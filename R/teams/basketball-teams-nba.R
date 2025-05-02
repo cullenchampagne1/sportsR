@@ -55,15 +55,15 @@ ALL_TEAMS_FILE <- "data/processed/basketball-teams-nba.csv"
 #'  abv [string] - Abreviation of team name (ex. DEN)
 #'  full_name [string] - Full name of team (ex. Denver Nuggets)
 #'  short_name [string] - Short name of team (ex. Nuggets)
+#'  division [string] - Division team is associated with (ex. Northwest)
+#'  conference [string] - Conference team is associated with (ex. Western)
 #'  primary [string] - Primary color of team uniforms in Hex format
 #'  secondary [string] - Secondary color of team uniforms in Hex format
 #'  logo [string] - Link to logo image from ESPN
-#'  conference [string] - Conference team is associated with (ex. Western)
-#'  division [string] - Division team is associated with (ex. Northwest)
-#'  twitter [string] - Twitter handle of team starting with '@'
-#'  webiste [string] - Website url for team
 #'  head_coach [string] - Current head coach of team 
 #'  general_manager [string] - Current general manager of team
+#'  twitter [string] - Twitter handle of team starting with '@'
+#'  webiste [string] - Website url for team
 #'  venue [string] - Current venue where team plays 
 #'
 get_formated_data <- function(VERBOSE = TRUE) {
@@ -160,8 +160,9 @@ get_formated_data <- function(VERBOSE = TRUE) {
         dplyr::mutate(primary = toupper(primary), secondary = toupper(secondary)) %>%
         # Add a stanard # before color values if isnt already there and value isnt NA
         dplyr::mutate(dplyr::across(c(primary, secondary), ~ ifelse(!is.na(.) & !str_starts(., "#"), paste0("#", .), .))) %>%
-        # Create a type column and move after id
-        dplyr::mutate(type = "NBA") %>% dplyr::select(id, espn_id, type, dplyr::everything()) %>% dplyr::relocate(venue, .after = last_col()) 
+        # Create a type column and move after id - reorder all columns to match standard
+        dplyr::mutate(type = "NBA") %>% dplyr::select(id, espn_id, type, abv, full_name, short_name, division, conference, dplyr::everything()) %>% 
+        dplyr::relocate(twitter, .after = last_col()) %>% dplyr::relocate(webiste, .after = last_col()) %>% dplyr::relocate(venue, .after = last_col()) 
 
     # Analyze missing data
     analyze_missing_data("NBA", all_nba_teams)
