@@ -3,7 +3,7 @@
 
  Retrieves NFL team data from ESPN's API and supplements it with additional  information scraped from the wiki team pages and official nfl webpages. The combined data  is processed into a structured dataframe and saved to a CSV file.
 
-**Function:** `football-teams-nfl::get_formated_data()`
+**Function:** `football-teams-nfl::get_formated_data()` 
 **Records:** 32 teams
 
 ### Returned Data Structure
@@ -39,7 +39,7 @@
 
  Retrieves college football team data from ESPN's API and supplements  it with additional information scraped from NCAA and CollegeFootballlDB. The combined  data is processed into a structured dataframe and saved to a CSV file.
 
-**Function:** `football-teams-college::get_formated_data()`
+**Function:** `football-teams-college::get_formated_data()` 
 **Records:** 606 teams
 
 ### Returned Data Structure
@@ -77,7 +77,7 @@
 
  Retrieves NBA team data from ESPN's API and supplements it with additional  information scraped from the wiki team pages. The combined data is processed into a  structured dataframe and saved to a CSV file. 
 
-**Function:** `basketball-teams-nba::get_formated_data()`
+**Function:** `basketball-teams-nba::get_formated_data()` 
 **Records:** 30 teams
 
 ### Returned Data Structure
@@ -110,7 +110,7 @@
 
  Retrieves college basketball team data from ESPN's API and supplements  it with additional information scraped from NCAA and CollegeBasketballDB. The combined  data is processed into a structured dataframe and saved to a CSV file. 
 
-**Function:** `basketball-teams-college::get_formated_data()`
+**Function:** `basketball-teams-college::get_formated_data()` 
 **Records:** 355 teams
 
 ### Returned Data Structure
@@ -147,7 +147,7 @@
 
  Retrieves MLB team data from ESPN's API and supplements it with additional  information scraped from the wiki team pages. The combined data is processed into a structured  dataframe and saved to a CSV file. 
 
-**Function:** `baseball-teams-mlb::get_formated_data()`
+**Function:** `baseball-teams-mlb::get_formated_data()` 
 **Records:** 30 teams
 
 ### Returned Data Structure

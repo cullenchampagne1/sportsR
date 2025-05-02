@@ -63,7 +63,7 @@ process_markdown_file <- function(script_file_path, md_file_path, records) {
         if (length(m) == 4) data.frame(Column = m[2], Type = m[3], Description = m[4])
     }))
     block <- paste(sprintf("## %s\n\n%s\n\n", title, desc),
-                    sprintf("**Function:** `%s`\n**Records:** %s teams\n\n### Returned Data Structure\n\n", function_name, records),
+                    sprintf("**Function:** `%s` \n**Records:** %s teams\n\n### Returned Data Structure\n\n", function_name, records),
                     "| Column | Type | Description |\n|--------|------|-------------|\n",
                     paste(apply(df, 1, \(r) sprintf("| %s | %s | %s |", r[1], r[2], r[3])), collapse = "\n"),
                     "\n\n| Sources |\n|--------|\n", 
