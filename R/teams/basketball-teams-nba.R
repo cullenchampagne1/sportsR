@@ -1,0 +1,178 @@
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+# of the Software, and to permit persons to whom the Software is furnished to do
+# so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Utilties for downloading data from cache
+source("R/util-data-download.R")
+# Utilties for generating unique team ids
+source("R/util-hash-generation.R")
+# Utilties for generating reports
+source("R/util-data-report.R")
+# Utilties for updating markdown
+source("R/util-markdown.R")
+
+library(rvest, quietly = TRUE, warn.conflicts = FALSE) # Filter through and parse html objects 
+library(tidyr, quietly = TRUE, warn.conflicts = FALSE) # Unest list attributed to columns in dataframe
+library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management of dataframes
+library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
+
+# Hardcoded list of nba team twitter acounts because couldnt find online
+NBA_TWITTER_ACCOUNTS <- yaml::read_yaml("data/mutations/basketball_nba_mutations.yaml")$TWITTER_ACCOUNTS
+# Read configuration from configs directory
+CONFIG <- yaml::read_yaml("configs/basketball_nba.yaml")
+# File to hold formated data
+ALL_TEAMS_FILE <- "data/processed/basketball-teams-nba.csv" 
+
+#' NBA Teams
+#'
+#' Retrieves NBA team data from ESPN's API and supplements it with additional 
+#' information scraped from the wiki team pages. The combined data is processed into a 
+#' structured dataframe and saved to a CSV file.
+#' 
+#' @source https://site.api.espn.com/
+#' @source https://en.wikipedia.org/wiki/
+#'
+#' @param VERBOSE Logical indicating whether to print progress messages (default: TRUE)
+#' 
+#' @return A dataframe containing the following information for each NBA team
+#'  id [string] - A generated unique identifier for each team
+#'  espn_id [int] - id used be espn to identify team
+#'  type [string] - Always set to NBA for team type
+#'  abv [string] - Abreviation of team name (ex. DEN)
+#'  full_name [string] - Full name of team (ex. Denver Nuggets)
+#'  short_name [string] - Short name of team (ex. Nuggets)
+#'  primary [string] - Primary color of team uniforms in Hex format
+#'  secondary [string] - Secondary color of team uniforms in Hex format
+#'  logo [string] - Link to logo image from ESPN
+#'  conference [string] - Conference team is associated with (ex. Western)
+#'  division [string] - Division team is associated with (ex. Northwest)
+#'  twitter [string] - Twitter handle of team starting with '@'
+#'  webiste [string] - Website url for team
+#'  head_coach [string] - Current head coach of team 
+#'  general_manager [string] - Current general manager of team
+#'  venue [string] - Current venue where team plays 
+#'
+get_formated_data <- function(VERBOSE = TRUE) {
+    # Grab College Football data from ESPN
+    all_espn_teams <- download_fromJSON(CONFIG$LINKS$ESPN_TEAMS, simplifyDataFrame = FALSE)
+    if (VERBOSE) cat(paste0("\n\033[32mDownloading NBA Teams: ", CONFIG$LINKS$ESPN_TEAMS, "\033[0m"))
+    
+    # Extract all teams from ESPN json structure
+    espn_teams_list <- lapply(all_espn_teams$sports[[1]]$leagues[[1]]$teams, function(x) x$team)
+
+    # Processes raw ESPN team JSON data into structured dataframe
+    # 
+    #' @param team List object containing raw team data from ESPN API
+    #' 
+    #' @return A dataframe containing all information in the espn json structure
+    #' 
+    extract_team <- function(team) {
+        # Catalog of base fields to extract from data
+        base_fields <- c("id", "uid", "slug", "abbreviation", "displayName",
+                        "shortDisplayName", "name", "nickname", "location",
+                        "color", "alternateColor", "isActive", "isAllStar")
+        # Extract all base fields and set to NA if not found
+        base_fields_df <- data.frame(
+            lapply(base_fields, function(f) ifelse(is.null(team[[f]]), NA, team[[f]])),
+            stringsAsFactors = FALSE
+        )
+        # Assigns names to all basefields
+        names(base_fields_df) <- base_fields
+        # Extract first logo from raw team data
+        base_fields_df$logo <- ifelse(length(team$logos) > 0, team$logos[[1]]$href, NA)
+        # Extract all avalaible links and retrive there text and hrefs
+        team_links <- setNames(sapply(team$links, function(x) x$href), make.names(sapply(team$links, function(x) x$text)))
+        # Bind base fields / logo with avalaible links
+        espn_team_df <- cbind(base_fields_df, t(team_links))
+        return(espn_team_df)
+    }
+    # Run extract teams function on all teams in data
+    espn_nba_teams <-  dplyr::bind_rows(lapply(espn_teams_list, extract_team))
+    # Replace abreviated team name
+    espn_nba_teams$displayName <- gsub("LA Clippers", "Los Angeles Clippers", espn_nba_teams$displayName)
+    
+    # Init blank data frame for team details
+    nba_team_details <- data.frame()
+    # Loop through team detail webpages and select data 
+    if (VERBOSE) cat(paste0("\n\033[32mDownloading NBA Team Information: https://en.wikipedia.org/wiki/...\033[0m"))
+    for (url in CONFIG$LINKS$TEAM_DETAILS) {
+        # Download page content from url
+        page_content <- download_fromHTML(url)
+        # Get name from xpath
+        name <- page_content %>% rvest::html_element(xpath = CONFIG$ATTRIBUTES$TEAM_DETAILS$NAME) %>% rvest::html_text(trim = TRUE)
+        # Get arena data from xpath
+        arena_text <- page_content %>% rvest::html_element(xpath = CONFIG$ATTRIBUTES$TEAM_DETAILS$ARENA) %>% rvest::html_text(trim = TRUE)
+        venue <- arena_text %>% gsub("\\[[a-z0-9]+\\]", "", .)
+        # Get head coach data from xpath
+        coach_text <- page_content %>% rvest::html_element(xpath = CONFIG$ATTRIBUTES$TEAM_DETAILS$COACH) %>% rvest::html_text(trim = TRUE)
+        head_coach <- coach_text %>% gsub("(\\w+)\\s+(\\w+).*", "\\1 \\2", .)
+        # Get division data from xpath
+        division <- page_content %>% rvest::html_element(xpath = CONFIG$ATTRIBUTES$TEAM_DETAILS$DIVISION) %>% rvest::html_text(trim = TRUE)
+        # Get conference data from xpath
+        conference <- page_content %>% rvest::html_element(xpath = CONFIG$ATTRIBUTES$TEAM_DETAILS$CONFERENCE) %>% rvest::html_text(trim = TRUE)
+        # Return dataframe with parsed information
+        nba_team_details <- rbind(nba_team_details, data.frame(
+            displayName = name,
+            conference = conference,
+            division = division,
+            twitter = paste0("@", NBA_TWITTER_ACCOUNTS[name]),
+            webiste = paste0("https://www.nba.com/", tolower(sub(".* ", "", name)), "/"),
+            head_coach = head_coach,
+            venue = venue,
+            stringsAsFactors = FALSE
+        ))
+    }
+
+    # Merge with the scraped team details
+    espn_nba_teams <- espn_nba_teams %>% dplyr::left_join(nba_team_details, by = "displayName")
+
+    page_content <- download_fromHTML(CONFIG$LINKS$GENERAL_MANAGERS)
+    if (VERBOSE) cat(paste0("\n\033[32mDownloading NBA General Managers: ", CONFIG$LINKS$GENERAL_MANAGERS, "\033[0m\n"))
+    # Extract arenas table from wiki page
+    tables <- page_content %>% html_elements("table")
+    general_managers <- tables[[2]] %>% rvest::html_table(fill = TRUE) %>% dplyr::select(Team, 'General Manager') %>% dplyr::rename(displayName = Team, general_manager = 'General Manager')
+    # Merge with the scraped team details
+    espn_nba_teams <- espn_nba_teams %>% dplyr::left_join(general_managers, by = "displayName") %>% dplyr::rename(espn_id = id)
+
+    # Generate Unique team ids for each team
+    all_nba_teams <- espn_nba_teams %>% dplyr::mutate(id = encode_id(paste0("B", espn_id), abbreviation)) %>% dplyr::filter(isActive == TRUE) %>%
+        # Remove uneeded columns
+        dplyr::select(-c(uid, name, nickname, isActive, isAllStar, Clubhouse, Roster,
+        Statistics, Schedule, Tickets, Depth.Chart, location, slug)) %>%
+        # Rename all columns to follow standard
+        dplyr::rename(full_name = displayName, short_name = shortDisplayName, primary = color, 
+            secondary = alternateColor, abv = abbreviation) %>%
+        # Capitalize all hex colors
+        dplyr::mutate(primary = toupper(primary), secondary = toupper(secondary)) %>%
+        # Add a stanard # before color values if isnt already there and value isnt NA
+        dplyr::mutate(dplyr::across(c(primary, secondary), ~ ifelse(!is.na(.) & !str_starts(., "#"), paste0("#", .), .))) %>%
+        # Create a type column and move after id
+        dplyr::mutate(type = "NBA") %>% dplyr::select(id, espn_id, type, dplyr::everything()) %>% dplyr::relocate(venue, .after = last_col()) 
+
+    # Analyze missing data
+    analyze_missing_data("NBA", all_nba_teams)
+    process_markdown_file("R/teams/basketball-teams-nba.R", "R/teams/readme.md", nrow(all_nba_teams))
+
+    if (VERBOSE) cat(paste0("\n\033[90mNBA Basketball Data Saved To: /", ALL_TEAMS_FILE, "\033[0m\n"))
+    # Save any created name bindings to file
+    write.csv(all_nba_teams, ALL_TEAMS_FILE, row.names = FALSE)
+    # Return formated data
+    return(all_nba_teams)
+}
+
+# If file is being run stand-alone, run function
+if (interactive()) get_formated_data()
