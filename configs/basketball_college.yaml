@@ -1,0 +1,35 @@
+LINKS:
+  ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams?limit=200000"
+  CBDB_TEAMS: "https://api.collegebasketballdata.com/teams" 
+  NCAA_TEAMS:
+    - "https://www.ncaa.com/stats/basketball-men/d1/current/team/145"
+    - "https://www.ncaa.com/stats/basketball-men/d1/current/team/145/p2"
+    - "https://www.ncaa.com/stats/basketball-men/d1/current/team/145/p3"
+    - "https://www.ncaa.com/stats/basketball-men/d1/current/team/145/p4"
+    - "https://www.ncaa.com/stats/basketball-men/d1/current/team/145/p5"
+    - "https://www.ncaa.com/stats/basketball-men/d1/current/team/145/p6"
+    - "https://www.ncaa.com/stats/basketball-men/d1/current/team/145/p7"
+    - "https://www.ncaa.com/stats/basketball-men/d1/current/team/145/p8"
+  COACHES: "https://en.wikipedia.org/wiki/List_of_current_NCAA_Division_I_men%27s_basketball_coaches"
+  NCAA_IDS:
+    - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=1.0&ranking_period=170.0&sport_code=MBB&stat_seq=145.0"
+ATTRIBUTES:
+  NCAA_TEAM_REF: "td.reclass a.skipMask[href^='/teams/']"
+  COACHES: "//table[1]"
+  ARENAS: "//table[2]"
+  NCAA_TEAMS:
+    ROWS: "tr"
+    COLUMNS: "td"
+    COLUMN_NUMBER: 2
+    IMG_SRC: ".//img/@src"
+    SCHOOL_URL: ".//a[@class='school']/@href"
+    SCHOOL_NAME: ".//a[@class='school']"
+  NCAA_DETAILED:
+    CONFERENCE: "//dt[text()='Conference']/following-sibling::dd[1]"
+    NICKNAME: "//dt[text()='Nickname']/following-sibling::dd[1]"
+    COLORS: "//dt[text()='Colors']/following-sibling::dd[1]"
+    SCHOOL: "h1.school-name"
+    WEBSITE: "span.icon-web + .info"
+    TWITTER: "span.icon-twitter + .info"
+  NCAA_STAT:
+    HEAD_COACH: "//div[contains(@class,'card-header') and contains(text(), 'Coach')]/following-sibling::div//a"

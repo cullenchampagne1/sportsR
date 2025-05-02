@@ -1,5 +1,4 @@
 data/raw/*
-configs/*
 data/sources.yaml
 .env
 .DS_Store
