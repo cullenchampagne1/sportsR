@@ -145,7 +145,7 @@
 
 ## MLB Teams
 
- Retrieves MLB team data from ESPN's API and supplements it with additional  information scraped from the wiki team pages. The combined data is processed into a structured  dataframe and saved to a CSV file. 
+ Retrieves MLB team data from ESPN's API and supplements it with additional information scraped from the wiki team pages. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `baseball-teams-mlb::get_formated_data()` 
 
@@ -161,11 +161,11 @@
 | abv | string | Abreviation of team name (ex. DEN) |
 | full_name | string | Full name of team (ex. Denver Nuggets) |
 | short_name | string | Short name of team (ex. Nuggets) |
+| league | string | League team is associated with (ex. National League) |
+| division | string | Division team is associated with (ex. Central Division) |
 | primary | string | Primary color of team uniforms in Hex format |
 | secondary | string | Secondary color of team uniforms in Hex format |
 | logo | string | Link to logo image from ESPN |
-| league | string | League team is associated with (ex. National League) |
-| division | string | Division team is associated with (ex. Central Division) |
 | twitter | string | Twitter handle of team starting with '@' |
 | webiste | string | Website url for team |
 | general_manager | string | Current general manager of team |
