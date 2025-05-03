@@ -129,7 +129,7 @@ get_formated_data <- function(verbose = TRUE) {
             conference = conference,
             division = division,
             twitter = paste0("@", nba_twitter_accounts[name]),
-            webiste = paste0("https://www.nba.com/", tolower(sub(".* ", "", name)), "/"),
+            website = paste0("https://www.nba.com/", tolower(sub(".* ", "", name)), "/"),
             head_coach = head_coach,
             venue = venue,
             stringsAsFactors = FALSE
@@ -165,7 +165,7 @@ get_formated_data <- function(verbose = TRUE) {
         dplyr::mutate(type = "NBA") %>%
         dplyr::select(id, espn_id, type, abv, full_name, short_name, division, conference, dplyr::everything()) %>%
         dplyr::relocate(twitter, .after = last_col()) %>%
-        dplyr::relocate(webiste, .after = last_col()) %>%
+        dplyr::relocate(website, .after = last_col()) %>%
         dplyr::relocate(venue, .after = last_col())
 
     # Analyze missing data
