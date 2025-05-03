@@ -194,7 +194,7 @@ get_formated_data <- function(verbose = TRUE) {
     # Init blank dataframe to hold NCAA ids
     ncaa_ids <- data.frame()
     # Loop through each division
-    for (link in config$LINKS$ncaa_ids) {
+    for (link in config$LINKS$NCAA_IDS) {
         page_content <- download_fromHTML(link, "data/raw", TRUE, headers)
         # Extract all <a> tags with class="skipMask" (team links)
         team_links <- page_content %>% rvest::html_elements(config$ATTRIBUTES$NCAA_TEAM_REF)
@@ -308,9 +308,9 @@ get_formated_data <- function(verbose = TRUE) {
     bindings <- all_college_data_matched %>% dplyr::select(ncaa_id, espn_id)
     write.csv(bindings, "data/bindings/ncaa_espn_basketball_bindings.csv", row.names = FALSE)
     # Identify unmatched records from dfA (college_basketball_teams)
-    unmatched_df_a <- college_basketball_teams[!seq_len(nrow(college_basketball_teams)) %in% matches.out$matches$inds.a, ]
+    unmatched_df_a <- college_basketball_teams[!seq_len(nrow(college_basketball_teams)) %in% matches_out$matches$inds.a, ]
     # Identify unmatched records from dfB (ncaa_basketball_teams)
-    unmatched_df_b <- ncaa_basketball_teams[!seq_len(nrow(ncaa_basketball_teams)) %in% matches.out$matches$inds.b, ]
+    unmatched_df_b <- ncaa_basketball_teams[!seq_len(nrow(ncaa_basketball_teams)) %in% matches_out$matches$inds.b, ]
     # Save unmatched records to files
     if (nrow(unmatched_df_a) > 0) write.csv(unmatched_df_a, "output/csv/unmatched_college_basketball_espn.csv", row.names = FALSE)
     if (nrow(unmatched_df_b) > 0) write.csv(unmatched_df_b, "output/csv/unmatched_college_basketball_ncaa.csv", row.names = FALSE)
@@ -443,7 +443,7 @@ get_formated_data <- function(verbose = TRUE) {
     analyze_missing_data("College Basketball", college_basketball_data)
     process_markdown_file("R/teams/basketball-teams-college.R", "R/teams/readme.md", nrow(college_basketball_data))
 
-    if (verbose) cat(paste0("\n\033[90m", nrow(unmatched_dfB), " NCAA Teams and ", nrow(unmatched_dfA), " ESPN Teams Could Not be Binded: /output/csv/unmatched_...\033[0m"))
+    if (verbose) cat(paste0("\n\033[90m", nrow(unmatched_df_b), " NCAA Teams and ", nrow(unmatched_df_a), " ESPN Teams Could Not be Binded: /output/csv/unmatched_...\033[0m"))
     if (verbose) cat(paste0("\n\033[90mCollege Basketball Data Saved To: /", all_teams_file, "\033[0m\n"))
 
     # Save any created name bindings to file

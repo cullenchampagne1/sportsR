@@ -235,7 +235,7 @@ get_formated_data <- function(verbose = TRUE) {
     # Init blank dataframe to hold NCAA ids
     ncaa_ids <- data.frame()
     # Loop through each division
-    for (link in config$LINKS$ncaa_ids) {
+    for (link in config$LINKS$NCAA_IDS) {
         page_content <- download_fromHTML(link, "data/raw", TRUE, headers)
         # Extract all <a> tags with class="skipMask" (team links)
         team_links <- page_content %>% rvest::html_elements(config$ATTRIBUTES$NCAA_TEAM_REF)
@@ -352,9 +352,9 @@ get_formated_data <- function(verbose = TRUE) {
     bindings <- all_college_data_matched %>% dplyr::select(ncaa_id, espn_id)
     write.csv(bindings, "data/bindings/ncaa_espn_football_bindings.csv", row.names = FALSE)
     # Identify unmatched records from dfA (all_college_data)
-    unmatched_df_a <- all_college_data[!seq_len(nrow(all_college_data)) %in% matches.out$matches$inds.a, ]
+    unmatched_df_a <- all_college_data[!seq_len(nrow(all_college_data)) %in% matches_out$matches$inds.a, ]
     # Identify unmatched records from dfB (ncaa_football_teams)
-    unmatched_df_b <- ncaa_football_teams[!seq_len(nrow(ncaa_football_teams)) %in% matches.out$matches$inds.b, ]
+    unmatched_df_b <- ncaa_football_teams[!seq_len(nrow(ncaa_football_teams)) %in% matches_out$matches$inds.b, ]
     # Save unmatched records to files
     if (nrow(unmatched_df_a) > 0) write.csv(unmatched_df_a, "output/csv/unmatched_college_football_espn.csv", row.names = FALSE)
     if (nrow(unmatched_df_b) > 0) write.csv(unmatched_df_b, "output/csv/unmatched_college_football_ncaa.csv", row.names = FALSE)
