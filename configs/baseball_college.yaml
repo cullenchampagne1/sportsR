@@ -1,2 +1,27 @@
 LINKS:
   ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/baseball/college-baseball/teams?limit=200000"
+  NCAA_TEAMS:
+    - "https://www.ncaa.com/stats/baseball/d1/current/team/484"
+    - "https://www.ncaa.com/stats/baseball/d1/current/team/484/p2"
+    - "https://www.ncaa.com/stats/baseball/d1/current/team/484/p3"
+    - "https://www.ncaa.com/stats/baseball/d1/current/team/484/p4"
+    - "https://www.ncaa.com/stats/baseball/d1/current/team/484/p5"
+    - "https://www.ncaa.com/stats/baseball/d1/current/team/484/p6"
+  NCAA_IDS:
+    - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=1.0&ranking_period=65.0&sport_code=MBA&stat_seq=484.0"
+ATTRIBUTES:
+  NCAA_TEAM_REF: "td.reclass a.skipMask[href^='/teams/']"
+  NCAA_TEAMS:
+    ROWS: "tr"
+    COLUMNS: "td"
+    COLUMN_NUMBER: 2
+    IMG_SRC: ".//img/@src"
+    SCHOOL_URL: ".//a[@class='school']/@href"
+    SCHOOL_NAME: ".//a[@class='school']"
+  NCAA_DETAILED:
+    CONFERENCE: "//dt[text()='Conference']/following-sibling::dd[1]"
+    NICKNAME: "//dt[text()='Nickname']/following-sibling::dd[1]"
+    COLORS: "//dt[text()='Colors']/following-sibling::dd[1]"
+    SCHOOL: "h1.school-name"
+    WEBSITE: "span.icon-web + .info"
+    TWITTER: "span.icon-twitter + .info"
