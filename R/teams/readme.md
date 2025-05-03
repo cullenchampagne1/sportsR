@@ -1,9 +1,11 @@
 
+![Description of the image](../../output/figures/teams-db.png)
+
 ## NFL Teams
 
- Retrieves NFL team data from ESPN's API and supplements it with additional  information scraped from the wiki team pages and official nfl webpages. The combined data  is processed into a structured dataframe and saved to a CSV file.
+ Retrieves NFL team data from ESPN's API and supplements it with additional information scraped from the wiki team pages and official nfl webpages. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
-**Function:** `football-teams-nfl::get_formated_data()`
+**Function:** `football-teams-nfl::get_formated_data()` 
 
 **Records:** `32 teams`
 
@@ -35,10 +37,9 @@
 | https://en.wikipedia.org/wiki/ |
 | https://www.nfl.com/teams/ |
 
-
 ## College Football Teams
 
- Retrieves college football team data from ESPN's API and supplements  it with additional information scraped from NCAA and CollegeFootballlDB. The combined  data is processed into a structured dataframe and saved to a CSV file.
+ Retrieves college football team data from ESPN's API and supplements it with additional information scraped from NCAA and CollegeFootballlDB. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `football-teams-college::get_formated_data()` 
 
@@ -74,10 +75,9 @@
 | https://api.collegefootballdata.com/teams |
 | https://www.ncaa.com/stats/football/ |
 
-
 ## NBA Teams
 
- Retrieves NBA team data from ESPN's API and supplements it with additional  information scraped from the wiki team pages. The combined data is processed into a  structured dataframe and saved to a CSV file. 
+ Retrieves NBA team data from ESPN's API and supplements it with additional information scraped from the wiki team pages. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `basketball-teams-nba::get_formated_data()` 
 
@@ -111,7 +111,7 @@
 
 ## College Basketball Teams
 
- Retrieves college basketball team data from ESPN's API and supplements  it with additional information scraped from NCAA and CollegeBasketballDB. The combined  data is processed into a structured dataframe and saved to a CSV file. 
+ Retrieves college basketball team data from ESPN's API and supplements it with additional information scraped from NCAA and CollegeBasketballDB. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `basketball-teams-college::get_formated_data()` 
 
@@ -145,7 +145,6 @@
 | https://site.api.espn.com/ |
 | https://api.collegebasketballdata.com/teams |
 | https://www.ncaa.com/stats/basketball-men/ |
-
 
 ## MLB Teams
 
