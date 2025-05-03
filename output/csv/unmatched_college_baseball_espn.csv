@@ -1,0 +1,135 @@
+"espn_id","uid","slug","abbreviation","displayName","shortDisplayName","name","nickname","location","color","alternateColor","isActive","isAllStar","logo"
+"821","s:1~l:14~t:821","alma","ALMA","Alma","ALMA","Scots","ALMA","Alma",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2800.png"
+"319","s:1~l:14~t:319","american-university","AMER","American University","American","Eagles","American","American University","c41130",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/44.png"
+"822","s:1~l:14~t:822","anderson-in","ANDC","Anderson (Indiana)","Anderson IND","Ravens","Anderson IND","Anderson (IN)",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2023.png"
+"129701","s:1~l:14~t:129701","augustana-college-il","AUG","Augustana College (Illinois)","Augustana Coll","Vikings","Augustana Coll","Augustana College (Il)",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2042.png"
+"129702","s:1~l:14~t:129702","aurora","AUR","Aurora","Aurora","Spartans","Aurora","Aurora",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2044.png"
+"824","s:1~l:14~t:824",NA,"BAKE",NA,"Baker University",NA,NA,"Baker University",NA,NA,TRUE,FALSE,NA
+"825","s:1~l:14~t:825","barry","BARR","Barry","BARRY","Buccaneers","BARRY","Barry",NA,NA,TRUE,FALSE,NA
+"833","s:1~l:14~t:833","bears","LENR","Bears","LENRHYNE","Bears","LENRHYNE",NA,NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2331.png"
+"826","s:1~l:14~t:826","bethany-ks","BETH","Bethany (Kansas)","BETHANYKS","Bethany (Ks)","BETHANYKS","Bethany (KS)",NA,NA,TRUE,FALSE,NA
+"56","s:1~l:14~t:56","birmingham-southern","BSC","Birmingham Southern","Birmingham-So.","Panthers","Birmingham-So.","Birmingham Southern","000000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/3.png"
+"322","s:1~l:14~t:322","boise-state","BOIS","Boise State","Boise St","Broncos","Boise St","Boise State","29299c",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/68.png"
+"1139","s:1~l:14~t:1139","boise-state","BOIS","Boise State","Boise St","Broncos","Boise St","Boise State",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/68.png"
+"323","s:1~l:14~t:323","boston-university","BU","Boston University","Boston U","Terriers","Boston U","Boston University","cc0000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/104.png"
+"827","s:1~l:14~t:827","broncos","CPPM","Broncos","CALPOLYPOM","Broncos","CALPOLYPOM",NA,NA,NA,TRUE,FALSE,NA
+"325","s:1~l:14~t:325","buffalo","BUFF","Buffalo","Buffalo","Bulls","Buffalo","Buffalo","004a84",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2084.png"
+"1280","s:1~l:14~t:1280","clcc","COP","CLCC","CLCC","Clcc","CLCC","CLCC",NA,NA,TRUE,FALSE,NA
+"1281","s:1~l:14~t:1281","cosn","SOU","COSN","COSN","Coyotes","COSN","COSN",NA,NA,TRUE,FALSE,NA
+"828","s:1~l:14~t:828","centenary","CENT","Centenary","CENTENARY","Gentlemen","CENTENARY","Centenary",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2113.png"
+"328","s:1~l:14~t:328","central-michigan","CMU","Central Mich.","C Michigan","Chippewas","C Michigan","Central Michigan","7b0000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2117.png"
+"836","s:1~l:14~t:836","chaparrals","LUBC","Chaparrals","LUBBCHRIST","Chaparrals","LUBBCHRIST",NA,NA,NA,TRUE,FALSE,NA
+"180","s:1~l:14~t:180","charlotte","CLT","Charlotte","Charlotte","49ers","Charlotte","Charlotte","0C562D",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2429.png"
+"330","s:1~l:14~t:330","chattanooga","UTC","Chattanooga","Chattanooga","Mocs","Chattanooga","Chattanooga","253b81",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/236.png"
+"331","s:1~l:14~t:331","chicago-st","CHST","Chicago St","Chicago St","Cougars","Chicago St","Chicago St","006700",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2130.png"
+"332","s:1~l:14~t:332","cleveland-state","CLEV","Cleveland State","Cleveland St","Vikings","Cleveland St","Cleveland State","006633",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/325.png"
+"1248","s:1~l:14~t:1248","coe-college","COE","Coe College","Coe College","Kohawks","Coe College","Coe College",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2141.png"
+"333","s:1~l:14~t:333","colgate","COLG","Colgate","Colgate","Raiders","Colgate","Colgate","910028",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2142.png"
+"334","s:1~l:14~t:334","colorado","COLO","Colorado","Colorado","Buffaloes","Colorado","Colorado","d1c57e",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/38.png"
+"335","s:1~l:14~t:335","colorado-state","CSU","Colorado State","Colorado St","Rams","Colorado St","Colorado State","008c73",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/36.png"
+"342","s:1~l:14~t:342","depaul","DEP","DePaul","DePaul","Blue Demons","DePaul","DePaul","2d649c",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/305.png"
+"1286","s:1~l:14~t:1286","depauw","DEP","DePauw","DePauw Univers","Tigers","DePauw Univers","DePauw",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/83.png"
+"341","s:1~l:14~t:341","denver","DEN","Denver","Denver","Pioneers","Denver","Denver","9c143d",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2172.png"
+"343","s:1~l:14~t:343","detroit-mercy","DETM","Detroit Mercy","Detroit Mercy","Titans","Detroit Mercy","Detroit Mercy","165b9e",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2174.png"
+"344","s:1~l:14~t:344","drake","DRKE","Drake","Drake","Bulldogs","Drake","Drake","0d1361",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2181.png"
+"345","s:1~l:14~t:345","drexel","DREX","Drexel","Drexel","Dragons","Drexel","Drexel","020260",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2182.png"
+"346","s:1~l:14~t:346","duquesne","DUQ","Duquesne","Duquesne","Dukes","Duquesne","Duquesne","283a61",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2184.png"
+"347","s:1~l:14~t:347","eastern-illinois","EIU","Eastern Ill.","E Illinois","Panthers","E Illinois","Eastern Illinois","000000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2197.png"
+"830","s:1~l:14~t:830","emporia-st","EMPO","Emporia St","EMPORIAST","Hornets","EMPORIAST","Emporia St",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2214.png"
+"1282","s:1~l:14~t:1282","fdtc","FLO","FDTC","FDTC","Fdtc","FDTC","FDTC",NA,NA,TRUE,FALSE,NA
+"831","s:1~l:14~t:831","florence","FRMN","FLORENCE","FRANCISMAR","Patriots","FRANCISMAR","FLORENCE",NA,NA,TRUE,FALSE,NA
+"163","s:1~l:14~t:163","florida-atlantic","FAU","Florida Atlantic University","FAU","Owls","FAU","Florida Atlantic","000099",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2226.png"
+"291","s:1~l:14~t:291","florida-gulf-coast","FGCU","Florida Gulf Coast University","FGCU","Eagles","FGCU","Florida Gulf Coast","000000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/526.png"
+"164","s:1~l:14~t:164","florida-international","FIU","Florida International","FIU","Panthers","FIU","Florida International","091731",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2229.png"
+"935","s:1~l:14~t:935","fort-lauderdale","NOV","Fort Lauderdale","NOVASE","Sharks","NOVASE","Fort Lauderdale",NA,NA,TRUE,FALSE,NA
+"355","s:1~l:14~t:355","furman","FUR","Furman","Furman","Paladins","Furman","Furman","4A2184",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/231.png"
+"1190","s:1~l:14~t:1190","grand-view","GV","Grand View","Grand View","Vikings","Grand View","Grand View",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2254.png"
+"361","s:1~l:14~t:361","green-bay","GB","Green Bay","Green Bay","Phoenix","Green Bay","Green Bay","006633",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2739.png"
+"362","s:1~l:14~t:362","hampton","HAMP","Hampton","Hampton","Pirates","Hampton","Hampton","0067AC",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2261.png"
+"70","s:1~l:14~t:70","hartford","HART","Hartford","Hartford","Hawks","Hartford","Hartford","D60008",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/42.png"
+"847","s:1~l:14~t:847","hawaii-hilo","HILO","Hawai'i Hilo","HAWAIIHILO","Vulcans","HAWAIIHILO","Hawai'i Hilo",NA,NA,TRUE,FALSE,NA
+"832","s:1~l:14~t:832","hawaii-pacific","HPAC","Hawai'i Pacific","HAWAIIPAC","Sea Warriors","HAWAIIPAC","Hawai'i Pacific",NA,NA,TRUE,FALSE,NA
+"368","s:1~l:14~t:368","howard","HOW","Howard","Howard","Bison","Howard","Howard","9e0b0e",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/47.png"
+"375","s:1~l:14~t:375","iu-indianapolis","IUPU","IU Indianapolis","IU Indy","Jaguars","IU Indy","IU Indianapolis","ca3a44",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/85.png"
+"369","s:1~l:14~t:369","idaho","IDHO","Idaho","Idaho","Vandals","Idaho","Idaho","000000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/70.png"
+"370","s:1~l:14~t:370","idaho-state","IDST","Idaho State","Idaho St","Bengals","Idaho St","Idaho State","ef8c00",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/304.png"
+"373","s:1~l:14~t:373","iowa-state","ISU","Iowa State","Iowa St","Cyclones","Iowa St","Iowa State","d62949",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/66.png"
+"1276","s:1~l:14~t:1276","jalc","JOH","JALC","JALC","Jalc","JALC","JALC",NA,NA,TRUE,FALSE,NA
+"451","s:1~l:14~t:451","kansas-city","KC","Kansas City","Kansas City","Roos","Kansas City","Kansas City","004A8B",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/140.png"
+"171","s:1~l:14~t:171","le-moyne","LEM","Le Moyne","Le Moyne","Dolphins","Le Moyne","Le Moyne",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2330.png"
+"834","s:1~l:14~t:834","lincoln","LINC","Lincoln","LINCOLN","Lions","LINCOLN","Lincoln",NA,NA,TRUE,FALSE,NA
+"926","s:1~l:14~t:926","lindenwood","LIN","Lindenwood","Lindenwood","Lions","Lindenwood","Lindenwood",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2815.png"
+"1247","s:1~l:14~t:1247","linfield","LFD","Linfield","Linfield","Wildcats","Linfield","Linfield",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/203.png"
+"1189","s:1~l:14~t:1189","loras-college",NA,NA,"Loras College","Duhawks",NA,"Loras College",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/263.png"
+"83","s:1~l:14~t:83","louisville","LOU","Louisville","Louisville","Cardinals","Louisville","Louisville","DE0018",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/97.png"
+"381","s:1~l:14~t:381","loyola-chicago","LUC","Loyola Chicago","Loyola Chicago","Ramblers","Loyola Chicago","Loyola Chicago","9d1244",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2350.png"
+"174","s:1~l:14~t:174","loyola-marymount","LMU","Loyola Marymount","LMU","Lions","LMU","Loyola Marymount","880029",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2351.png"
+"929","s:1~l:14~t:929","miami-gardens","STFL","MIAMI GARDENS","STTHOM(FL)","Bobcats","STTHOM(FL)","MIAMI GARDENS",NA,NA,TRUE,FALSE,NA
+"928","s:1~l:14~t:928","mount-vernon","CRIA","MOUNT VERNON","Cornell IA","Rams","Cornell IA","MOUNT VERNON",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2155.png"
+"823","s:1~l:14~t:823","muskogee","BACN","MUSKOGEE","BACONECG","Bacone","BACONECG","MUSKOGEE",NA,NA,TRUE,FALSE,NA
+"383","s:1~l:14~t:383","marquette","MARQ","Marquette","Marquette","Golden Eagles","Marquette","Marquette","083963",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/269.png"
+"129698","s:1~l:14~t:129698","mercyhurst","MER","Mercyhurst","Mercyhurst","Lakers","Mercyhurst","Mercyhurst",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2385.png"
+"837","s:1~l:14~t:837","mid-america-christian","MACU","Mid-America Christian","MCA","Evangels","MCA","Mid-America Christian",NA,NA,TRUE,FALSE,NA
+"389","s:1~l:14~t:389","montana","MONT","Montana","Montana","Grizzlies","Montana","Montana","63104a",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/149.png"
+"390","s:1~l:14~t:390","montana-state","MTST","Montana State","Montana St","Bobcats","Montana St","Montana State","010670",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/147.png"
+"392","s:1~l:14~t:392","morgan-state","MORG","Morgan State","Morgan St","Bears","Morgan St","Morgan State","0505aa",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2415.png"
+"95","s:1~l:14~t:95","nc-state","NCST","North Carolina State","NC State","Wolfpack","NC State","NC State","D60039",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/152.png"
+"1277","s:1~l:14~t:1277","nmcc","NOR","NMCC","NMCC","Nmcc","NMCC","NMCC",NA,NA,TRUE,FALSE,NA
+"838","s:1~l:14~t:838","ny-institute-of-technology","NYIT","New York Institute of Technology","NYIT","Yellow Jackets","NYIT","NY Institute of Technology",NA,NA,TRUE,FALSE,NA
+"397","s:1~l:14~t:397","new-hampshire","UNH","New Hampshire","New Hampshire","Wildcats","New Hampshire","New Hampshire","004371",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/160.png"
+"401","s:1~l:14~t:401","north-carolina-at","NCAT","North Carolina A&T","NC A&T","Aggies","NC A&T","North Carolina A&T","0505aa",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2448.png"
+"402","s:1~l:14~t:402","north-carolina-central","NCCU","North Carolina Central","NC Central","Eagles","NC Central","North Carolina Central","860016",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2428.png"
+"310","s:1~l:14~t:310","north-dakota-state","NDSU","North Dakota State","N Dakota St","Bison","N Dakota St","North Dakota State",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2449.png"
+"839","s:1~l:14~t:839","north-georgia","NTGA","North Georgia","NORGE","Saints","NORGE","North Georgia",NA,NA,TRUE,FALSE,NA
+"840","s:1~l:14~t:840","northwestern-college-ia","NWIA","Northwestern College (Iowa)","NWCOLLIOWA","Northwestern College (Ia)","NWCOLLIOWA","Northwestern College (IA)",NA,NA,TRUE,FALSE,NA
+"186","s:1~l:14~t:186","northwestern-state","NWST","Northwestern State","N'Western St","Demons","N'Western St","Northwestern State","68565F",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2466.png"
+"396","s:1~l:14~t:396","omaha","OMA","Omaha","Omaha","Mavericks","Omaha","Omaha","e3193e",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2437.png"
+"1279","s:1~l:14~t:1279","pearl","PEA","PEARL","PEARL","Pearl","PEARL","PEARL",NA,NA,TRUE,FALSE,NA
+"835","s:1~l:14~t:835","pineville","LOUC","PINEVILLE","LACOLLEGE","Wildcats","LACOLLEGE","PINEVILLE",NA,NA,TRUE,FALSE,NA
+"413","s:1~l:14~t:413","pacific","PAC","Pacific","Pacific","Tigers","Pacific","Pacific","ff5109",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/279.png"
+"417","s:1~l:14~t:417","portland-state","PRST","Portland State","Portland St","Vikings","Portland St","Portland State","005e60",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2502.png"
+"419","s:1~l:14~t:419","providence","PROV","Providence","Providence","Friars","Providence","Providence","000000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2507.png"
+"1238","s:1~l:14~t:1238","queens-university","QUR","Queens University","Queens","Royals","Queens","Queens University",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2511.png"
+"1191","s:1~l:14~t:1191","roosevelt","ROO","ROOSEVELT","ROOSEVELT","Lakers","ROOSEVELT","ROOSEVELT",NA,NA,TRUE,FALSE,NA
+"424","s:1~l:14~t:424","robert-morris","RMU","Robert Morris","Robert Morris","Colonials","Robert Morris","Robert Morris","3d4262",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2523.png"
+"1275","s:1~l:14~t:1275","sanjacjc","SAN","SANJACJC","SANJACJC","Sanjacjc","SANJACJC","SANJACJC",NA,NA,TRUE,FALSE,NA
+"1278","s:1~l:14~t:1278","scof","STA","SCOF","SCOF","Scof","SCOF","SCOF",NA,NA,TRUE,FALSE,NA
+"309","s:1~l:14~t:309","se-louisiana","SELA","SE Louisiana","SE Louisiana","Lions","SE Louisiana","SE Louisiana",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2545.png"
+"1197","s:1~l:14~t:1197","seuniv","SOU","SEUNIV","Southeastern","Fires","Southeastern","SEUNIV",NA,NA,TRUE,FALSE,NA
+"433","s:1~l:14~t:433","smu","SMU","SMU","SMU","Mustangs","SMU","SMU","e73139",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2567.png"
+"842","s:1~l:14~t:842","sw-oklahoma-state","SWOS","SW Oklahoma State","SWOKLAST","Bulldogs","SWOKLAST","SW Oklahoma State",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2927.png"
+"426","s:1~l:14~t:426","saint-marys","SMC","Saint Mary's","Saint Mary's","Gaels","Saint Mary's","Saint Mary's","000063",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2608.png"
+"841","s:1~l:14~t:841","salisbury","SALB","Salisbury","SALISBURY","Sea Gulls","SALISBURY","Salisbury",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2532.png"
+"286","s:1~l:14~t:286","savannah-state","SAVS","Savannah State","Savannah St","Tigers","Savannah St","Savannah State","000000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2542.png"
+"430","s:1~l:14~t:430","south-carolina-state","SCST","South Carolina State","SC State","Bulldogs","SC State","South Carolina State","7d1315",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2569.png"
+"301","s:1~l:14~t:301","south-dakota-state","SDST","South Dakota State","S Dakota St","Jackrabbits","S Dakota St","South Dakota State","000000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2571.png"
+"1273","s:1~l:14~t:1273","spartans","TAM","Spartans","UNIVTAMPA","Spartans","UNIVTAMPA",NA,NA,NA,TRUE,FALSE,NA
+"435","s:1~l:14~t:435","st-francis-bkn","SFBK","St. Francis (BKN)","St Francis BK","Terriers","St Francis BK","St. Francis (BKN)","00158c",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2597.png"
+"436","s:1~l:14~t:436","st-francis-pa","SFPA","St. Francis (Pennsylvania)","St Francis PA","Red Flash","St Francis PA","St. Francis (PA)","a20012",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2598.png"
+"843","s:1~l:14~t:843","st-gregory","STGR","St. Gregory","St Gregorys","Cavaliers","St Gregorys","St. Gregory",NA,NA,TRUE,FALSE,NA
+"844","s:1~l:14~t:844","st-martins","STMT","St. Martins","STMARTINS","Saints","STMARTINS","St. Martins",NA,NA,TRUE,FALSE,NA
+"1287","s:1~l:14~t:1287","st-olaf","ST.","St. Olaf","St. Olaf","Oles","St. Olaf","St. Olaf",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/133.png"
+"850","s:1~l:14~t:850","st-thomas-minnesota","STMN","St. Thomas-Minnesota","St Thomas (MN)","Tommies","St Thomas (MN)","St. Thomas-Minnesota",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2900.png"
+"1245","s:1~l:14~t:1245","stonehill","STO","Stonehill","Stonehill","Skyhawks","Stonehill","Stonehill","300A48",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/284.png"
+"439","s:1~l:14~t:439","syracuse","SYR","Syracuse","Syracuse","Orange","Syracuse","Syracuse","1A3E86",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/183.png"
+"1153","s:1~l:14~t:1153","tbd","TBD","TBD","TBD","TBD",NA,"TBD",NA,NA,TRUE,FALSE,NA
+"1154","s:1~l:14~t:1154","tbd","TBD","TBD","TBD","TBD",NA,"TBD",NA,NA,TRUE,FALSE,NA
+"845","s:1~l:14~t:845","tabor","TABR","Tabor","TABOR","Tabor","TABOR","Tabor",NA,NA,TRUE,FALSE,NA
+"114","s:1~l:14~t:114","temple","TEM","Temple","Temple","Owls","Temple","Temple","BC0138",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/218.png"
+"199","s:1~l:14~t:199","tennessee","TENN","Tennessee","Tennessee","Volunteers","Tennessee","Tennessee","EE9627",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2633.png"
+"126","s:1~l:14~t:126","texas","TEX","Texas","Texas","Longhorns","Texas","Texas","EF7321",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/251.png"
+"147","s:1~l:14~t:147","texas-state","TXST","Texas State","Texas St","Bobcats","Texas St","Texas State","94314A",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/326.png"
+"924","s:1~l:14~t:924","truman-state","TRST","Truman State","Truman St","Bulldogs","Truman St","Truman State",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2654.png"
+"446","s:1~l:14~t:446","tulsa","TLSA","Tulsa","Tulsa","Golden Hurricane","Tulsa","Tulsa","004273",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/202.png"
+"68","s:1~l:14~t:68","usc","USC","USC","USC","Trojans","USC","USC","A50010",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/30.png"
+"125","s:1~l:14~t:125","ut-arlington","UTA","Texas-Arlington","UT Arlington","Mavericks","UT Arlington","UT Arlington","004B7C",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/250.png"
+"456","s:1~l:14~t:456","utep","UTEP","UTEP","UTEP","Miners","UTEP","UTEP","ff7339",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2638.png"
+"1239","s:1~l:14~t:1239","upper-iowa","UIU","Upper Iowa","Upper Iowa","Peacocks","Upper Iowa","Upper Iowa",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/389.png"
+"851","s:1~l:14~t:851","valdosta","VALD","VALDOSTA","VALDOSTA","Blazers","VALDOSTA","VALDOSTA",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2673.png"
+"457","s:1~l:14~t:457","vermont","UVM","Vermont","Vermont","Catamounts","Vermont","Vermont","204631",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/261.png"
+"852","s:1~l:14~t:852","wayne-state-ne","WNST","Wayne State (Nebraska)","WAYNESTNE","Wildcats","WAYNESTNE","Wayne State (NE)",NA,NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2844.png"
+"461","s:1~l:14~t:461","weber-state","WEB","Weber State","Weber St","Wildcats","Weber St","Weber State","18005a",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2692.png"
+"205","s:1~l:14~t:205","western-carolina","WCU","Western Carolina","W Carolina","Catamounts","W Carolina","Western Carolina","6E268B",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2717.png"
+"289","s:1~l:14~t:289","william-mary","W&M","William & Mary","William & Mary","Tribe","William & Mary","William & Mary","000000",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2729.png"
+"464","s:1~l:14~t:464","wisconsin","WISC","Wisconsin","Wisconsin","Badgers","Wisconsin","Wisconsin","c32122",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/275.png"
+"465","s:1~l:14~t:465","wyoming","WYO","Wyoming","Wyoming","Cowboys","Wyoming","Wyoming","523921",NA,TRUE,FALSE,"https://a.espncdn.com/i/teamlogos/ncaa/500/2751.png"
