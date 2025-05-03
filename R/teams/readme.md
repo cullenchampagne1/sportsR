@@ -1,6 +1,3 @@
-
-![Description of the image](../../output/figures/teams-db.png)
-
 ## NFL Teams
 
  Retrieves NFL team data from ESPN's API and supplements it with additional information scraped from the wiki team pages and official nfl webpages. The combined data is processed into a structured dataframe and saved to a CSV file. 
