@@ -1,6 +1,5 @@
 LINKS:
   ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams?limit=200000"
-  CFDB_TEAMS: "https://api.collegefootballdata.com/teams"
   NCAA_TEAMS:
     - "https://www.ncaa.com/stats/football/fcs/current/team/27"
     - "https://www.ncaa.com/stats/football/fcs/current/team/27/p2"
