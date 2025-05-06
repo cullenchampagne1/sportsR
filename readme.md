@@ -2,13 +2,7 @@
 ---
 ## Team Information
 
-Team data is primarily sourced from ESPN's public API, with additional enhancements from:
-- League-specific websites
-- Wikipedia tables
-- NCAA's official statistics website (for college sports)
-
-For a detailed breakdown of data sources and table structures, please see the:  
-[Teams Documentation](/R/teams/readme.md)
+Team data is primarily sourced from ESPN's public API, with additional enhancements from league-specific websites, wikipedia tables, and NCAA's official statistics website (for college sports). For a detailed breakdown of data sources and table structures, please see the [Teams Documentation](/R/teams/readme.md).
 
 ### Available Team Data:
 - [NFL Teams](/R/teams/readme.md#nfl-teams) - All current National Football League franchises  
