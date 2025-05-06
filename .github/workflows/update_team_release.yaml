@@ -30,15 +30,15 @@ jobs:
         if: steps.changes.outputs.files == ''
         run: echo "No matching files changed. Skipping." && exit 0
 
-      - name: Get latest release tag with 'teams'
+      - name: Get release tag by name
         id: get_release
         run: |
-          release=$(gh release list --limit 100 | grep -i 'teams' | head -n 1 | awk '{print $1}')
-          if [ -z "$release" ]; then
-            echo "No release found with 'teams' in the name or tag." >&2
+          release_tag=$(gh api repos/${{ github.repository }}/releases | jq -r '.[] | select(.name == "Teams") | .tag_name' | head -n 1)
+          if [ -z "$release_tag" ]; then
+            echo "No release found with name 'Teams'" >&2
             exit 1
           fi
-          echo "release=$release" >> "$GITHUB_OUTPUT"
+          echo "release=$release_tag" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
