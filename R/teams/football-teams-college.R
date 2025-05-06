@@ -30,6 +30,7 @@ library(tidyr, quietly = TRUE, warn.conflicts = FALSE) # Unest list attributed t
 library(purrr, quietly = TRUE, warn.conflicts = FALSE)  # Map functions to values in dataframe
 library(caret, quietly = TRUE, warn.conflicts = FALSE) # ML model for matching teams
 library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management of dataframes
+library(stringdist, quietly = TRUE, warn.conflicts = FALSE) # String distance calculations for matching
 library(httr, quietly = TRUE, warn.conflicts = FALSE) # Header management for downloading data
 library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
 library(magick, quietly = TRUE, warn.conflicts = FALSE) # Working with svgs from color data
@@ -224,7 +225,7 @@ get_formated_data <- function(verbose = TRUE) {
     })) %>%
     tidyr::unnest(scraped_data)
     
-    matching_model <- readRDS("training/xgb_model.rds")
+    matching_model <- readRDS("data/models/espn-ncaa-binding-model.rds")
     # Extract bindings for previous matched data devided by sport name
     sport_bindings <- matching_model$sport_bindings %>% dplyr::filter(sport == "football") %>% select(espn_id, ncaa_id)
     # Combine previous matched data onto df
@@ -272,7 +273,7 @@ get_formated_data <- function(verbose = TRUE) {
     matching_model$sport_bindings <- dplyr::bind_rows(matching_model$sport_bindings, new_bindings) %>%
     dplyr::distinct(espn_id, ncaa_id, sport, .keep_all = TRUE)
     # Save updated model
-    saveRDS(matching_model, "training/xgb_model.rds")
+    saveRDS(matching_model, "data/models/espn-ncaa-binding-model.rds")
     # Join newly matched data with previous bindings
     all_college_data <- dplyr::bind_rows(combined_data, final_output)
     # Get unmatched data from both sources
@@ -340,8 +341,7 @@ get_formated_data <- function(verbose = TRUE) {
             defensive_coordinator = defensive_coordinator %>% gsub("\\[[a-z0-9]+\\]", "", .))
 
     # Initialize bindings file if it doesn't exist for logo colors
-    if (!file.exists("data/bindings/ncaa_logo_color_bindings.csv")) color_bindings <- tibble::tibble(url = character(), colors = character())
-    else color_bindings <- read.csv("data/bindings/ncaa_logo_color_bindings.csv")
+    color_bindings <- read.csv("https://github.com/cullenchampagne1/sportsR/releases/download/bindings/ncaa_logo_color_bindings.csv")
 
     #' Processes and svg logo and returns top 2 colors
     #'
@@ -376,11 +376,7 @@ get_formated_data <- function(verbose = TRUE) {
             if (nrow(color_counts) >= 2) result <- paste(color_counts$hex_colors[1:2], collapse = ", ")
             else if (nrow(color_counts) == 1) result <- as.character(color_counts$hex_colors[1])
             else result <- NA_character_
-
-            # Update bindings with new colors
-            if (!is.na(result)) color_bindings <<- color_bindings %>% dplyr::add_row(url = svg_url, colors = result)
-
-            # Return result of nat failed
+            # Return result if not failed
             result
         }, error = function(e) { NA_character_ })
         colors
@@ -418,11 +414,6 @@ get_formated_data <- function(verbose = TRUE) {
         }) %>%
         # Removed uneeded columns
         dplyr::select(-img_src, -temp_colors, -dominant_colors) 
-        # Put venue back to last position
-        # dplyr::relocate(venue, .after = last_col())
-
-    # Save color bindings back to file
-    write.csv(color_bindings, "data/bindings/ncaa_logo_color_bindings.csv")
 
     #' Processes ncaa webpages and extract head coach
     #'
@@ -449,8 +440,6 @@ get_formated_data <- function(verbose = TRUE) {
     #' @param ncaa_id id of ncaa team
     #'
     get_venue <- function(ncaa_id) {
-        # Delay between requests to avoid being blocked
-        Sys.sleep(1) 
         # Create url from ncaa_id
         url <- paste0("https://stats.ncaa.org/teams/", ncaa_id)
         # Download page content from url
