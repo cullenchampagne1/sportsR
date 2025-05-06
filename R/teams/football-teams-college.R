@@ -40,8 +40,6 @@ dotenv::load_dot_env()  # Loads variables from .env into the R environment
 
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/football_college.yaml")
-# API key for College Football API
-college_api_key <- Sys.getenv("COLLEGE_API_KEY")
 # File to hold formated data
 all_teams_file <- "data/processed/football-teams-college.csv"
 
@@ -242,13 +240,13 @@ get_formated_data <- function(verbose = TRUE) {
     candidate_pairs <- unbound_espn %>%
         dplyr:::cross_join(unbound_ncaa) %>%
         dplyr:::mutate(
-            name_jw = 1 - stringdist(displayName, school_name, method = "jw"),
-            name_osa = 1 - stringdist(displayName, school_name, method = "osa"),
-            location_in_name = as.numeric(str_detect(name_ncaa, fixed(location))),
-            nickname_in_name = as.numeric(str_detect(displayName, fixed(nickname_ncaa))),
-            name_length_diff = abs(nchar(displayName) - nchar(school_name)),
-            first_word_match = as.numeric(word(displayName, 1) == word(school_name, 1)),
-            last_word_match = as.numeric(word(displayName, -1) == word(school_name, -1))
+            name_jw = coalesce(1 - stringdist::stringdist(displayName, school_name, method = "jw"), 0),
+            name_osa = coalesce(1 - stringdist::stringdist(displayName, school_name, method = "osa"), 0),
+            location_in_name = suppressWarnings(coalesce(as.numeric(str_detect(name_ncaa, fixed(location))), 0)),
+            nickname_in_name = suppressWarnings(coalesce(as.numeric(str_detect(displayName, fixed(nickname_ncaa))), 0)),
+            name_length_diff = coalesce(abs(nchar(displayName) - nchar(school_name)), 0),
+            first_word_match = coalesce(as.numeric(word(displayName, 1) == word(school_name, 1)), 0),
+            last_word_match = coalesce(as.numeric(word(displayName, -1) == word(school_name, -1)), 0)
         ) %>%
         tidyr::drop_na()
     # Track original columns to add back later
