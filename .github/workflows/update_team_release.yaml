@@ -5,7 +5,7 @@ on:
     paths:
       - 'data/processed/*_teams_*.csv'
   workflow_dispatch:
-  
+
 jobs:
   update-release:
     runs-on: ubuntu-latest
@@ -30,21 +30,15 @@ jobs:
         if: steps.changes.outputs.files == ''
         run: echo "No matching files changed. Skipping." && exit 0
 
-      - name: Get latest release tag with 'teams'
+      - name: Get release tag by name
         id: get_release
         run: |
-          release=$(gh release list --limit 100 | grep 'teams' | head -n 1 | awk '{print $1}')
-          echo "release=$release" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download current release description
-        id: get_description
-        run: |
-          desc=$(gh release view ${{ steps.get_release.outputs.release }} --json body -q '.body')
-          echo "desc<<EOF" >> $GITHUB_OUTPUT
-          echo "$desc" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          release_tag=$(gh api repos/${{ github.repository }}/releases | jq -r '.[] | select(.name == "Teams") | .tag_name' | head -n 1)
+          if [ -z "$release_tag" ]; then
+            echo "No release found with name 'Teams'" >&2
+            exit 1
+          fi
+          echo "release=$release_tag" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -58,13 +52,15 @@ jobs:
 
       - name: Update release notes
         run: |
+          base_note="This release provides structured CSV datasets containing detailed information about teams across multiple professional and collegiate sports leagues. The data has been meticulously collected from official sources and APIs, then processed into a clean, consistent format for easy use in analytics, applications, and research. For a detailed breakdown of data sources and table structures, please see the [Teams Documentation](/R/teams/readme.md)"
+
           timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
-          note="### Update on $timestamp\n"
+          note="\n\n` Update on $timestamp`\n"
           for file in ${{ steps.changes.outputs.files }}; do
             note+="- Updated \`$file\`\n"
           done
 
-          echo -e "${{ steps.get_description.outputs.desc }}\n\n$note" > NEW_DESC.md
+          echo -e "$base_note$note" > NEW_DESC.md
 
           gh release edit ${{ steps.get_release.outputs.release }} --notes-file NEW_DESC.md
         env:
