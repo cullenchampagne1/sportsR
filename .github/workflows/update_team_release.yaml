@@ -35,8 +35,9 @@ jobs:
         run: |
           release_tag=$(gh api repos/${{ github.repository }}/releases | jq -r '.[] | select(.name == "Teams") | .tag_name' | head -n 1)
           if [ -z "$release_tag" ]; then
-            echo "No release found with name 'Teams'" >&2
-            exit 1
+            echo "No release found with name 'Teams'. Creating one."
+            release_tag="v1.0.0"
+            gh release create $release_tag --title "Teams" --notes "Initial release for Teams data"
           fi
           echo "release=$release_tag" >> $GITHUB_OUTPUT
         env:
