@@ -52,6 +52,7 @@ all_teams_file <- "data/processed/football-teams-college.csv"
 #'
 #' @source https://site.api.espn.com/
 #' @source https://www.ncaa.com/stats/football/
+#' @source https://en.wikipedia.org/wiki/
 #'
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
 #'
@@ -464,6 +465,11 @@ get_formated_data <- function(verbose = TRUE) {
     updated_venues <- unknown_venues %>% dplyr::mutate(venue = map_chr(ncaa_id, ~{ get_venue(.x) }))
     # Update coaches back into dataset
     all_college_data <- all_college_data %>% dplyr::rows_update(updated_venues, by = "ncaa_id")
+
+    # Move head coach, offensive coordinator, and defensive coordinator to after logo
+    all_college_data <- all_college_data %>% relocate(head_coach, offensive_coordinator, defensive_coordinator, .after = logo)
+    # Move venue to last position
+    all_college_data <- all_college_data %>% relocate(venue, .after = last_col())
 
     # Analyze missing data
     analyze_missing_data("College Football", all_college_data)
