@@ -9,6 +9,8 @@ on:
 jobs:
   export-and-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout repo
@@ -31,11 +33,11 @@ jobs:
     - name: Get release tag by name
       id: get_release
       run: |
-        release_tag=$(gh api repos/${{ github.repository }}/releases | jq -r '.[] | select(.name == "bindings") | .tag_name' | head -n 1)
+        release_tag=$(gh api repos/${{ github.repository }}/releases | jq -r '.[] | select(.name == "Team Bindings") | .tag_name' | head -n 1)
         if [ -z "$release_tag" ]; then
           echo "No release found with name 'bindings'. Creating one."
           release_tag="v1.0.0"
-          gh release create $release_tag --title "bindings" --notes "Initial release for bindings data"
+          gh release create $release_tag --title "Team Bindings" --notes "Initial release for bindings data"
         fi
         echo "release=$release_tag" >> $GITHUB_OUTPUT
       env:
