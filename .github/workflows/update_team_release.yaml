@@ -24,7 +24,12 @@ jobs:
       - name: Get changed files
         id: changes
         run: |
-          echo "files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^data/processed/.*-teams-.*\.csv$' | xargs)" >> $GITHUB_OUTPUT
+          # Fallback to HEAD~1 if github.event.before is invalid
+          before_commit=${{ github.event.before }}
+          if ! git cat-file -e "$before_commit" 2>/dev/null; then
+            before_commit=$(git rev-parse HEAD~1)
+          fi
+          echo "files=$(git diff --name-only $before_commit ${{ github.sha }} | grep '^data/processed/.*-teams-.*\.csv$' | xargs)" >> $GITHUB_OUTPUT
 
       - name: Check for changes
         if: steps.changes.outputs.files == ''
