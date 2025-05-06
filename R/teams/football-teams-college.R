@@ -48,6 +48,8 @@ all_teams_file <- "data/processed/football-teams-college.csv"
 #' Retrieves college football team data from ESPN's API and supplements
 #' it with additional information scraped from NCAA and CollegeFootballlDB. The combined
 #' data is processed into a structured dataframe and saved to a CSV file.
+#' 
+#' @values ../../output/tables/college_football_missing_data.png
 #'
 #' @source https://site.api.espn.com/
 #' @source https://www.ncaa.com/stats/football/

@@ -18,35 +18,46 @@
 
 library(tidyverse, quietly = TRUE, warn.conflicts = FALSE) 
 
-#' Generate and Save Missing Data Bar Chart to output folder
-#'
-#' @param name Character string for the title/report name (e.g., "NBA Teams")
-#' @param df Dataframe to analyze
-#' 
 analyze_missing_data <- function(name, df) {
-    #Calculate missing values per column
+    # Calculate missing values per column and add column numbers
     missing_data <- df %>%
-    summarise(across(everything(), ~ sum(is.na(.)))) %>%
-    pivot_longer(everything(), names_to = "column", values_to = "missing_count") %>%
-    arrange(desc(missing_count))
-    # Create the bar chart
-    missing_barchart <- ggplot(missing_data, aes(x = reorder(column, -missing_count), y = missing_count)) +
-    geom_col(fill = "#1E88E5", width = 0.7) +  # NBA-style blue
-    geom_text(aes(label = missing_count), vjust = -0.5, size = 3.5) +  # Add counts on top
-    labs(
-        title = paste0("Missing Values in ", name, " Dataset"),
-        subtitle = "Columns ordered by most missing data",
-        x = "Column",
-        y = "Number of Missing Values"
-    ) +
-    theme_minimal() +
-    theme(
-        axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
-        plot.title = element_text(face = "bold", size = 14),
-        panel.grid.major.x = element_blank()
-    )
+        summarise(across(everything(), ~ sum(is.na(.)))) %>%
+        pivot_longer(everything(), names_to = "column", values_to = "missing_count") %>%
+        mutate(col_number = row_number()) %>%  # Add column numbers
+        arrange(desc(missing_count))
+    
+    # Create the bar chart with refined styling
+    missing_barchart <- ggplot(missing_data, aes(x = reorder(col_number, -missing_count), y = missing_count)) +
+        geom_col(fill = "#333333", width = 0.6) +  # Dark gray bars
+        geom_text(aes(label = missing_count), vjust = -0.3, size = 2.8, color = "black") +
+        labs(
+            title = paste("Missing Values:", name),
+            x = "Column Number",
+            y = NULL
+        ) +
+        theme_minimal(base_size = 10) +
+        theme(
+            plot.title = element_text(face = "bold", size = 11, margin = margin(b = 3)),
+            plot.margin = unit(c(2, 2, 2, 2), "mm"),
+            panel.background = element_rect(fill = "#f8f8f8", color = NA),  # Off-white background
+            plot.background = element_rect(fill = "#f8f8f8", color = NA),
+            panel.grid.major.x = element_blank(),
+            panel.grid.minor.y = element_blank(),
+            axis.text.x = element_text(color = "black"),
+            axis.text.y = element_text(color = "black")
+        ) +
+        scale_y_continuous(expand = expansion(mult = c(0, 0.1)))  # Remove extra space above bars
+
     file_slug <- str_to_lower(str_replace_all(name, "\\s+", "_"))
-    # Save bar chart to file
-    ggsave(paste0("output/tables/", file_slug,"_missing_data.png"), plot = missing_barchart, width = 10, 
-        height = 6, dpi = 300, bg = "white")
+    output_dir <- "output/tables/"
+    if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+    
+    ggsave(
+        paste0(output_dir, file_slug, "_missing_data.png"),
+        plot = missing_barchart,
+        width = 8,
+        height = 2.5,
+        dpi = 300,
+        bg = "#f8f8f8"  # Off-white background
+    )
 }
