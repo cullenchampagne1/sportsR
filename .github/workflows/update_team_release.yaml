@@ -3,7 +3,7 @@ name: Update Teams Release
 on:
   push:
     paths:
-      - '**/*'
+      - 'data/processed/*_teams_*.csv'
   workflow_dispatch:
 
 jobs:
