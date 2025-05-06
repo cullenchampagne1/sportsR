@@ -65,7 +65,7 @@ jobs:
           timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
           note="\n\n\`\`\`Update on $timestamp\`\`\`\n"
           for file in ${{ steps.changes.outputs.files }}; do
-            note+="- Updated \`$file\`\n"
+            note+="- \`$file\`\n"
           done
 
           echo -e "$base_note$note" > NEW_DESC.md
