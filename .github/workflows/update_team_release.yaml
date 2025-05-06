@@ -1,4 +1,4 @@
-name: Update Team Data Files
+name: Update Teams Release
 
 on:
   push:
@@ -6,35 +6,65 @@ on:
       - 'data/processed/*_teams_*.csv'
 
 jobs:
-  update-teams:
+  update-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup GitHub CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gh
-
-      - name: Get Release
-        id: get-release
-        run: |
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/teams --jq '.id')
-          echo "release_id=$RELEASE_ID" >> $GITHUB_OUTPUT
-
-      - name: Upload Team Files
-        uses: AButler/upload-release-assets@v2.0
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          files: 'data/processed/*_teams_*.csv'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag: teams
-          overwrite: true 
+          python-version: 3.x
 
-      - name: Update Release Notes
+      - name: Get changed files
+        id: changes
         run: |
-          echo "### Team Data Update $(date +'%Y-%m-%d %H:%M')" > update.md
-          echo "#### Updated Files:" >> update.md
-          git diff --name-only HEAD^ HEAD -- 'data/processed/*_teams_*.csv' | while read -r file; do
-            echo "- ${file##*/}" >> update.md  # Shows just filename
+          echo "files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^data/processed/.*_teams_.*\.csv$' | xargs)" >> $GITHUB_OUTPUT
+
+      - name: Check for changes
+        if: steps.changes.outputs.files == ''
+        run: echo "No matching files changed. Skipping." && exit 0
+
+      - name: Get latest release tag with 'teams'
+        id: get_release
+        run: |
+          release=$(gh release list --limit 100 | grep 'teams' | head -n 1 | awk '{print $1}')
+          echo "release=$release" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download current release description
+        id: get_description
+        run: |
+          desc=$(gh release view ${{ steps.get_release.outputs.release }} --json body -q '.body')
+          echo "desc<<EOF" >> $GITHUB_OUTPUT
+          echo "$desc" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload new files to release
+        run: |
+          for file in ${{ steps.changes.outputs.files }}; do
+            gh release upload ${{ steps.get_release.outputs.release }} "$file" --clobber
           done
-          gh release edit teams --notes-file update.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update release notes
+        run: |
+          timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
+          note="### Update on $timestamp\n"
+          for file in ${{ steps.changes.outputs.files }}; do
+            note+="- Updated \`$file\`\n"
+          done
+
+          echo -e "${{ steps.get_description.outputs.desc }}\n\n$note" > NEW_DESC.md
+
+          gh release edit ${{ steps.get_release.outputs.release }} --notes-file NEW_DESC.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
