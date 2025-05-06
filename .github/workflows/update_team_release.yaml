@@ -19,7 +19,7 @@ jobs:
       - name: Get Release
         id: get-release
         run: |
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/latest --jq '.id')
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/teams --jq '.id')
           echo "release_id=$RELEASE_ID" >> $GITHUB_OUTPUT
 
       - name: Upload Team Files
@@ -27,7 +27,7 @@ jobs:
         with:
           files: 'data/processed/*_teams_*.csv'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag: latest
+          release-tag: teams
           overwrite: true 
 
       - name: Update Release Notes
@@ -37,4 +37,4 @@ jobs:
           git diff --name-only HEAD^ HEAD -- 'data/processed/*_teams_*.csv' | while read -r file; do
             echo "- ${file##*/}" >> update.md  # Shows just filename
           done
-          gh release edit latest --notes-file update.md
+          gh release edit teams --notes-file update.md
