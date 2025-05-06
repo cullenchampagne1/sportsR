@@ -11,8 +11,8 @@ For a detailed breakdown of data sources and table structures, please see the:
 [Teams Documentation](/R/teams/readme.md)
 
 ### Available Team Data:
-- [NFL Teams](/R/teams/readme.md#nfl-teams)** - All current National Football League franchises  
-- [College Football Teams](/R/teams/readme.md#college-football-teams)** - NCAA Football FBS, FCS, DI, and DII programs  
-- [NBA Teams](/R/teams/readme.md#nba-teams)** - All National Basketball Association teams  
-- [College Basketball Teams](/R/teams/readme.md#college-basketball-teams)** - NCAA Division I men's basketball programs  
+- [NFL Teams](/R/teams/readme.md#nfl-teams) - All current National Football League franchises  
+- [College Football Teams](/R/teams/readme.md#college-football-teams) - NCAA Football FBS, FCS, DI, and DII programs  
+- [NBA Teams](/R/teams/readme.md#nba-teams) - All National Basketball Association teams  
+- [College Basketball Teams](/R/teams/readme.md#college-basketball-teams) - NCAA Division I men's basketball programs  
 ---
