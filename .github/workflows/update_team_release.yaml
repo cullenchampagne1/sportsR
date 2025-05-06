@@ -3,7 +3,7 @@ name: Update Teams Release
 on:
   push:
     paths:
-      - 'data/processed/*_teams_*.csv'
+      - 'data/processed/*-teams-*.csv'
   workflow_dispatch:
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
       - name: Get changed files
         id: changes
         run: |
-          echo "files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^data/processed/.*_teams_.*\.csv$' | xargs)" >> $GITHUB_OUTPUT
+          echo "files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^data/processed/.*-teams-.*\.csv$' | xargs)" >> $GITHUB_OUTPUT
 
       - name: Check for changes
         if: steps.changes.outputs.files == ''
