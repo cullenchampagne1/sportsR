@@ -38,14 +38,14 @@ jobs:
             echo "No release found with 'teams' in the name or tag." >&2
             exit 1
           fi
-          echo "release=$release" >> $GITHUB_OUTPUT
+          echo "release=$release" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download current release description
         id: get_description
         run: |
-          desc=$(gh release view ${{ steps.get_release.outputs.release }} --json body -q '.body')
+          desc=$(gh release view "${{ steps.get_release.outputs.release }}" --json body -q '.body')
           echo "desc<<EOF" >> $GITHUB_OUTPUT
           echo "$desc" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
