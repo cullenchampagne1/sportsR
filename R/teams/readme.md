@@ -2,6 +2,8 @@
 ---
 ## NFL Teams
 
+![Missing Values](../../output/tables/nfl_missing_data.png)
+
  Retrieves NFL team data from ESPN's API and supplements it with additional information scraped from the wiki team pages and official nfl webpages. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `football-teams-nfl::get_formated_data()` 
@@ -10,25 +12,25 @@
 
 ### Returned Data Structure
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | string | A generated unique identifier for each team |
-| espn_id | int | id used be espn to identify team |
-| type | string | Always set to NBA for team type |
-| abv | string | Abreviation of team name (ex. DEN) |
-| full_name | string | Full name of team (ex. Denver Nuggets) |
-| short_name | string | Short name of team (ex. Nuggets) |
-| primary | string | Primary color of team uniforms in Hex format |
-| secondary | string | Secondary color of team uniforms in Hex format |
-| logo | string | Link to logo image from ESPN |
-| conference | string | Conference team is associated with (ex. Western) |
-| division | string | Division team is associated with (ex. Northwest) |
-| webiste | string | Website url for team |
-| head_coach | string | Current head coach of team |
-| offensive_coordinator | string | Current offensive coordinator of team |
-| defensive_coordinator | string | Current defensive coordinator of team |
-| general_manager | string | Current general manager of team |
-| venue | string | Current venue where team plays |
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | string | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify team |
+| 3 | type | string | Always set to NBA for team type |
+| 4 | abv | string | Abreviation of team name (ex. DEN) |
+| 5 | full_name | string | Full name of team (ex. Denver Nuggets) |
+| 6 | short_name | string | Short name of team (ex. Nuggets) |
+| 7 | primary | string | Primary color of team uniforms in Hex format |
+| 8 | secondary | string | Secondary color of team uniforms in Hex format |
+| 9 | logo | string | Link to logo image from ESPN |
+| 10 | conference | string | Conference team is associated with (ex. Western) |
+| 11 | division | string | Division team is associated with (ex. Northwest) |
+| 12 | webiste | string | Website url for team |
+| 13 | head_coach | string | Current head coach of team |
+| 14 | offensive_coordinator | string | Current offensive coordinator of team |
+| 15 | defensive_coordinator | string | Current defensive coordinator of team |
+| 16 | general_manager | string | Current general manager of team |
+| 17 | venue | string | Current venue where team plays |
 
 | Sources |
 |--------|
@@ -79,6 +81,8 @@
 ---
 ## NBA Teams
 
+![Missing Values](../../output/tables/nba_missing_data.png)
+
  Retrieves NBA team data from ESPN's API and supplements it with additional information scraped from the wiki team pages. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `basketball-teams-nba::get_formated_data()` 
@@ -87,24 +91,24 @@
 
 ### Returned Data Structure
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | string | A generated unique identifier for each team |
-| espn_id | int | id used be espn to identify team |
-| type | string | Always set to NBA for team type |
-| abv | string | Abreviation of team name (ex. DEN) |
-| full_name | string | Full name of team (ex. Denver Nuggets) |
-| short_name | string | Short name of team (ex. Nuggets) |
-| division | string | Division team is associated with (ex. Northwest) |
-| conference | string | Conference team is associated with (ex. Western) |
-| primary | string | Primary color of team uniforms in Hex format |
-| secondary | string | Secondary color of team uniforms in Hex format |
-| logo | string | Link to logo image from ESPN |
-| head_coach | string | Current head coach of team |
-| general_manager | string | Current general manager of team |
-| twitter | string | Twitter handle of team starting with '@' |
-| webiste | string | Website url for team |
-| venue | string | Current venue where team plays |
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | string | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify team |
+| 3 | type | string | Always set to NBA for team type |
+| 4 | abv | string | Abreviation of team name (ex. DEN) |
+| 5 | full_name | string | Full name of team (ex. Denver Nuggets) |
+| 6 | short_name | string | Short name of team (ex. Nuggets) |
+| 7 | division | string | Division team is associated with (ex. Northwest) |
+| 8 | conference | string | Conference team is associated with (ex. Western) |
+| 9 | primary | string | Primary color of team uniforms in Hex format |
+| 10 | secondary | string | Secondary color of team uniforms in Hex format |
+| 11 | logo | string | Link to logo image from ESPN |
+| 12 | head_coach | string | Current head coach of team |
+| 13 | general_manager | string | Current general manager of team |
+| 14 | twitter | string | Twitter handle of team starting with '@' |
+| 15 | webiste | string | Website url for team |
+| 16 | venue | string | Current venue where team plays |
 
 | Sources |
 |--------|
@@ -150,6 +154,8 @@
 ---
 ## MLB Teams
 
+![Missing Values](../../output/tables/mlb_missing_data.png)
+
  Retrieves MLB team data from ESPN's API and supplements it with additional information scraped from the wiki team pages. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `baseball-teams-mlb::get_formated_data()` 
@@ -158,24 +164,24 @@
 
 ### Returned Data Structure
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | string | A generated unique identifier for each team |
-| espn_id | int | id used be espn to identify team |
-| type | string | Always set to NBA for team type |
-| abv | string | Abreviation of team name (ex. DEN) |
-| full_name | string | Full name of team (ex. Denver Nuggets) |
-| short_name | string | Short name of team (ex. Nuggets) |
-| league | string | League team is associated with (ex. National League) |
-| division | string | Division team is associated with (ex. Central Division) |
-| primary | string | Primary color of team uniforms in Hex format |
-| secondary | string | Secondary color of team uniforms in Hex format |
-| logo | string | Link to logo image from ESPN |
-| twitter | string | Twitter handle of team starting with '@' |
-| webiste | string | Website url for team |
-| general_manager | string | Current general manager of team |
-| manager | string | Current manager of team |
-| venue | string | Current venue where team plays |
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | string | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify team |
+| 3 | type | string | Always set to NBA for team type |
+| 4 | abv | string | Abreviation of team name (ex. DEN) |
+| 5 | full_name | string | Full name of team (ex. Denver Nuggets) |
+| 6 | short_name | string | Short name of team (ex. Nuggets) |
+| 7 | league | string | League team is associated with (ex. National League) |
+| 8 | division | string | Division team is associated with (ex. Central Division) |
+| 9 | primary | string | Primary color of team uniforms in Hex format |
+| 10 | secondary | string | Secondary color of team uniforms in Hex format |
+| 11 | logo | string | Link to logo image from ESPN |
+| 12 | twitter | string | Twitter handle of team starting with '@' |
+| 13 | webiste | string | Website url for team |
+| 14 | general_manager | string | Current general manager of team |
+| 15 | manager | string | Current manager of team |
+| 16 | venue | string | Current venue where team plays |
 
 | Sources |
 |--------|

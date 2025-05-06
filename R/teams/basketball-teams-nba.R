@@ -42,6 +42,8 @@ all_teams_file <- "data/processed/basketball-teams-nba.csv"
 #' Retrieves NBA team data from ESPN's API and supplements it with additional
 #' information scraped from the wiki team pages. The combined data is processed into a
 #' structured dataframe and saved to a CSV file.
+#' 
+#' @values ../../output/tables/nba_missing_data.png
 #'
 #' @source https://site.api.espn.com/
 #' @source https://en.wikipedia.org/wiki/
