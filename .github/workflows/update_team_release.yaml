@@ -55,7 +55,7 @@ jobs:
           base_note="This release provides structured CSV datasets containing detailed information about teams across multiple professional and collegiate sports leagues. The data has been meticulously collected from official sources and APIs, then processed into a clean, consistent format for easy use in analytics, applications, and research. For a detailed breakdown of data sources and table structures, please see the [Teams Documentation](/R/teams/readme.md)"
 
           timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
-          note="\n\n### Update on $timestamp\n"
+          note="\n\n` Update on $timestamp`\n"
           for file in ${{ steps.changes.outputs.files }}; do
             note+="- Updated \`$file\`\n"
           done
