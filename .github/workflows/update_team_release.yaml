@@ -33,7 +33,11 @@ jobs:
       - name: Get latest release tag with 'teams'
         id: get_release
         run: |
-          release=$(gh release list --limit 100 | grep 'teams' | head -n 1 | awk '{print $1}')
+          release=$(gh release list --limit 100 | grep -i 'teams' | head -n 1 | awk '{print $1}')
+          if [ -z "$release" ]; then
+            echo "No release found with 'teams' in the name or tag." >&2
+            exit 1
+          fi
           echo "release=$release" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
