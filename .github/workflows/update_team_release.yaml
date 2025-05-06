@@ -1,0 +1,40 @@
+name: Update Team Data Files
+
+on:
+  push:
+    paths:
+      - 'data/processed/*_teams_*.csv'
+
+jobs:
+  update-teams:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
+
+      - name: Get Release
+        id: get-release
+        run: |
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/teams --jq '.id')
+          echo "release_id=$RELEASE_ID" >> $GITHUB_OUTPUT
+
+      - name: Upload Team Files
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'data/processed/*_teams_*.csv'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: teams
+          overwrite: true 
+
+      - name: Update Release Notes
+        run: |
+          echo "### Team Data Update $(date +'%Y-%m-%d %H:%M')" > update.md
+          echo "#### Updated Files:" >> update.md
+          git diff --name-only HEAD^ HEAD -- 'data/processed/*_teams_*.csv' | while read -r file; do
+            echo "- ${file##*/}" >> update.md  # Shows just filename
+          done
+          gh release edit teams --notes-file update.md
