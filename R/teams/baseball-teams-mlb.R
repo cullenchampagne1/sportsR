@@ -44,6 +44,8 @@ all_teams_file <- "data/processed/baseball-teams-mlb.csv"
 #' Retrieves MLB team data from ESPN's API and supplements it with additional
 #' information scraped from the wiki team pages. The combined data is processed into a structured
 #' dataframe and saved to a CSV file.
+#' 
+#' @values ../../output/tables/mlb_missing_data.png
 #'
 #' @source https://site.api.espn.com/
 #' @source https://en.wikipedia.org/wiki/

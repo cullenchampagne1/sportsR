@@ -1,4 +1,4 @@
-"id","espn_id","type","abv","full_name","short_name","division","conference","primary","secondary","logo","head_coach","general_manager","twitter","webiste","venue"
+"id","espn_id","type","abv","full_name","short_name","division","conference","primary","secondary","logo","head_coach","general_manager","twitter","website","venue"
 "ATL07161","1","NBA","ATL","Atlanta Hawks","Hawks","Southeast","Eastern","#C8102E","#FDB927","https://a.espncdn.com/i/teamlogos/nba/500/atl.png","Quin Snyder","Landry Fields","@ATLHawks","https://www.nba.com/hawks/","State Farm Arena"
 "BOS51017","2","NBA","BOS","Boston Celtics","Celtics","Atlantic","Eastern","#008348","#FFFFFF","https://a.espncdn.com/i/teamlogos/nba/500/bos.png","Joe Mazzulla","Brad Stevens","@celtics","https://www.nba.com/celtics/","TD Garden"
 "BKN41881","17","NBA","BKN","Brooklyn Nets","Nets","Atlantic","Eastern","#000000","#FFFFFF","https://a.espncdn.com/i/teamlogos/nba/500/bkn.png","Jordi Fernández","Sean Marks","@BrooklynNets","https://www.nba.com/nets/","Barclays Center"
