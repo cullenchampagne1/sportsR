@@ -49,10 +49,11 @@ process_markdown_file <- function(script_file_path, md_file_path, records) {
     comment <- extract_comment_block(script_file_path, "get_formated_data")
     lines <- sub("^#' ?", "", strsplit(comment, "\n")[[1]])
     title <- lines[1]
-    desc_end <- which(grepl("^@source", lines))
+    desc_end <- which(grepl("^@values", lines))
     if (length(desc_end) == 0) desc_end <- length(lines) 
     else desc_end <- desc_end[1] - 1  
     desc <- paste(lines[2:desc_end], collapse = " ")
+    values <- sub("^@values ", "", lines[grepl("^@values", lines)])
     sources <- sub("^@source ", "", lines[grepl("^@source", lines)])
     ret_start <- which(grepl("^@return", lines))
     ret_lines <- lines[ret_start:length(lines)]
@@ -62,10 +63,24 @@ process_markdown_file <- function(script_file_path, md_file_path, records) {
         m <- regmatches(x, regexec("^(\\w+) \\[(\\w+)\\] - (.+)$", x))[[1]]
         if (length(m) == 4) data.frame(Column = m[2], Type = m[3], Description = m[4])
     }))
-    block <- paste(sprintf("## %s\n\n%s\n\n", title, desc),
+    table_header <- "| # | Column | Type | Description |\n|----|--------|------|-------------|\n"
+    # Generate numbered rows
+    numbered_rows <- apply(df, 1, \(r, i) sprintf("| %d | %s | %s | %s |", i, r[1], r[2], r[3]), 
+                        i = seq_len(nrow(df)))
+    # Combine into final table
+    markdown_table <- paste0(table_header, paste(numbered_rows, collapse = "\n"))
+    block <- paste(sprintf("## %s\n\n", title),
+                    sprintf("![Missing Values](%s)\n\n", values[1]),
+                    sprintf("%s\n\n", desc),
                     sprintf("**Function:** `%s` \n\n**Records:** `%s teams`\n\n### Returned Data Structure\n\n", function_name, records),
-                    "| Column | Type | Description |\n|--------|------|-------------|\n",
-                    paste(apply(df, 1, \(r) sprintf("| %s | %s | %s |", r[1], r[2], r[3])), collapse = "\n"),
+                    "| # | Column | Type | Description |\n|----|--------|------|-------------|\n",
+                    paste(sapply(1:nrow(df), function(i) {
+                        sprintf("| %d | %s | %s | %s |", 
+                                i, 
+                                df[i, "Column"], 
+                                df[i, "Type"], 
+                                df[i, "Description"])
+                    }), collapse = "\n"),
                     "\n\n| Sources |\n|--------|\n", 
                     paste(sprintf("| %s |", sources), collapse = "\n"), "\n", sep = "")
     md_lines <- readLines(md_file_path, warn = FALSE)
