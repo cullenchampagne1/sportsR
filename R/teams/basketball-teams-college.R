@@ -41,14 +41,18 @@ library(dotenv, quietly = TRUE, warn.conflicts = FALSE) # Get env variables
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/basketball_college.yaml")
 # File to hold formated data
-all_teams_file <- "data/processed/basketball-teams-college.csv"
+all_teams_file <- "basketball-teams-college.csv"
+
+args <- commandArgs(trailingOnly = TRUE)
+# If output directory save there, else save to data/processed
+out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processed/"
 
 #' College Basketball Teams
 #'
 #' Retrieves college basketball team data from ESPN's API and supplements
 #' it with additional information scraped from NCAA and Wiki. The combined
 #' data is processed into a structured dataframe and saved to a CSV file.
-#' 
+#'
 #' @values ../../output/tables/college_basketball_missing_data.png
 #'
 #' @source https://site.api.espn.com/
@@ -78,7 +82,7 @@ all_teams_file <- "data/processed/basketball-teams-college.csv"
 #'  twitter [string] - Twitter handle of team starting with '@'
 #'  venue [string] - Current venue where team plays
 #'
-get_formated_data <- function(verbose = TRUE) {
+get_formated_data <- function(verbose = TRUE, save = out_dir) {
     # Grab College Baskteball data from ESPN
     college_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, force_refresh = TRUE, simplifyDataFrame = FALSE)
     if (verbose) cat(paste0("\n\033[32mDownloading ESPN Basketball Teams: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
@@ -441,11 +445,11 @@ get_formated_data <- function(verbose = TRUE) {
     if (verbose) cat(paste0("\n\033[90mCollege Basketball Data Saved To: /", all_teams_file, "\033[0m\n"))
 
     # Save any created name bindings to file
-    write.csv(all_college_data, all_teams_file, row.names = FALSE)
+    if (save) write.csv(all_college_data, paste0(save, all_teams_file), row.names = FALSE)
     # Return formated data
     return(all_college_data)
 }
 
 
 # If file is being run stand-alone, run function
-if (interactive()) get_formated_data()
+get_formated_data()

@@ -35,7 +35,11 @@ nba_twitter_accounts <- readRDS(url("https://github.com/cullenchampagne1/sportsR
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/basketball_nba.yaml")
 # File to hold formated data
-all_teams_file <- "data/processed/basketball-teams-nba.csv"
+all_teams_file <- "basketball-teams-nba.csv"
+
+args <- commandArgs(trailingOnly = TRUE)
+# If output directory save there, else save to data/processed
+out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processed/"
 
 #' NBA Teams
 #'
@@ -68,7 +72,7 @@ all_teams_file <- "data/processed/basketball-teams-nba.csv"
 #'  webiste [string] - Website url for team
 #'  venue [string] - Current venue where team plays
 #'
-get_formated_data <- function(verbose = TRUE) {
+get_formated_data <- function(verbose = TRUE, save = out_dir) {
     # Grab College Football data from ESPN
     all_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, simplifyDataFrame = FALSE)
     if (verbose) cat(paste0("\n\033[32mDownloading NBA Teams: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
@@ -176,10 +180,10 @@ get_formated_data <- function(verbose = TRUE) {
 
     if (verbose) cat(paste0("\n\033[90mNBA Basketball Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save any created name bindings to file
-    write.csv(all_nba_teams, all_teams_file, row.names = FALSE)
+    if (save) write.csv(all_nba_teams, paste0(save, all_teams_file), row.names = FALSE)
     # Return formated data
     return(all_nba_teams)
 }
 
 # If file is being run stand-alone, run function
-if (interactive()) get_formated_data()
+get_formated_data()

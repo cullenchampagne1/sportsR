@@ -3,14 +3,19 @@ name: Update Teams Release
 on:
   push:
     paths:
-      - 'data/processed/*-teams-*.csv'
+      - 'R/teams/*.R'
   workflow_dispatch:
 
 jobs:
   update-release:
     runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/cullenchampagne1/sportsr:master
+
     permissions:
       contents: write
+      packages: read
 
     steps:
       - name: Checkout repository (full history & tags)
@@ -18,31 +23,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Delete old 'teams' release and tag (if they exist)
+      - name: Mark Working Directory as Safe
         run: |
-          gh release delete teams -y || echo "No existing release named 'teams'"
-          git tag -d teams       || echo "No local tag 'teams' to delete"
-          git push origin :teams || echo "No remote tag 'teams' to delete"
+          git config --global --add safe.directory "$PWD"
+
+      - name: Ensure data/raw exists
+        run: mkdir -p data/raw
+    
+      - name: Restore cached raw data
+        uses: actions/cache@v3
+        with:
+          path: data/raw
+          key: data-raw-cache
+          restore-keys: |
+            data-raw-cache
+
+      - name: Run update teams release script
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build release notes
-        shell: bash
         run: |
-          base_note="This release provides structured CSV datasets containing detailed information about teams across multiple professional and collegiate sports leagues. The data has been meticulously collected from official sources and APIs, then processed into a clean, consistent format for easy use in analytics, applications, and research. For a detailed breakdown of data sources and table structures, please see the [Teams Documentation](/R/teams/readme.md)"
-          timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
-          {
-            echo "$base_note"
-            echo
-            echo "\`Update on $timestamp\`"
-            echo
-          } > NEW_DESC.md
-
-      - name: Create new 'teams' release & upload all matching files
-        run: |
-          gh release create teams \
-            --title "Teams" \
-            --notes-file NEW_DESC.md \
-            data/processed/*-teams-*.csv
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          chmod +x .github/scripts/update_teams_release.sh
+          .github/scripts/update_teams_release.sh output
+      

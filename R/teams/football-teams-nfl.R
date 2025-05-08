@@ -33,7 +33,11 @@ library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugratio
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/football_nfl.yaml")
 # File to hold formated data
-all_teams_file <- "data/processed/football-teams-nfl.csv"
+all_teams_file <- "football-teams-nfl.csv"
+
+args <- commandArgs(trailingOnly = TRUE)
+# If output directory save there, else save to data/processed
+out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processed/"
 
 #' NFL Teams
 #'
@@ -71,7 +75,7 @@ all_teams_file <- "data/processed/football-teams-nfl.csv"
 #'  general_manager [string] - Current general manager of team
 #'  venue [string] - Current venue where team plays
 #'
-get_formated_data <- function(verbose = TRUE) {
+get_formated_data <- function(verbose = TRUE, save = out_dir) {
     
     # Processes raw ESPN team JSON data into structured dataframe
     #
@@ -206,10 +210,10 @@ get_formated_data <- function(verbose = TRUE) {
 
     if (verbose) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save generated csollege data
-    write.csv(all_nfl_data, all_teams_file, row.names = FALSE)
+    if (save) write.csv(all_nfl_data, paste0(save, all_teams_file), row.names = FALSE)
     # Return fornated data
     return(all_nfl_data)
 }
 
 # If file is being run stand-alone, run function
-if (interactive()) get_formated_data()
+get_formated_data()
