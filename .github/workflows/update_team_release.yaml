@@ -13,57 +13,39 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository (full history & tags)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      - name: Get changed files
-        id: changes
-        run: |
-          before_commit=${{ github.event.before }}
-          if ! git cat-file -e "$before_commit" 2>/dev/null; then
-            before_commit=$(git rev-parse HEAD~1)
-          fi
-          files=$(git diff --name-only "$before_commit" "${{ github.sha }}" \
-            | grep '^data/processed/.*-teams-.*\.csv$' \
-            | xargs)
-          echo "files=$files" >> $GITHUB_OUTPUT
-
-      - name: Check for changes
-        if: steps.changes.outputs.files == ''
-        run: |
-          echo "No matching files changed. Skipping."
-          exit 0
-
       - name: Delete old 'teams' release and tag (if they exist)
         run: |
           gh release delete teams -y || echo "No existing release named 'teams'"
-          git tag -d teams        || echo "No local tag 'teams' to delete"
-          git push origin :teams  || echo "No remote tag 'teams' to delete"
+          git tag -d teams       || echo "No local tag 'teams' to delete"
+          git push origin :teams || echo "No remote tag 'teams' to delete"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build release notes
+        shell: bash
         run: |
           base_note="This release provides structured CSV datasets containing detailed information about teams across multiple professional and collegiate sports leagues. The data has been meticulously collected from official sources and APIs, then processed into a clean, consistent format for easy use in analytics, applications, and research. For a detailed breakdown of data sources and table structures, please see the [Teams Documentation](/R/teams/readme.md)"
           timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
-          note="\`Update on $TIMESTAMP\`\n"
-          for file in ${{ steps.changes.outputs.files }}; do
-            note+="- \`$file\`\n"
-          done
-          echo -e "$base_note$note" > NEW_DESC.md
+          {
+            echo "$base_note"
+            echo
+            echo "\`Update on $timestamp\`"
+            echo
+            for file in data/processed/*-teams-*.csv; do
+              echo "- \`$file\`"
+            done
+          } > NEW_DESC.md
 
-      - name: Create new 'teams' release and upload files
+      - name: Create new 'teams' release & upload all matching files
         run: |
           gh release create teams \
             --title "Teams" \
             --notes-file NEW_DESC.md \
-            ${{ steps.changes.outputs.files }}
+            data/processed/*-teams-*.csv
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
