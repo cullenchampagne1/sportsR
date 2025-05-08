@@ -431,7 +431,7 @@ get_formated_data <- function(verbose = TRUE) {
     # Move head coach to after logo
     all_college_data <- all_college_data %>% relocate(head_coach, .after = logo)
     # Move full_name to after abv
-    all_college_data <- all_college_data %>% relocate(head_coach, .after = abv)
+    all_college_data <- all_college_data %>% relocate(full_name, .after = abv)
 
     # Analyze missing data
     analyze_missing_data("College Basketball", all_college_data)
