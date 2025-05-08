@@ -191,3 +191,43 @@
 | https://site.api.espn.com/ |
 | https://en.wikipedia.org/wiki/ |
 ---
+## College Baseball Teams
+
+![Missing Values](../../output/tables/college_baseball_missing_data.png)
+
+ Retrieves college baseball team data from ESPN's API and supplements it with additional information scraped from NCAA and Wiki. The combined data is processed into a structured dataframe and saved to a CSV file. 
+
+**Function:** `baseball-teams-college::get_formated_data()` 
+
+**Records:** `296 teams`
+
+### Returned Data Structure
+
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | int | A generated unique identifier for each team |
+| 2 | espn_id | string | id used be espn to identify team |
+| 3 | ncaa_id | string | id used be ncaa to identify team |
+| 4 | type | string | Always set to NCAAB for team type |
+| 5 | slug | string | Slug used to identify teams |
+| 6 | abv | string | Abreviation of team name (ex. TOW) |
+| 7 | full_name | string | Full name of team (ex. Towson Tigers) |
+| 8 | short_name | string | Short name of team (ex. Tigers) |
+| 9 | university | string | University team is located at (ex. Towson) |
+| 10 | division | string | Division team is associated with (ex. I) |
+| 11 | conference | string | Conference team is associated with (ex. Big West) |
+| 12 | primary | string | Primary color of team uniforms in Hex format |
+| 13 | secondary | string | Secondary color of team uniforms in Hex format |
+| 14 | logo | string | Link to logo image from ESPN |
+| 15 | head_coach | string | Current head coach of team |
+| 16 | school_url | string | NCAA url for team |
+| 17 | website | string | Website url for teams school |
+| 18 | twitter | string | Twitter handle of team starting with '@' |
+| 19 | venue | string | Current venue where team plays |
+
+| Sources |
+|--------|
+| https://site.api.espn.com/ |
+| https://www.ncaa.com/stats/basketball-men/ |
+| https://en.wikipedia.org/wiki/ |
+
