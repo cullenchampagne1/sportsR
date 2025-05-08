@@ -31,9 +31,9 @@ library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management o
 library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
 
 # Hardcoded list of mlb team twitter acounts because couldnt find online
-mlb_twitter_acounts <- yaml::read_yaml("data/mutations/baseball_mlb_mutations.yaml")$TWITTER_ACCOUNTS
+mlb_twitter_acounts <- readRDS(url("https://github.com/cullenchampagne1/sportsR/releases/download/misc/mlb-twitter-bindings.rds", open = "rb"))
 # Hardcoded list of mbl team websites because couldnt find online
-mlb_websites <- yaml::read_yaml("data/mutations/baseball_mlb_mutations.yaml")$WEBSITES
+mlb_websites <- readRDS(url("https://github.com/cullenchampagne1/sportsR/releases/download/misc/mlb-website-bindings.rds", open = "rb"))
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/baseball_mlb.yaml")
 # File to hold formated data
@@ -44,7 +44,7 @@ all_teams_file <- "data/processed/baseball-teams-mlb.csv"
 #' Retrieves MLB team data from ESPN's API and supplements it with additional
 #' information scraped from the wiki team pages. The combined data is processed into a structured
 #' dataframe and saved to a CSV file.
-#' 
+#'
 #' @values ../../output/tables/mlb_missing_data.png
 #'
 #' @source https://site.api.espn.com/
@@ -64,10 +64,10 @@ all_teams_file <- "data/processed/baseball-teams-mlb.csv"
 #'  primary [string] - Primary color of team uniforms in Hex format
 #'  secondary [string] - Secondary color of team uniforms in Hex format
 #'  logo [string] - Link to logo image from ESPN
+#'  manager [string] - Current manager of team
+#'  general_manager [string] - Current general manager of team
 #'  twitter [string] - Twitter handle of team starting with '@'
 #'  webiste [string] - Website url for team
-#'  general_manager [string] - Current general manager of team
-#'  manager [string] - Current manager of team
 #'  venue [string] - Current venue where team plays
 #'
 get_formated_data <- function(verbose = TRUE) {

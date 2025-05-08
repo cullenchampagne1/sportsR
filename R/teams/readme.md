@@ -180,10 +180,10 @@
 | 9 | primary | string | Primary color of team uniforms in Hex format |
 | 10 | secondary | string | Secondary color of team uniforms in Hex format |
 | 11 | logo | string | Link to logo image from ESPN |
-| 12 | twitter | string | Twitter handle of team starting with '@' |
-| 13 | webiste | string | Website url for team |
-| 14 | general_manager | string | Current general manager of team |
-| 15 | manager | string | Current manager of team |
+| 12 | manager | string | Current manager of team |
+| 13 | general_manager | string | Current general manager of team |
+| 14 | twitter | string | Twitter handle of team starting with '@' |
+| 15 | webiste | string | Website url for team |
 | 16 | venue | string | Current venue where team plays |
 
 | Sources |

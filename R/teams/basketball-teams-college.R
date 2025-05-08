@@ -120,7 +120,7 @@ get_formated_data <- function(verbose = TRUE) {
     # Loop through each division
     for (link in config$LINKS$NCAA_TEAMS) {
         # Get division by index
-        division <- sub("^.*/basketball/([^/]+).*", "\\1", link)
+        division <- sub("^.*/basketball-men/([^/]+).*", "\\1", link)
         # Download first page of current division teams
         page_content <- download_fromHTML(link, force_refresh = TRUE)
         # Initialize an empty list to store data

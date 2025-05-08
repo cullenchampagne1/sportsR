@@ -31,7 +31,7 @@ library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management o
 library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
 
 # Hardcoded list of nba team twitter acounts because couldnt find online
-nba_twitter_accounts <- yaml::read_yaml("data/mutations/basketball_nba_mutations.yaml")$TWITTER_ACCOUNTS
+nba_twitter_accounts <- readRDS(url("https://github.com/cullenchampagne1/sportsR/releases/download/misc/nba-twitter-bindings.rds", open = "rb"))
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/basketball_nba.yaml")
 # File to hold formated data
@@ -42,7 +42,7 @@ all_teams_file <- "data/processed/basketball-teams-nba.csv"
 #' Retrieves NBA team data from ESPN's API and supplements it with additional
 #' information scraped from the wiki team pages. The combined data is processed into a
 #' structured dataframe and saved to a CSV file.
-#' 
+#'
 #' @values ../../output/tables/nba_missing_data.png
 #'
 #' @source https://site.api.espn.com/

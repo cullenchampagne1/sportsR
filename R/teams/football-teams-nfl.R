@@ -40,7 +40,7 @@ all_teams_file <- "data/processed/football-teams-nfl.csv"
 #' Retrieves NFL team data from ESPN's API and supplements it with additional
 #' information scraped from the wiki team pages and official nfl webpages. The combined data
 #' is processed into a structured dataframe and saved to a CSV file.
-#' 
+#'
 #' @values ../../output/tables/nfl_missing_data.png
 #'
 #' @values ../../output/tables/nfl_missing_data.png
