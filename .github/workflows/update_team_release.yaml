@@ -16,60 +16,54 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # Fetch the current commit and the previous commit
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.x
+          python-version: '3.x'
 
       - name: Get changed files
         id: changes
         run: |
-          # Fallback to HEAD~1 if github.event.before is invalid
           before_commit=${{ github.event.before }}
           if ! git cat-file -e "$before_commit" 2>/dev/null; then
             before_commit=$(git rev-parse HEAD~1)
           fi
-          echo "files=$(git diff --name-only $before_commit ${{ github.sha }} | grep '^data/processed/.*-teams-.*\.csv$' | xargs)" >> $GITHUB_OUTPUT
+          files=$(git diff --name-only "$before_commit" "${{ github.sha }}" \
+            | grep '^data/processed/.*-teams-.*\.csv$' \
+            | xargs)
+          echo "files=$files" >> $GITHUB_OUTPUT
 
       - name: Check for changes
         if: steps.changes.outputs.files == ''
-        run: echo "No matching files changed. Skipping." && exit 0
-
-      - name: Get release tag by name
-        id: get_release
         run: |
-          release_tag=$(gh api repos/${{ github.repository }}/releases | jq -r '.[] | select(.name == "Teams") | .tag_name' | head -n 1)
-          if [ -z "$release_tag" ]; then
-            echo "No release found with name 'Teams'. Creating one."
-            release_tag="v1.0.0"
-            gh release create $release_tag --title "Teams" --notes "Initial release for Teams data"
-          fi
-          echo "release=$release_tag" >> $GITHUB_OUTPUT
+          echo "No matching files changed. Skipping."
+          exit 0
+
+      - name: Delete old 'teams' release and tag (if they exist)
+        run: |
+          gh release delete teams -y || echo "No existing release named 'teams'"
+          git tag -d teams        || echo "No local tag 'teams' to delete"
+          git push origin :teams  || echo "No remote tag 'teams' to delete"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload new files to release
-        run: |
-          for file in ${{ steps.changes.outputs.files }}; do
-            gh release upload ${{ steps.get_release.outputs.release }} "$file" --clobber
-          done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update release notes
+      - name: Build release notes
         run: |
           base_note="This release provides structured CSV datasets containing detailed information about teams across multiple professional and collegiate sports leagues. The data has been meticulously collected from official sources and APIs, then processed into a clean, consistent format for easy use in analytics, applications, and research. For a detailed breakdown of data sources and table structures, please see the [Teams Documentation](/R/teams/readme.md)"
-
           timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
-          note="\n\n\`\`\`Update on $timestamp\`\`\`\n"
+          note="\`Update on $TIMESTAMP\`\n"
           for file in ${{ steps.changes.outputs.files }}; do
             note+="- \`$file\`\n"
           done
-
           echo -e "$base_note$note" > NEW_DESC.md
 
-          gh release edit ${{ steps.get_release.outputs.release }} --notes-file NEW_DESC.md
+      - name: Create new 'teams' release and upload files
+        run: |
+          gh release create teams \
+            --title "Teams" \
+            --notes-file NEW_DESC.md \
+            ${{ steps.changes.outputs.files }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
