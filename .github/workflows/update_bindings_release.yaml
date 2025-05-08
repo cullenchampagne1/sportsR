@@ -23,6 +23,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fix Git safe directory
+        run: |
+          # mark the checked-out repo as safe so git commands inside the container work
+          git config --global --add safe.directory "$PWD"
+
       - name: Convert RDS to CSVs by Sport
         run: |
           mkdir -p output
