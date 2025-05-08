@@ -37,22 +37,11 @@ jobs:
             }
           '
 
-      - name: Determine (or default) release tag
-        id: tag
+      - name: Delete old “teams” release and tag (if they exist)
         run: |
-          TAG=$(gh api repos/${{ github.repository }}/releases \
-               | jq -r '.[] | select(.name=="Team Bindings") | .tag_name' \
-               | head -n1)
-          if [ -z "$TAG" ]; then
-            TAG="v1.0.0"
-          fi
-          echo "RELEASE_TAG=$TAG" >> $GITHUB_ENV
-
-      - name: Delete old release and its tag (if they exist)
-        run: |
-          gh release delete ${{ env.RELEASE_TAG }} -y || echo "No existing release to delete"
-          git tag -d ${{ env.RELEASE_TAG }}      || echo "No local tag to delete"
-          git push origin :${{ env.RELEASE_TAG }} || echo "No remote tag to delete"
+          gh release delete teams -y || echo "No existing release named 'teams'"
+          git tag -d teams       || echo "No local tag 'teams' to delete"
+          git push origin :teams || echo "No remote tag 'teams' to delete"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,9 +49,9 @@ jobs:
         run: |
           echo -e "Hardcopy of NCAA and ESPN team bindings, sport-specific data files. In production, unbound teams are supplemented by the model. Also includes NCAA logo URLs and generated primary/secondary colors (\`magick\`-generated).\n\n\`Update on $(date -u +\"%Y-%m-%d %H:%M UTC\")\`" > NEW_DESC.md
 
-      - name: Create new release & upload CSVs
+      - name: Create new “teams” release & upload CSVs
         run: |
-          gh release create ${{ env.RELEASE_TAG }} \
+          gh release create teams \
             --title "Team Bindings" \
             --notes-file NEW_DESC.md \
             output/*.csv
