@@ -42,11 +42,11 @@ jobs:
             }
           '
 
-      - name: Delete old “teams” release and tag (if they exist)
+      - name: Delete old “bindings” release and tag (if they exist)
         run: |
-          gh release delete teams -y || echo "No existing release named 'teams'"
-          git tag -d teams       || echo "No local tag 'teams' to delete"
-          git push origin :teams || echo "No remote tag 'teams' to delete"
+          gh release delete bindings -y || echo "No existing release named 'teams'"
+          git tag -d bindings       || echo "No local tag 'teams' to delete"
+          git push origin :bindings || echo "No remote tag 'teams' to delete"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -61,7 +61,7 @@ jobs:
 
       - name: Create new “teams” release & upload CSVs
         run: |
-          gh release create teams \
+          gh release create bindings \
             --title "Team Bindings" \
             --notes-file NEW_DESC.md \
             output/*.csv
