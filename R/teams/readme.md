@@ -12,41 +12,25 @@
 
 ### Returned Data Structure
 
-<div style="display: flex; gap: 2rem;">
-
-  <div>
-
-| #  | Column     | Type   | Description                                 |
-|----|------------|--------|---------------------------------------------|
-| 1  | id         | string | A generated unique identifier for each team |
-| 2  | espn_id    | int    | id used by ESPN to identify team           |
-| 3  | type       | string | Always set to NBA for team type             |
-| 4  | abv        | string | Abbreviation of team name (ex. DEN)         |
-| 5  | full_name  | string | Full name of team (ex. Denver Nuggets)      |
-| 6  | short_name | string | Short name of team (ex. Nuggets)            |
-| 7  | primary    | string | Primary color of team uniforms in Hex       |
-| 8  | secondary  | string | Secondary color of team uniforms in Hex     |
-| 9  | logo       | string | Link to logo image from ESPN                |
-
-  </div>
-
-  <div>
-
-| #   | Column                 | Type   | Description                                                |
-|-----|------------------------|--------|------------------------------------------------------------|
-| 10  | conference             | string | Conference team is associated with (ex. Western)           |
-| 11  | division               | string | Division team is associated with (ex. Northwest)           |
-| 12  | website                | string | Website URL for team                                       |
-| 13  | head_coach             | string | Current head coach of team                                 |
-| 14  | offensive_coordinator  | string | Current offensive coordinator of team                      |
-| 15  | defensive_coordinator  | string | Current defensive coordinator of team                      |
-| 16  | general_manager        | string | Current general manager of team                            |
-| 17  | venue                  | string | Current venue where team plays                             |
-
-  </div>
-
-</div>
-
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | string | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify team |
+| 3 | type | string | Always set to NBA for team type |
+| 4 | abv | string | Abreviation of team name (ex. DEN) |
+| 5 | full_name | string | Full name of team (ex. Denver Nuggets) |
+| 6 | short_name | string | Short name of team (ex. Nuggets) |
+| 7 | primary | string | Primary color of team uniforms in Hex format |
+| 8 | secondary | string | Secondary color of team uniforms in Hex format |
+| 9 | logo | string | Link to logo image from ESPN |
+| 10 | conference | string | Conference team is associated with (ex. Western) |
+| 11 | division | string | Division team is associated with (ex. Northwest) |
+| 12 | webiste | string | Website url for team |
+| 13 | head_coach | string | Current head coach of team |
+| 14 | offensive_coordinator | string | Current offensive coordinator of team |
+| 15 | defensive_coordinator | string | Current defensive coordinator of team |
+| 16 | general_manager | string | Current general manager of team |
+| 17 | venue | string | Current venue where team plays |
 
 | Sources |
 |--------|
