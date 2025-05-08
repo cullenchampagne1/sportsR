@@ -36,9 +36,6 @@ jobs:
             echo
             echo "\`Update on $timestamp\`"
             echo
-            for file in data/processed/*-teams-*.csv; do
-              echo "- \`$file\`"
-            done
           } > NEW_DESC.md
 
       - name: Create new 'teams' release & upload all matching files
