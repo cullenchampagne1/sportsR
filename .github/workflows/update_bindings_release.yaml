@@ -52,7 +52,11 @@ jobs:
 
       - name: Build release notes
         run: |
-          echo -e "Hardcopy of NCAA and ESPN team bindings, sport-specific data files. In production, unbound teams are supplemented by the model. Also includes NCAA logo URLs and generated primary/secondary colors (\`magick\`-generated).\n\n\`Update on $(date -u +\"%Y-%m-%d %H:%M UTC\")\`" > NEW_DESC.md
+          echo "Hardcopy of NCAA and ESPN team bindings, these bindings are sport specific so make sure you are downlaoding the individaul files for whicher sport you are currently working on. In production teams not in this listing or supplimented by the model." > NEW_DESC.md
+          # Blank line
+          echo "" >> NEW_DESC.md
+          # Append the update timestamp
+          echo "\`Update on $(date -u +\"%Y-%m-%d %H:%M UTC\")\`" >> NEW_DESC.md
 
       - name: Create new “teams” release & upload CSVs
         run: |
