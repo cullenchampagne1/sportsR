@@ -25,34 +25,35 @@ source("R/util-data-report.R")
 # Utilties for updating markdown
 source("R/util-markdown.R")
 
-library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
 library(rvest, quietly = TRUE, warn.conflicts = FALSE) # Filter through and parse html objects
 library(tidyr, quietly = TRUE, warn.conflicts = FALSE) # Unest list attributed to columns in dataframe
 library(purrr, quietly = TRUE, warn.conflicts = FALSE)  # Map functions to values in dataframe
+library(caret, quietly = TRUE, warn.conflicts = FALSE) # ML model for matching teams
 library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management of dataframes
-library(Matrix, quietly = TRUE, warn.conflicts = FALSE) # Used by fastlink
+library(stringdist, quietly = TRUE, warn.conflicts = FALSE) # String distance calculations for matching
+library(httr, quietly = TRUE, warn.conflicts = FALSE) # Header management for downloading data
+library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
+library(magick, quietly = TRUE, warn.conflicts = FALSE) # Working with svgs from color data
+library(magick, quietly = TRUE, warn.conflicts = FALSE) # Working with svgs from color data
+library(rsvg, quietly = TRUE, warn.conflicts = FALSE) # Converting svg graphics
 library(dotenv, quietly = TRUE, warn.conflicts = FALSE) # Get env variables
-library(fastLink, quietly = TRUE, warn.conflicts = FALSE) # Weighted dataset matching for NCAA and ESPN
-library(stringdist, quietly = TRUE, warn.conflicts = FALSE) # Used by fastlink
-
-dotenv::load_dot_env()  # Loads variables from .env into the R environment
 
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/basketball_college.yaml")
-# API key for College Football API
-college_api_key <- Sys.getenv("COLLEGE_API_KEY")
 # File to hold formated data
 all_teams_file <- "data/processed/basketball-teams-college.csv"
 
 #' College Basketball Teams
 #'
 #' Retrieves college basketball team data from ESPN's API and supplements
-#' it with additional information scraped from NCAA and CollegeBasketballDB. The combined
+#' it with additional information scraped from NCAA and Wiki. The combined
 #' data is processed into a structured dataframe and saved to a CSV file.
+#' 
+#' @values ../../output/tables/college_basketball_missing_data.png
 #'
 #' @source https://site.api.espn.com/
-#' @source https://api.collegebasketballdata.com/teams
 #' @source https://www.ncaa.com/stats/basketball-men/
+#' @source https://en.wikipedia.org/wiki/
 #'
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
 #'
@@ -61,6 +62,7 @@ all_teams_file <- "data/processed/basketball-teams-college.csv"
 #'  espn_id [string] - id used be espn to identify team
 #'  ncaa_id [string] - id used be ncaa to identify team
 #'  type [string] - Always set to NCAAB for team type
+#'  slug [string] - Slug used to identify teams
 #'  abv [string] - Abreviation of team name (ex. TOW)
 #'  full_name [string] - Full name of team (ex. Towson Tigers)
 #'  short_name [string] - Short name of team (ex. Tigers)
@@ -77,15 +79,12 @@ all_teams_file <- "data/processed/basketball-teams-college.csv"
 #'  venue [string] - Current venue where team plays
 #'
 get_formated_data <- function(verbose = TRUE) {
-    # Grab College basketball data from ESPN
+    # Grab College Baskteball data from ESPN
+    college_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, force_refresh = TRUE, simplifyDataFrame = FALSE)
     if (verbose) cat(paste0("\n\033[32mDownloading ESPN Basketball Teams: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
-    college_basketball_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, simplifyDataFrame = FALSE)
-    # Grab College Football API team info
-    college_cbd_teams <- download_fromJSON(config$LINKS$CBDB_TEAMS, force_refresh = TRUE, auth = paste("Bearer", college_api_key))
-    if (verbose) cat(paste0("\n\033[32mDownloading CBDB Basketball Teams: ", config$LINKS$CBDB_TEAMS, "\033[0m"))
 
     # Extract all teams from ESPN json structure
-    espn_teams_list <- lapply(college_basketball_teams$sports[[1]]$leagues[[1]]$teams, function(x) x$team)
+    espn_teams_list <- lapply(college_espn_teams$sports[[1]]$leagues[[1]]$teams, function(x) x$team)
 
     # Processes raw ESPN team JSON data into structured dataframe
     #
@@ -112,45 +111,16 @@ get_formated_data <- function(verbose = TRUE) {
         # Bind base fields / logo with avalaible links
         espn_team_df <- cbind(base_fields_df, t(team_links))
     }
+    # Run extract teams function on all teams in data and rename id
+    college_espn_teams <- dplyr::bind_rows(lapply(espn_teams_list, extract_team)) %>% rename(espn_id = id)
 
-    # Run extract teams function on all teams in data
-    college_basketball_teams <- bind_rows(lapply(espn_teams_list, extract_team))
-
-    # Prefix columns with "ESPN_" and convert to uppercase
-    names(college_basketball_teams) <- paste0("ESPN_", toupper(names(college_basketball_teams)))
-    # Prefix columns with "CBD_" and convert to uppercase
-    names(college_cbd_teams) <- paste0("CBD_", toupper(names(college_cbd_teams)))
-
-    # Combine data from both locations, keeping any espn data that cant find a match while
-    # Removing CFD data that isnt show on espn
-    college_basketball_teams <- merge(college_basketball_teams, college_cbd_teams,
-    by.x = "ESPN_ID", by.y = "CBD_SOURCEID", all.x = TRUE, all.y = FALSE)
-
-    # Generate Unique team ids for each team
-    college_basketball_teams <- college_basketball_teams %>%
-        dplyr::mutate(id = encode_id(paste0("F", ESPN_ID), ESPN_ABBREVIATION)) %>%
-        # Put uniquie id as first column in dataset and filter by only active colleges
-        dplyr::select(id, dplyr::everything()) %>%
-        dplyr::filter(ESPN_ISACTIVE == TRUE) %>%
-        # Remove all uneeded columns
-        dplyr::select(-c(ESPN_SLUG, CBD_PRIMARYCOLOR, CBD_SECONDARYCOLOR, ESPN_ROSTER, ESPN_SCHEDULE, ESPN_TICKETS,
-            CBD_SCHOOL, CBD_ABBREVIATION, ESPN_CLUBHOUSE, ESPN_STATISTICS, ESPN_ISACTIVE, ESPN_ISALLSTAR, ESPN_UID,
-            CBD_CURRENTVENUEID, CBD_CURRENTCITY, CBD_CURRENTSTATE, ESPN_NAME, ESPN_NICKNAME,
-            CBD_CONFERENCE, CBD_CONFERENCEID, CBD_DISPLAYNAME, CBD_SHORTDISPLAYNAME, CBD_ID)) %>%
-        # Rename all remaining columns
-        dplyr::rename(full_name = ESPN_DISPLAYNAME, short_name = ESPN_SHORTDISPLAYNAME, primary = ESPN_COLOR,
-            secondary = ESPN_ALTERNATECOLOR, logo = ESPN_LOGO, venue = CBD_CURRENTVENUE,
-            abv = ESPN_ABBREVIATION, owner = ESPN_LOCATION, espn_id = ESPN_ID, nickname = CBD_MASCOT) %>%
-        # Create a type column
-        dplyr::mutate(type = "NCAAB")
-
-    if (verbose) cat(paste0("\n\033[32mDownloading NCAA Basketball Teams: https://www.ncaa.com/stats/basketball-men/...\033[0m"))
+    if (verbose) cat(paste0("\n\033[32mDownloading NCAA Baskteball Teams: https://www.ncaa.com/stats/basketball/...\033[0m"))
     # Dataframe to hold all parsed NCAA teams
-    ncaa_basketball_teams <- data.frame()
+    college_ncaa_teams <- data.frame()
     # Loop through each division
     for (link in config$LINKS$NCAA_TEAMS) {
         # Get division by index
-        division <- sub("^.*/basketball-men/([^/]+).*", "\\1", link)
+        division <- sub("^.*/basketball/([^/]+).*", "\\1", link)
         # Download first page of current division teams
         page_content <- download_fromHTML(link, force_refresh = TRUE)
         # Initialize an empty list to store data
@@ -179,7 +149,7 @@ get_formated_data <- function(verbose = TRUE) {
             )
         }
          # Add team to data frame
-        ncaa_basketball_teams <- rbind(ncaa_basketball_teams, dplyr::bind_rows(team_data))
+        college_ncaa_teams <- rbind(college_ncaa_teams, dplyr::bind_rows(team_data))
     }
 
     # Headers used to visit ncaa stats webiste and avoid blocking
@@ -209,7 +179,7 @@ get_formated_data <- function(verbose = TRUE) {
     }
 
     # Combine ncaa ids by matching school names
-    ncaa_basketball_teams <- merge(ncaa_basketball_teams, ncaa_ids,
+    college_ncaa_teams <- merge(college_ncaa_teams, ncaa_ids,
     by.x = "school_name", by.y = "team_name", all.x = TRUE, all.y = FALSE)
 
     # Helper function to handle NA values in data
@@ -237,9 +207,9 @@ get_formated_data <- function(verbose = TRUE) {
         # Return dataframe with parsed information
         data.frame(
             conference = conference %||% NA_character_,
-            nickname = nickname %||% NA_character_,
+            nickname_ncaa = nickname %||% NA_character_,
             colors = colors %||% NA_character_,
-            name = school_name %||% NA_character_,
+            name_ncaa = school_name %||% NA_character_,
             website = website %||% NA_character_,
             twitter = twitter %||% NA_character_,
             stringsAsFactors = FALSE
@@ -248,72 +218,86 @@ get_formated_data <- function(verbose = TRUE) {
 
     if (verbose) cat(paste0("\n\033[32mDownloading NCAA Team Details: https://www.ncaa.com/schools/...\033[0m"))
     # Scrape each teams detailed data (Takes a while to load)
-    ncaa_basketball_teams <- ncaa_basketball_teams %>%
-    dplyr::mutate(scraped_data = purrr::map(school_url, ~ {
+    college_ncaa_teams <- college_ncaa_teams %>% dplyr::mutate(scraped_data = purrr::map(school_url, ~ {
         scrape_ncaa_team_data(.x)
     })) %>%
-    tidyr::unnest(scraped_data) %>%
-    dplyr::rename(owner = school_name, full_name = name)
+    tidyr::unnest(scraped_data)
+    
+    matching_model <- readRDS("data/models/espn-ncaa-binding-model.rds")
+    # Extract bindings for previous matched data devided by sport name
+    sport_bindings <- matching_model$sport_bindings %>% dplyr::filter(sport == "basketball") %>% select(espn_id, ncaa_id)
+    # Combine previous matched data onto df
+    combined_espn <- college_espn_teams %>% dplyr::filter(espn_id %in% sport_bindings$espn_id) %>% dplyr::mutate(dplyr::across(c(espn_id), as.character))
+    combined_ncaa <- college_ncaa_teams %>% dplyr::filter(ncaa_id %in% sport_bindings$ncaa_id) %>% dplyr::mutate(dplyr::across(c(ncaa_id), as.character))
+    combined_data <- combined_espn %>%
+        dplyr::inner_join(sport_bindings, by = "espn_id") %>%
+        dplyr::inner_join(combined_ncaa, by = "ncaa_id")
 
-    # List of state and university abreveations that are swapped for consistancy
-    abbreviations <- yaml::read_yaml("data/mutations/university_abbreviations.yaml")$ABBREVIATIONS %>% unlist() %>% set_names(names(.))
-    # Not all teams can be automaticaly matched, load a maual mutations file to assist with remaining teams
-    mutations <- yaml::read_yaml("data/mutations/basketball_college_mutations.yaml")
-    # Iterate through custom rules for NCAA
-    for (rule in mutations$NCAA) {
-        matches <- stringr::str_match(rule, "IF (\\w+) == '(.*?)' THEN (\\w+) = '(.*?)'")
-        ncaa_basketball_teams <- ncaa_basketball_teams %>% dplyr::mutate(
-            !!matches[4] := if_else(.data[[matches[2]]] == matches[3], matches[5], .data[[matches[4]]]))
-    }
-    # Iterate through custom rules for ESPN
-    for (rule in mutations$ESPN) {
-        matches <- stringr::str_match(rule, "IF (\\w+) == '(.*?)' THEN (\\w+) = '(.*?)'")
-        college_basketball_teams <- college_basketball_teams %>% dplyr::mutate(
-            !!matches[4] := if_else(.data[[matches[2]]] == matches[3], matches[5], .data[[matches[4]]]))
-    }
-    # Apply abreviation replacements to both dataframes
-    college_basketball_teams <- college_basketball_teams %>% dplyr::mutate(dplyr::across(c(owner, full_name), ~ str_replace_all(.x, abbreviations)))
-    ncaa_basketball_teams <- ncaa_basketball_teams %>% dplyr::mutate(dplyr::across(c(owner, full_name), ~ str_replace_all(.x, abbreviations)))
+    # Only pass unbounded espn and ncaa data into model
+    unbound_espn <- college_espn_teams %>% dplyr::filter(!espn_id %in% sport_bindings$espn_id)
+    unbound_ncaa <- college_ncaa_teams %>% dplyr::filter(!ncaa_id %in% sport_bindings$ncaa_id)
+    # Generare features for unbounded data and drop NA values
+    candidate_pairs <- unbound_espn %>%
+        dplyr:::cross_join(unbound_ncaa) %>%
+        dplyr:::mutate(
+            name_jw = coalesce(1 - stringdist::stringdist(displayName, school_name, method = "jw"), 0),
+            name_osa = coalesce(1 - stringdist::stringdist(displayName, school_name, method = "osa"), 0),
+            location_in_name = suppressWarnings(coalesce(as.numeric(str_detect(name_ncaa, fixed(location))), 0)),
+            nickname_in_name = suppressWarnings(coalesce(as.numeric(str_detect(displayName, fixed(nickname_ncaa))), 0)),
+            name_length_diff = coalesce(abs(nchar(displayName) - nchar(school_name)), 0),
+            first_word_match = coalesce(as.numeric(word(displayName, 1) == word(school_name, 1)), 0),
+            last_word_match = coalesce(as.numeric(word(displayName, -1) == word(school_name, -1)), 0)
+        ) %>%
+        tidyr::drop_na()
+    # Track original columns to add back later
+    original_cols <- candidate_pairs %>% dplyr::select(-c(name_jw, name_osa, location_in_name, nickname_in_name, name_length_diff, first_word_match, last_word_match))
+    # Only output generate features to model
+    model_features <- candidate_pairs %>% dplyr::select(name_jw, name_osa, location_in_name, nickname_in_name, name_length_diff, first_word_match, last_word_match)
+    # Predict probability on all unmatched data
+    model_features$pred_prob <- suppressWarnings(predict(matching_model, newdata = model_features, type = "prob")$yes)
+    # Add origibal columns to matched data filtering by best result above threshold
+    final_output <- dplyr::bind_cols(original_cols, model_features) %>%
+        dplyr::group_by(ncaa_id) %>%
+        dplyr::slice_max(pred_prob, n = 1, with_ties = FALSE) %>%
+        dplyr::ungroup() %>%
+        dplyr::filter(pred_prob >= 4.58e-05)
+    # Remove features and mutate id columns for join
+    final_output <- final_output %>%
+        dplyr::select(-c(pred_prob, name_jw, name_osa, location_in_name, nickname_in_name, name_length_diff, first_word_match, last_word_match)) %>%
+        dplyr::mutate(dplyr::across(c(espn_id, ncaa_id), as.character))
+    # Get new bindings for model generated output
+    new_bindings <- final_output %>% dplyr::select(espn_id, ncaa_id) %>% dplyr::mutate(sport = "basketball")
+    # Add newly generated bindings to model hardcoded bindings for later use
+    matching_model$sport_bindings <- dplyr::bind_rows(matching_model$sport_bindings, new_bindings) %>%
+    dplyr::distinct(espn_id, ncaa_id, sport, .keep_all = TRUE)
+    # Save updated model
+    saveRDS(matching_model, "data/models/espn-ncaa-binding-model.rds")
+    # Join newly matched data with previous bindings
+    all_college_data <- dplyr::bind_rows(combined_data, final_output)
+    # Get unmatched data from both sources
+    unbounded_ncaa_data <- college_ncaa_teams %>% dplyr::filter(!ncaa_id %in% all_college_data$ncaa_id)
+    unbounded_espn_data <- college_espn_teams %>% dplyr::filter(!espn_id %in% all_college_data$espn_id)
 
-    sink(tempfile())
-    # Use fast link to combine both datasets using string simulity over multiple columns
-    matches_out <- fastLink::fastLink(
-        dfA = college_basketball_teams, dfB = ncaa_basketball_teams,
-        varnames = c("owner", "full_name", "nickname"),
-        stringdist.match = c("owner", "full_name", "nickname"),
-        partial.match = c("nickname"),
-        dedupe.matches = TRUE,
-        threshold.match = 0.2,
-        jw.weight = 0.2,
-        cut.p = 0.75,
-        linprog.dedupe = TRUE,
-        verbose = FALSE
-    )
-    sink()
-    # Combine data based on matches
-    all_college_data_matched <- getMatches(
-        dfA = college_basketball_teams,
-        dfB = ncaa_basketball_teams,
-        fl.out = matches_out
-    )
-
-    # Go back and inherit correct columns after matching
-    all_college_data_matched <- all_college_data_matched %>%
-        dplyr::left_join(ncaa_basketball_teams %>%
-        dplyr::select(ncaa_id, ncaa_owner = owner), by = "ncaa_id") %>%
-        dplyr::mutate(owner = ifelse(!is.na(ncaa_owner) & nchar(ncaa_owner) > nchar(owner),  ncaa_owner, owner)) %>%
-        dplyr::select(-ncaa_owner)
-
-    # Create a bindings file for later use
-    bindings <- all_college_data_matched %>% dplyr::select(ncaa_id, espn_id)
-    write.csv(bindings, "data/bindings/ncaa_espn_basketball_bindings.csv", row.names = FALSE)
-    # Identify unmatched records from dfA (college_basketball_teams)
-    unmatched_df_a <- college_basketball_teams[!seq_len(nrow(college_basketball_teams)) %in% matches_out$matches$inds.a, ]
-    # Identify unmatched records from dfB (ncaa_basketball_teams)
-    unmatched_df_b <- ncaa_basketball_teams[!seq_len(nrow(ncaa_basketball_teams)) %in% matches_out$matches$inds.b, ]
-    # Save unmatched records to files
-    if (nrow(unmatched_df_a) > 0) write.csv(unmatched_df_a, "output/csv/unmatched_college_basketball_espn.csv", row.names = FALSE)
-    if (nrow(unmatched_df_b) > 0) write.csv(unmatched_df_b, "output/csv/unmatched_college_basketball_ncaa.csv", row.names = FALSE)
+    # Reformat combined data into standard format and only select relevant columns
+    all_college_data <- all_college_data %>%
+        # Rename columns to standardize
+        dplyr::rename(
+            abv = abbreviation,
+            full_name = displayName,
+            short_name = name,
+            university = name_ncaa,
+            primary = color,
+            secondary = alternateColor,
+        ) %>%
+        # Create a type column to identify sport and venue column for later
+        dplyr::mutate(type = "NCAAF", venue = NA_character_) %>%
+        # Set values based on Na counditions for NCAA teams
+        dplyr::mutate(university = university %||% location) %>%
+        # Create a unique id for each team
+        dplyr::mutate(id = encode_id(paste0("F", espn_id), abv)) %>%
+        # Select only relevant columns
+        dplyr::select(id, espn_id, ncaa_id, type, slug, abv, full_name, short_name, university,
+            division, conference, primary, secondary, logo, img_src, school_url, website, twitter, venue)
 
     # Dowload current coaches for means college basketball
     if (verbose) cat(paste0("\n\033[32mDownloading NCAA Basketball Coaches: ", config$LINKS$COACHES, "\033[0m"))
@@ -321,15 +305,13 @@ get_formated_data <- function(verbose = TRUE) {
     # Extract arenas table from wiki page
     college_basketball_coaches <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$COACHES) %>% rvest::html_table(fill = TRUE)
     # Fromat table for combination with team names
-    college_basketball_coaches <- college_basketball_coaches %>% dplyr::select(Team, "Current coach")
+    college_basketball_coaches <- college_basketball_coaches %>% dplyr::select(Team, "Current coach") %>% dplyr::rename(head_coach = "Current coach")
     # Combine both data by matching team and owner
-    all_college_data_matched <- merge(all_college_data_matched, college_basketball_coaches,
+    all_college_data <- merge(all_college_data, college_basketball_coaches,
     by.x = "full_name", by.y = "Team", all.x = TRUE, all.y = FALSE)
 
-    # Initialize bindings file if it doesn't exist for logo colors
-    if (!file.exists("data/bindings/ncaa_logo_color_bindings.csv")) color_bindings <- tibble::tibble(url = character(), colors = character())
-    else color_bindings <- read.csv("data/bindings/ncaa_logo_color_bindings.csv")
-
+    # Read bindings from repository
+    color_bindings <- read.csv("https://github.com/cullenchampagne1/sportsR/releases/download/misc/ncaa_logo_color_bindings.csv")
 
     #' Processes and svg logo and returns top 2 colors
     #'
@@ -344,10 +326,9 @@ get_formated_data <- function(verbose = TRUE) {
         # If not proceed to download svg and generate color codes
         colors <- tryCatch({
             # Download and convert SVG to raster
-            img <- magick::image_read_svg(svg_url) %>% magick::image_convert(format = "png")
-            # Get pixel data from downloaded image
-            png_data <- magick::image_write(img, tempfile(fileext = ".png"), format = "png")
-            img_array <- png::readPNG(png_data)
+            raw_svg <- httr::content(httr::GET(svg_url), as = "raw")
+            png_bytes <- rsvg::rsvg_png(raw_svg)
+            img_array <- png::readPNG(png_bytes)
             # Reshape to RGB matrix (excluding alpha if exists)
             if (dim(img_array)[3] == 4) rgb_matrix <- img_array[, , 1:3]
             else  rgb_matrix <- img_array
@@ -375,13 +356,9 @@ get_formated_data <- function(verbose = TRUE) {
     }
 
     if (verbose) cat(paste0("\n\033[32mDownloading NCAA Team Logos: https://www.ncaa.com/sites/default/files/images/logos/schools/bgl/...\033[0m"))
-    college_basketball_data <- all_college_data_matched %>%
-        # Replace university names when avalaible and rename to university
-        dplyr::rename(university = owner) %>%
+    all_college_data <- all_college_data %>%
         # Replace logo url when avalaible
         dplyr::mutate(logo = if_else(is.na(img_src), logo, img_src)) %>%
-        # Reorder column for consistancy
-        dplyr::select(id, espn_id, ncaa_id, type, abv, full_name, nickname, university, division, conference, dplyr::everything()) %>%
         # Get primary and secondary colors from logo when not avalaible through espn
         dplyr::mutate(dominant_colors = purrr::map_chr(img_src, get_dominant_colors)) %>%
         dplyr::mutate(
@@ -409,15 +386,7 @@ get_formated_data <- function(verbose = TRUE) {
             ifelse(grepl("^https?://", urls, ignore.case = TRUE), urls, paste0("https://", urls))
         }) %>%
         # Removed uneeded columns
-        dplyr::select(-img_src, -short_name, -temp_colors, -dominant_colors, -colors, -gamma.1, -gamma.2, -gamma.3, -posterior) %>%
-        # Rename columns to match others
-        dplyr::rename(short_name = nickname, head_coach = "Current coach") %>%
-        # Put venue back to last position
-        dplyr::relocate(head_coach, .after = "logo") %>%
-        dplyr::relocate(venue, .after = last_col())
-
-    # Save color bindings back to file
-    write.csv(color_bindings, "data/bindings/ncaa_logo_color_bindings.csv")
+        dplyr::select(-img_src, -temp_colors, -dominant_colors)
 
     #' Processes ncaa webpages and extract head coach
     #'
@@ -434,22 +403,47 @@ get_formated_data <- function(verbose = TRUE) {
 
     if (verbose) cat(paste0("\n\033[32mDownloading Additional NCAA Coaches: https://stats.ncaa.org/team/...\n\033[0m"))
     # Filter and retrieve unknown coaches from ncaa website
-    unknown_coaches <- college_basketball_data %>% dplyr::filter(is.na(head_coach)) %>% dplyr::select(ncaa_id, head_coach)
+    unknown_coaches <- all_college_data %>% dplyr::filter(is.na(head_coach)) %>% dplyr::select(ncaa_id, head_coach)
     updated_coaches <- unknown_coaches %>% mutate(head_coach = map_chr(ncaa_id, ~{ get_coach_name(.x) }))
     # Update coaches back into dataset
-    college_basketball_data <- college_basketball_data %>% dplyr::rows_update(updated_coaches, by = "ncaa_id")
+    all_college_data <- all_college_data %>% dplyr::rows_update(updated_coaches, by = "ncaa_id")
+
+    #' Processes ncaa webpages and extract venues
+    #'
+    #' @param ncaa_id id of ncaa team
+    #'
+    get_venue <- function(ncaa_id) {
+        # Create url from ncaa_id
+        url <- paste0("https://stats.ncaa.org/teams/", ncaa_id)
+        # Download page content from url
+        page_content <- download_fromHTML(url, "data/raw", FALSE, headers)
+        # Get coach from xpath
+        venue <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$NCAA_STAT$VENUE) %>% rvest::html_text(trim = TRUE)
+    }
+
+    if (verbose) cat(paste0("\n\033[32mDownloading Additional NCAA Venues: https://stats.ncaa.org/team/...\n\033[0m"))
+    # Filter and retrieve unknown coaches from ncaa website
+    unknown_venues <- all_college_data %>% dplyr::filter(is.na(venue)) %>% dplyr::select(ncaa_id, venue)
+    updated_venues <- unknown_venues %>% dplyr::mutate(venue = map_chr(ncaa_id, ~{ get_venue(.x) }))
+    # Update coaches back into dataset
+    all_college_data <- all_college_data %>% dplyr::rows_update(updated_venues, by = "ncaa_id")
+
+    # Move head coach to after logo
+    all_college_data <- all_college_data %>% relocate(head_coach, .after = logo)
+    # Move full_name to after abv
+    all_college_data <- all_college_data %>% relocate(head_coach, .after = abv)
 
     # Analyze missing data
-    analyze_missing_data("College Basketball", college_basketball_data)
-    process_markdown_file("R/teams/basketball-teams-college.R", "R/teams/readme.md", nrow(college_basketball_data))
+    analyze_missing_data("College Basketball", all_college_data)
+    process_markdown_file("R/teams/basketball-teams-college.R", "R/teams/readme.md", nrow(all_college_data))
 
-    if (verbose) cat(paste0("\n\033[90m", nrow(unmatched_df_b), " NCAA Teams and ", nrow(unmatched_df_a), " ESPN Teams Could Not be Binded: /output/csv/unmatched_...\033[0m"))
+    if (verbose) cat(paste0("\n\033[90m", nrow(unbounded_ncaa_data), " NCAA Teams and ", nrow(unbounded_espn_data), " ESPN Teams Could Not be Binded: /output/csv/unmatched_...\033[0m"))
     if (verbose) cat(paste0("\n\033[90mCollege Basketball Data Saved To: /", all_teams_file, "\033[0m\n"))
 
     # Save any created name bindings to file
-    write.csv(college_basketball_data, all_teams_file, row.names = FALSE)
+    write.csv(all_college_data, all_teams_file, row.names = FALSE)
     # Return formated data
-    return(college_basketball_data)
+    return(all_college_data)
 }
 
 

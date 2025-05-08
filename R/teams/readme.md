@@ -117,7 +117,9 @@
 ---
 ## College Basketball Teams
 
- Retrieves college basketball team data from ESPN's API and supplements it with additional information scraped from NCAA and CollegeBasketballDB. The combined data is processed into a structured dataframe and saved to a CSV file. 
+![Missing Values](../../output/tables/college_basketball_missing_data.png)
+
+ Retrieves college basketball team data from ESPN's API and supplements it with additional information scraped from NCAA and Wiki. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `basketball-teams-college::get_formated_data()` 
 
@@ -125,32 +127,33 @@
 
 ### Returned Data Structure
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | int | A generated unique identifier for each team |
-| espn_id | string | id used be espn to identify team |
-| ncaa_id | string | id used be ncaa to identify team |
-| type | string | Always set to NCAAB for team type |
-| abv | string | Abreviation of team name (ex. TOW) |
-| full_name | string | Full name of team (ex. Towson Tigers) |
-| short_name | string | Short name of team (ex. Tigers) |
-| university | string | University team is located at (ex. Towson) |
-| division | string | Division team is associated with (ex. I) |
-| conference | string | Conference team is associated with (ex. Big West) |
-| primary | string | Primary color of team uniforms in Hex format |
-| secondary | string | Secondary color of team uniforms in Hex format |
-| logo | string | Link to logo image from ESPN |
-| head_coach | string | Current head coach of team |
-| school_url | string | NCAA url for team |
-| website | string | Website url for teams school |
-| twitter | string | Twitter handle of team starting with '@' |
-| venue | string | Current venue where team plays |
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | int | A generated unique identifier for each team |
+| 2 | espn_id | string | id used be espn to identify team |
+| 3 | ncaa_id | string | id used be ncaa to identify team |
+| 4 | type | string | Always set to NCAAB for team type |
+| 5 | slug | string | Slug used to identify teams |
+| 6 | abv | string | Abreviation of team name (ex. TOW) |
+| 7 | full_name | string | Full name of team (ex. Towson Tigers) |
+| 8 | short_name | string | Short name of team (ex. Tigers) |
+| 9 | university | string | University team is located at (ex. Towson) |
+| 10 | division | string | Division team is associated with (ex. I) |
+| 11 | conference | string | Conference team is associated with (ex. Big West) |
+| 12 | primary | string | Primary color of team uniforms in Hex format |
+| 13 | secondary | string | Secondary color of team uniforms in Hex format |
+| 14 | logo | string | Link to logo image from ESPN |
+| 15 | head_coach | string | Current head coach of team |
+| 16 | school_url | string | NCAA url for team |
+| 17 | website | string | Website url for teams school |
+| 18 | twitter | string | Twitter handle of team starting with '@' |
+| 19 | venue | string | Current venue where team plays |
 
 | Sources |
 |--------|
 | https://site.api.espn.com/ |
-| https://api.collegebasketballdata.com/teams |
 | https://www.ncaa.com/stats/basketball-men/ |
+| https://en.wikipedia.org/wiki/ |
 ---
 ## MLB Teams
 

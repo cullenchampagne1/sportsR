@@ -34,9 +34,8 @@ library(stringdist, quietly = TRUE, warn.conflicts = FALSE) # String distance ca
 library(httr, quietly = TRUE, warn.conflicts = FALSE) # Header management for downloading data
 library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
 library(magick, quietly = TRUE, warn.conflicts = FALSE) # Working with svgs from color data
+library(rsvg, quietly = TRUE, warn.conflicts = FALSE) # Converting svg graphics
 library(dotenv, quietly = TRUE, warn.conflicts = FALSE) # Get env variables
-
-dotenv::load_dot_env()  # Loads variables from .env into the R environment
 
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/football_college.yaml")
@@ -264,10 +263,10 @@ get_formated_data <- function(verbose = TRUE) {
         dplyr::ungroup() %>%
         dplyr::filter(pred_prob >= 4.58e-05)
     # Remove features and mutate id columns for join
-    final_output <- final_output %>% 
-        dplyr::select(-c(pred_prob, name_jw, name_osa, location_in_name, nickname_in_name, name_length_diff, first_word_match, last_word_match)) %>% 
+    final_output <- final_output %>%
+        dplyr::select(-c(pred_prob, name_jw, name_osa, location_in_name, nickname_in_name, name_length_diff, first_word_match, last_word_match)) %>%
         dplyr::mutate(dplyr::across(c(espn_id, ncaa_id), as.character))
-    # Get new bindings for model generated output 
+    # Get new bindings for model generated output
     new_bindings <- final_output %>% dplyr::select(espn_id, ncaa_id) %>% dplyr::mutate(sport = "football")
     # Add newly generated bindings to model hardcoded bindings for later use
     matching_model$sport_bindings <- dplyr::bind_rows(matching_model$sport_bindings, new_bindings) %>%
@@ -340,8 +339,8 @@ get_formated_data <- function(verbose = TRUE) {
             offensive_coordinator = offensive_coordinator %>% gsub("\\[[a-z0-9]+\\]", "", .),
             defensive_coordinator = defensive_coordinator %>% gsub("\\[[a-z0-9]+\\]", "", .))
 
-    # Initialize bindings file if it doesn't exist for logo colors
-    color_bindings <- read.csv("https://github.com/cullenchampagne1/sportsR/releases/download/bindings/ncaa_logo_color_bindings.csv")
+    # Read bindings from repository
+    color_bindings <- read.csv("https://github.com/cullenchampagne1/sportsR/releases/download/misc/ncaa_logo_color_bindings.csv")
 
     #' Processes and svg logo and returns top 2 colors
     #'
@@ -356,10 +355,9 @@ get_formated_data <- function(verbose = TRUE) {
         # If not proceed to download svg and generate color codes
         colors <- tryCatch({
             # Download and convert SVG to raster
-            img <- magick::image_read_svg(svg_url) %>% magick::image_convert(format = "png")
-            # Get pixel data from downloaded image
-            png_data <- magick::image_write(img, tempfile(fileext = ".png"), format = "png")
-            img_array <- png::readPNG(png_data)
+            raw_svg <- httr::content(httr::GET(svg_url), as = "raw")
+            png_bytes <- rsvg::rsvg_png(raw_svg)
+            img_array <- png::readPNG(png_bytes)
             # Reshape to RGB matrix (excluding alpha if exists)
             if (dim(img_array)[3] == 4) rgb_matrix <- img_array[, , 1:3]
             else  rgb_matrix <- img_array
@@ -377,6 +375,7 @@ get_formated_data <- function(verbose = TRUE) {
             else if (nrow(color_counts) == 1) result <- as.character(color_counts$hex_colors[1])
             else result <- NA_character_
             # Return result if not failed
+            if (!is.na(result)) color_bindings <<- color_bindings %>% dplyr::add_row(url = svg_url, colors = result)
             result
         }, error = function(e) { NA_character_ })
         colors
