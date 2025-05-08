@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/cullenchampagne1/sportsr:latest
+      image: ghcr.io/cullenchampagne1/sportsr:master
 
     permissions:
       contents: write
