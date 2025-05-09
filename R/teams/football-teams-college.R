@@ -40,11 +40,7 @@ library(dotenv, quietly = TRUE, warn.conflicts = FALSE) # Get env variables
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/football_college.yaml")
 # File to hold formated data
-all_teams_file <- "football-teams-college.csv"
-
-args <- commandArgs(trailingOnly = TRUE)
-# If output directory save there, else save to data/processed
-out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processed/"
+all_teams_file <- "data/processed/football-teams-college.csv"
 
 #' College Football Teams
 #'
@@ -59,6 +55,7 @@ out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processe
 #' @source https://en.wikipedia.org/wiki/
 #'
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
+#' @param save Logical indicating weather to save data to data/processed folder
 #'
 #' @return A dataframe containing the following information for each football team
 #'  id [string] - A generated unique identifier for each team
@@ -83,7 +80,7 @@ out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processe
 #'  twitter [string] -Twitter handle of team starting with '@'
 #'  venue [string] - Current venue where team plays
 #'
-get_formated_data <- function(verbose = TRUE, save = out_dir) {
+get_formated_data <- function(verbose = TRUE, save = TRUE) {
     # Grab College Football data from ESPN
     college_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, force_refresh = TRUE, simplifyDataFrame = FALSE)
     if (verbose) cat(paste0("\n\033[32mDownloading ESPN Football Teams: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
@@ -469,8 +466,11 @@ get_formated_data <- function(verbose = TRUE, save = out_dir) {
 
     if (verbose) cat(paste0("\n\033[90m", nrow(unbounded_ncaa_data), " NCAA Teams and ", nrow(unbounded_espn_data), " ESPN Teams Could Not be Binded: /output/csv/unmatched_...\033[0m"))
     if (verbose) cat(paste0("\n\033[90mCollege Football Data Saved To: /", all_teams_file, "\033[0m\n"))
+    
     # Save generated csollege data
-    write.csv(all_college_data, paste0(save, all_teams_file), row.names = FALSE)
+    if (save) write.csv(all_college_data, all_teams_file, row.names = FALSE)
+    # Save rds file of data
+    if (save) saveRDS(all_college_data, sub("\\.csv$", ".rds", all_teams_file))
     # Return fornated data
     return(all_college_data)
 }

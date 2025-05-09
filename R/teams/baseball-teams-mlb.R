@@ -37,11 +37,7 @@ mlb_websites <- readRDS(url("https://github.com/cullenchampagne1/sportsR/release
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/baseball_mlb.yaml")
 # File to hold formated data
-all_teams_file <- "baseball-teams-mlb.csv"
-
-args <- commandArgs(trailingOnly = TRUE)
-# If output directory save there, else save to data/processed 
-out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processed/"
+all_teams_file <- "data/processed/baseball-teams-mlb.csv"
 
 #' MLB Teams
 #'
@@ -55,6 +51,7 @@ out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processe
 #' @source https://en.wikipedia.org/wiki/
 #'
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
+#' @param save Logical indicating weather to save data to data/processed folder
 #'
 #' @return A dataframe containing the following information for each NBA team
 #'  id [string] - A generated unique identifier for each team
@@ -74,7 +71,7 @@ out_dir <- if (length(args) >= 1 && nzchar(args[1])) args[1] else "data/processe
 #'  webiste [string] - Website url for team
 #'  venue [string] - Current venue where team plays
 #'
-get_formated_data <- function(verbose = TRUE, save = out_dir) {
+get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
     # Processes raw ESPN team JSON data into structured dataframe
     #
@@ -179,7 +176,9 @@ get_formated_data <- function(verbose = TRUE, save = out_dir) {
 
     if (verbose) cat(paste0("\n\033[90mMLB Baseball Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save any created name bindings to file
-    write.csv(all_mlb_teams, paste0(save, all_teams_file), row.names = FALSE)
+    if (save) write.csv(all_mlb_teams, all_teams_file, row.names = FALSE)
+    # Save rds file of data
+    if (save) saveRDS(all_college_data, sub("\\.csv$", ".rds", all_teams_file))
     # Return formated data
     return(all_mlb_teams)
 }
