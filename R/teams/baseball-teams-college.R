@@ -382,7 +382,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
         # Create url from ncaa_id
         url <- paste0("https://stats.ncaa.org/teams/", ncaa_id)
         # Download page content from url
-        page_content <- download_fromHTML(url, "data/raw", TRUE, headers)
+        page_content <- download_fromHTML(url, "data/raw", FALSE, headers)
         # Get coach from xpath
         coach_name <- page_content %>% html_element(xpath = config$ATTRIBUTES$NCAA_STAT$HEAD_COACH) %>% html_text(trim = TRUE)
     }
