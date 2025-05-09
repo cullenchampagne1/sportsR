@@ -25,7 +25,7 @@ done
 NOTES_FILE=$(mktemp)
 echo "This release provides structured CSV datasets containing detailed information about teams across multiple professional and collegiate sports leagues. The data has been meticulously collected from official sources and APIs, then processed into a clean, consistent format for easy use in analytics, applications, and research. For a detailed breakdown of data sources and table structures, please see the [Teams Documentation](/R/teams/readme.md)" > "$NOTES_FILE"
 echo "" >> "$NOTES_FILE"
-echo "`Update on  $(date -u "+%Y-%m-%d %H:%M UTC")`" >> "$NOTES_FILE"
+echo "\`Update on  $(date -u "+%Y-%m-%d %H:%M UTC")\`" >> "$NOTES_FILE"
 
 # Delete any existing teams release from repository
 if gh release view teams >/dev/null 2>&1; then
