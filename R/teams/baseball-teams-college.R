@@ -32,7 +32,6 @@ library(purrr, quietly = TRUE, warn.conflicts = FALSE)  # Map functions to value
 library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management of dataframes
 library(Matrix, quietly = TRUE, warn.conflicts = FALSE) # Used by fastlink
 library(dotenv, quietly = TRUE, warn.conflicts = FALSE) # Get env variables
-library(fastLink, quietly = TRUE, warn.conflicts = FALSE) # Weighted dataset matching for NCAA and ESPN
 library(stringdist, quietly = TRUE, warn.conflicts = FALSE) # Used by fastlink
 
 # Read configuration from configs directory
