@@ -1,7 +1,7 @@
 ARG CACHEBUST=1
 FROM rocker/r-ver:4.3.1
 
-# Install system dependencies needed by various R packages
+# Install system dependencies needed by stringi/stringr, magick, XML, etc.
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     libcurl4-openssl-dev \
@@ -12,15 +12,12 @@ RUN apt-get update && apt-get install -y \
     libyaml-dev \
   && rm -rf /var/lib/apt/lists/*
 
-RUN R -e "install.packages(
-    c(
-      'dotenv', 'dplyr', 'xgboost', 'httr', 'Matrix',
-      'purrr', 'rvest', 'stringdist', 'stringr', 'tidyr',
-      'yaml', 'magick', 'png', 'tibble', 'caret', 'tidyverse',
-      'digest', 'jsonlite', 'xml2', 'here', 'renv'
-    ),
-    repos = 'https://cloud.r-project.org',
-    dependencies = TRUE
+# Install R packages (including tidyverse and all its dependencies) in one line
+RUN R -e "install.packages( \
+    c('dotenv','dplyr','xgboost','httr','Matrix','purrr','rvest','stringdist',\
+'stringr','tidyr','yaml','magick','png','tibble','caret','tidyverse','digest',\
+'jsonlite','xml2','here','renv'), \
+    repos='https://cloud.r-project.org', dependencies=TRUE \
   )"
 
 # Install GitHub CLI
@@ -34,4 +31,4 @@ RUN apt-get update && apt-get install -y \
       https://cli.github.com/packages stable main" \
       > /etc/apt/sources.list.d/github-cli.list \
   && apt-get update && apt-get install -y gh \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* 
