@@ -429,7 +429,7 @@ get_formated_data <- function(verbose = TRUE, save = out_dir) {
     if (verbose) cat(paste0("\n\033[90mCollege Baseball Data Saved To: /", all_teams_file, "\033[0m\n"))
 
     # Save any created name bindings to file
-    if (save) write.csv(all_college_data, paste0(save, all_teams_file), row.names = FALSE)
+    write.csv(all_college_data, paste0(save, all_teams_file), row.names = FALSE)
     # Return formated data
     return(all_college_data)
 

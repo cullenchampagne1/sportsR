@@ -470,7 +470,7 @@ get_formated_data <- function(verbose = TRUE, save = out_dir) {
     if (verbose) cat(paste0("\n\033[90m", nrow(unbounded_ncaa_data), " NCAA Teams and ", nrow(unbounded_espn_data), " ESPN Teams Could Not be Binded: /output/csv/unmatched_...\033[0m"))
     if (verbose) cat(paste0("\n\033[90mCollege Football Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save generated csollege data
-    if (save) write.csv(all_college_data, paste0(save, all_teams_file), row.names = FALSE)
+    write.csv(all_college_data, paste0(save, all_teams_file), row.names = FALSE)
     # Return fornated data
     return(all_college_data)
 }

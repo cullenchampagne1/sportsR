@@ -210,7 +210,7 @@ get_formated_data <- function(verbose = TRUE, save = out_dir) {
 
     if (verbose) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save generated csollege data
-    if (save) write.csv(all_nfl_data, paste0(save, all_teams_file), row.names = FALSE)
+    write.csv(all_nfl_data, paste0(save, all_teams_file), row.names = FALSE)
     # Return fornated data
     return(all_nfl_data)
 }
