@@ -17,6 +17,7 @@ echo "→ Creating output directory: $OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
 
 echo "→ Executing R scripts in R/teams/"
+Rscrpt "install.packages(c('dotenv','dplyr','xgboost','httr','Matrix','purrr','rvest','stringdist','stringr','tidyr','yaml', 'magick','png','tibble','caret','tidyverse','digest','jsonlite','xml2','here','renv'), repos='https://cloud.r-project.org', dependencies=TRUE)"
 for script in R/teams/*.R; do
   echo "   • Running $script → $OUTPUT_DIR"
   Rscript --vanilla "$script" "$OUTPUT_DIR"
