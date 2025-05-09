@@ -1,0 +1,23 @@
+LINKS:
+  ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/teams?limit=200000"
+  TEAM_DETAILS:
+    - "https://en.wikipedia.org/wiki/Atlanta_Dream"
+    - "https://en.wikipedia.org/wiki/Chicago_Sky"
+    - "https://en.wikipedia.org/wiki/Connecticut_Sun"
+    - "https://en.wikipedia.org/wiki/Indiana_Fever"
+    - "https://en.wikipedia.org/wiki/New_York_Liberty"
+    - "https://en.wikipedia.org/wiki/Washington_Mystics"
+    - "https://en.wikipedia.org/wiki/Dallas_Wings"
+    - "https://en.wikipedia.org/wiki/Golden_State_Valkyries"
+    - "https://en.wikipedia.org/wiki/Las_Vegas_Aces"
+    - "https://en.wikipedia.org/wiki/Los_Angeles_Sparks"
+    - "https://en.wikipedia.org/wiki/Minnesota_Lynx"
+    - "https://en.wikipedia.org/wiki/Phoenix_Mercury"
+    - "https://en.wikipedia.org/wiki/Seattle_Storm"
+ATTRIBUTES:
+  TEAM_DETAILS:
+    NAME: "//th[@class='infobox-above fn org']/text()"
+    ARENA: "//th[@class='infobox-label'][contains(., 'Arena')]/following-sibling::td[1]"
+    COACH: "//th[@class='infobox-label'][contains(., 'Head coach')]/following-sibling::td[1]"
+    CONFERENCE: "//th[@class='infobox-label'][contains(., 'Conference')]/following-sibling::td[1]"
+    GENERAL_MANAGER: "//th[@class='infobox-label'][contains(., 'General manager')]/following-sibling::td[1]"

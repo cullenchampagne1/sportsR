@@ -115,6 +115,41 @@
 | https://site.api.espn.com/ |
 | https://en.wikipedia.org/wiki/ |
 ---
+## WNBA Teams
+
+![Missing Values](../../output/tables/wnba_missing_data.png)
+
+ Retrieves WNBA team data from ESPN's API and supplements it with additional information scraped from the wiki team pages. The combined data is processed into a structured dataframe and saved to a CSV file. 
+
+**Function:** `basketball-teams-wnba::get_formated_data()` 
+
+**Records:** `13 teams`
+
+### Returned Data Structure
+
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | string | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify team |
+| 3 | type | string | Always set to NBA for team type |
+| 4 | abv | string | Abreviation of team name (ex. DEN) |
+| 5 | full_name | string | Full name of team (ex. Denver Nuggets) |
+| 6 | short_name | string | Short name of team (ex. Nuggets) |
+| 7 | conference | string | Conference team is associated with (ex. Western) |
+| 8 | primary | string | Primary color of team uniforms in Hex format |
+| 9 | secondary | string | Secondary color of team uniforms in Hex format |
+| 10 | logo | string | Link to logo image from ESPN |
+| 11 | head_coach | string | Current head coach of team |
+| 12 | general_manager | string | Current general manager of team |
+| 13 | twitter | string | Twitter handle of team starting with '@' |
+| 14 | webiste | string | Website url for team |
+| 15 | venue | string | Current venue where team plays |
+
+| Sources |
+|--------|
+| https://site.api.espn.com/ |
+| https://en.wikipedia.org/wiki/ |
+---
 ## College Basketball Teams
 
 ![Missing Values](../../output/tables/college_basketball_missing_data.png)
@@ -230,4 +265,3 @@
 | https://site.api.espn.com/ |
 | https://www.ncaa.com/stats/basketball-men/ |
 | https://en.wikipedia.org/wiki/ |
-
