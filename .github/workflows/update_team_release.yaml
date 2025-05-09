@@ -27,6 +27,16 @@ jobs:
         run: |
           git config --global --add safe.directory "$PWD"
 
+      - name: Debug show installed R packages
+        run: |
+          Rscript --vanilla -e "
+            cat('Library paths:\\n', .libPaths(), '\n\n');
+            pkgs <- installed.packages()[,'Package'];
+            cat('Has tidyverse? ', 'tidyverse' %in% pkgs, '\n');
+            cat('--- full package list ---\n');
+            cat(paste(pkgs, collapse=', '), '\n')
+          "
+
       - name: Ensure data/raw exists
         run: mkdir -p data/raw
     
