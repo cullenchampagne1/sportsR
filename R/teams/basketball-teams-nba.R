@@ -179,7 +179,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     # Save any created name bindings to file
     if (save) write.csv(all_nba_teams, all_teams_file, row.names = FALSE)
     # Save rds file of data
-    if (save) saveRDS(all_college_data, sub("\\.csv$", ".rds", all_teams_file))
+    if (save) saveRDS(all_nba_teams, sub("\\.csv$", ".rds", all_teams_file))
     # Return formated data
     return(all_nba_teams)
 }

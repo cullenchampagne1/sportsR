@@ -209,7 +209,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     # Save generated csollege data
     if (save) write.csv(all_nfl_data, all_teams_file, row.names = FALSE)
     # Save rds file of data
-    if (save) saveRDS(all_college_data, sub("\\.csv$", ".rds", all_teams_file))
+    if (save) saveRDS(all_nfl_data, sub("\\.csv$", ".rds", all_teams_file))
     # Return fornated data
     return(all_nfl_data)
 }
