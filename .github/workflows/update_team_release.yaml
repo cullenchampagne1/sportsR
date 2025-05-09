@@ -51,5 +51,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           chmod +x .github/scripts/update_teams_release.sh
-          .github/scripts/update_teams_release.sh output
+          .github/scripts/update_teams_release.sh data/processed
       
