@@ -19,7 +19,7 @@ mkdir -p "$OUTPUT_DIR"
 echo "→ Executing R scripts in R/teams/"
 for script in R/teams/*.R; do
   echo "   • Running $script → $OUTPUT_DIR"
-  Rscript "$script" "$OUTPUT_DIR"
+  Rscript --vanilla "$script" "$OUTPUT_DIR"
 done
 
 NOTES_FILE=$(mktemp)
