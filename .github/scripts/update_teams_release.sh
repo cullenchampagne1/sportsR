@@ -38,7 +38,11 @@ fi
 assets=()
 while IFS= read -r -d $'\0' file; do
   assets+=("$file")
-done < <(find "$OUTPUT_DIR" -maxdepth 1 -type f -print0)
+done < <(
+  find "$OUTPUT_DIR" -type f \
+    -name '*-teams-*.csv' \
+    -print0
+)
 
 echo "→ Creating new 'teams' release"
 gh release create teams \
