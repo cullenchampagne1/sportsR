@@ -35,11 +35,16 @@ else
   echo "→ No existing 'teams' release to delete"
 fi
 
+assets=()
+while IFS= read -r -d $'\0' file; do
+  assets+=("$file")
+done < <(find "$OUTPUT_DIR" -maxdepth 1 -type f -print0)
+
 echo "→ Creating new 'teams' release"
 gh release create teams \
   --title "Teams" \
   --notes-file "$NOTES_FILE" \
-  "$OUTPUT_DIR"/*
+  "${assets[@]}"
 
 rm "$NOTES_FILE"
 echo "✅ Done."
