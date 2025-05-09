@@ -67,6 +67,6 @@ jobs:
           gh release create bindings \
             --title "Team Bindings" \
             --notes-file NEW_DESC.md \
-            output/*
+            output/*.*
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
