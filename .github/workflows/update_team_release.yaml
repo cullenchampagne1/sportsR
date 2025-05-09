@@ -27,15 +27,13 @@ jobs:
         run: |
           git config --global --add safe.directory "$PWD"
 
-      - name: Debug show installed R packages
+      - name: Install tidyverse in container
         run: |
-          Rscript --vanilla -e "
-            cat('Library paths:\\n', .libPaths(), '\n\n');
-            pkgs <- installed.packages()[,'Package'];
-            cat('Has tidyverse? ', 'tidyverse' %in% pkgs, '\n');
-            cat('--- full package list ---\n');
-            cat(paste(pkgs, collapse=', '), '\n')
-          "
+          Rscript --vanilla -e "install.packages(
+            'tidyverse',
+            repos='https://cloud.r-project.org',
+            dependencies=TRUE
+          )"
 
       - name: Ensure data/raw exists
         run: mkdir -p data/raw
