@@ -67,6 +67,13 @@ jobs:
           gh release create bindings \
             --title "Team Bindings" \
             --notes-file NEW_DESC.md \
-            output/*.*
+          
+          for file in output/*.csv; do
+            gh release upload bindings "$file" --clobber
+          done
+
+          for file in output/*.rds; do
+            gh release upload bindings "$file" --clobber
+          done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
