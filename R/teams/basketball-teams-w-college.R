@@ -295,7 +295,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
         # Set values based on Na counditions for NCAA teams
         dplyr::mutate(university = university %||% location) %>%
         # Create a unique id for each team
-        dplyr::mutate(id = encode_id(paste0("F", espn_id), abv)) %>%
+        dplyr::mutate(id = encode_id(paste0("WBA", espn_id), abv)) %>%
         # Select only relevant columns
         dplyr::select(id, espn_id, ncaa_id, type, slug, abv, full_name, short_name, university,
             division, conference, primary, secondary, logo, img_src, head_coach, school_url, website, twitter, venue)

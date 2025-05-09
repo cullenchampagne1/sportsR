@@ -291,11 +291,11 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
             secondary = alternateColor,
         ) %>%
         # Create a type column to identify sport and venue column for later
-        dplyr::mutate(type = "NCAAF", venue = NA_character_) %>%
+        dplyr::mutate(type = "NCAAB", venue = NA_character_) %>%
         # Set values based on Na counditions for NCAA teams
         dplyr::mutate(university = university %||% location) %>%
         # Create a unique id for each team
-        dplyr::mutate(id = encode_id(paste0("F", espn_id), abv)) %>%
+        dplyr::mutate(id = encode_id(paste0("BA", espn_id), abv)) %>%
         # Select only relevant columns
         dplyr::select(id, espn_id, ncaa_id, type, slug, abv, full_name, short_name, university,
             division, conference, primary, secondary, logo, img_src, school_url, website, twitter, venue)
