@@ -33,7 +33,7 @@ library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugratio
 # Hardcoded list of nba team twitter acounts because couldnt find online
 nba_twitter_accounts <- readRDS(url("https://github.com/cullenchampagne1/sportsR/releases/download/misc/nba-twitter-bindings.rds", open = "rb"))
 # Read configuration from configs directory
-config <- yaml::read_yaml("configs/basketball_nba.yaml")
+config <- yaml::read_yaml("configs/basketball-nba.yaml")
 # File to hold formated data
 all_teams_file <- "data/processed/basketball-teams-nba.csv"
 
@@ -185,4 +185,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-get_formated_data()
+invisible(get_formated_data())

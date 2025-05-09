@@ -31,7 +31,7 @@ library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management o
 library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
 
 # Read configuration from configs directory
-config <- yaml::read_yaml("configs/football_nfl.yaml")
+config <- yaml::read_yaml("configs/football-nfl.yaml")
 # File to hold formated data
 all_teams_file <- "data/processed/football-teams-nfl.csv"
 
@@ -215,4 +215,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-get_formated_data()
+invisible(get_formated_data())

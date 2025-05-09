@@ -39,7 +39,7 @@ library(rsvg, quietly = TRUE, warn.conflicts = FALSE) # Converting svg graphics
 library(dotenv, quietly = TRUE, warn.conflicts = FALSE) # Get env variables
 
 # Read configuration from configs directory
-config <- yaml::read_yaml("configs/basketball_college.yaml")
+config <- yaml::read_yaml("configs/basketball-college.yaml")
 # File to hold formated data
 all_teams_file <- "basketball-teams-college.csv"
 
@@ -451,4 +451,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
 
 # If file is being run stand-alone, run function
-get_formated_data()
+invisible(get_formated_data())

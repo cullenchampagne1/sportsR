@@ -35,7 +35,7 @@ mlb_twitter_acounts <- readRDS(url("https://github.com/cullenchampagne1/sportsR/
 # Hardcoded list of mbl team websites because couldnt find online
 mlb_websites <- readRDS(url("https://github.com/cullenchampagne1/sportsR/releases/download/misc/mlb-website-bindings.rds", open = "rb"))
 # Read configuration from configs directory
-config <- yaml::read_yaml("configs/baseball_mlb.yaml")
+config <- yaml::read_yaml("configs/baseball-mlb.yaml")
 # File to hold formated data
 all_teams_file <- "data/processed/baseball-teams-mlb.csv"
 
@@ -184,4 +184,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-get_formated_data()
+invisible(get_formated_data())

@@ -35,7 +35,7 @@ library(dotenv, quietly = TRUE, warn.conflicts = FALSE) # Get env variables
 library(stringdist, quietly = TRUE, warn.conflicts = FALSE) # Used by fastlink
 
 # Read configuration from configs directory
-config <- yaml::read_yaml("configs/baseball_college.yaml")
+config <- yaml::read_yaml("configs/baseball-college.yaml")
 # File to hold formated data
 all_teams_file <- "data/processed/baseball-teams-college.csv"
 
@@ -434,4 +434,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-get_formated_data()
+invisible(get_formated_data())
