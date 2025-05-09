@@ -1,0 +1,34 @@
+LINKS:
+  ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/basketball/womens-college-basketball/teams?limit=200000"
+  NCAA_TEAMS:
+    - "https://www.ncaa.com/stats/basketball-women/d1/current/team/111"
+    - "https://www.ncaa.com/stats/basketball-women/d1/current/team/111/p2"
+    - "https://www.ncaa.com/stats/basketball-women/d1/current/team/111/p3"
+    - "https://www.ncaa.com/stats/basketball-women/d1/current/team/111/p4"
+    - "https://www.ncaa.com/stats/basketball-women/d1/current/team/111/p5"
+    - "https://www.ncaa.com/stats/basketball-women/d1/current/team/111/p6"
+    - "https://www.ncaa.com/stats/basketball-women/d1/current/team/111/p7"
+    - "https://www.ncaa.com/stats/basketball-women/d1/current/team/111/p8"
+  NCAA_IDS:
+    - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=1.0&ranking_period=167.0&sport_code=WBB&stat_seq=111.0"
+ATTRIBUTES:
+  NCAA_TEAM_REF: "td.reclass a.skipMask[href^='/teams/']"
+  COACHES: "//table[1]"
+  ARENAS: "//table[2]"
+  NCAA_TEAMS:
+    ROWS: "tr"
+    COLUMNS: "td"
+    COLUMN_NUMBER: 2
+    IMG_SRC: ".//img/@src"
+    SCHOOL_URL: ".//a[@class='school']/@href"
+    SCHOOL_NAME: ".//a[@class='school']"
+  NCAA_DETAILED:
+    CONFERENCE: "//dt[text()='Conference']/following-sibling::dd[1]"
+    NICKNAME: "//dt[text()='Nickname']/following-sibling::dd[1]"
+    COLORS: "//dt[text()='Colors']/following-sibling::dd[1]"
+    SCHOOL: "h1.school-name"
+    WEBSITE: "span.icon-web + .info"
+    TWITTER: "span.icon-twitter + .info"
+  NCAA_STAT:
+    HEAD_COACH: "//div[contains(@class,'card-header') and contains(text(), 'Coach')]/following-sibling::div//a"
+    VENUE: "//div[contains(@class, 'card-header') and contains(text(), 'Arena')]/following-sibling::div//dt[contains(text(), 'Name:')]/following-sibling::dd"
