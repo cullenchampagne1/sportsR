@@ -40,8 +40,7 @@ jobs:
                 row.names = FALSE
               )
               saveRDS(df,
-                file.path("output", paste0(s, "_ncaa_espn_bindings.rds")),
-                row.names = FALSE
+                file.path("output", paste0(s, "_ncaa_espn_bindings.rds"))
               )
             }
           '
