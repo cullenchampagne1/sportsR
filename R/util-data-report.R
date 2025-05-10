@@ -42,14 +42,14 @@ analyze_missing_data <- function(name, df) {
         theme(
             plot.title = element_text(face = "bold", size = 11, margin = margin(b = 3)),
             plot.margin = unit(c(2, 2, 2, 2), "mm"),
-            panel.background = element_rect(fill = "#f8f8f8", color = NA),  # Off-white background
+            panel.background = element_rect(fill = "#f8f8f8", color = NA),
             plot.background = element_rect(fill = "#f8f8f8", color = NA),
             panel.grid.major.x = element_blank(),
             panel.grid.minor.y = element_blank(),
             axis.text.x = element_text(color = "black"),
             axis.text.y = element_text(color = "black")
         ) +
-        scale_y_continuous(expand = expansion(mult = c(0, 0.1)))  # Remove extra space above bars
+        scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
 
     file_slug <- str_to_lower(str_replace_all(name, "\\s+", "_"))
     output_dir <- "output/tables/"
@@ -62,5 +62,40 @@ analyze_missing_data <- function(name, df) {
         height = 2.5,
         dpi = 300,
         bg = "#f8f8f8"  # Off-white background
+    )
+}
+
+plot_coordinates_map <- function(name, df) {
+    map_data <- df %>% mutate(
+            latitude = as.numeric(str_remove_all(latitude, "[^0-9.]+")) * ifelse(str_detect(latitude, "S"), -1, 1),
+            longitude = as.numeric(str_remove_all(longitude, "[^0-9.]+")) * ifelse(str_detect(longitude, "W"), -1, 1))
+    
+    coord_plot <- ggplot(map_data, aes(x = longitude, y = latitude, label = full_name)) +
+        borders("state", colour = "gray80", fill = "gray95") +
+        geom_point(color = "#333333", size = 2) +
+        geom_text(vjust = -1, size = 2.5, color = "black") +
+        labs(title = paste("Map Coordinates:", name), x = "Longitude", y = "Latitude") +
+        theme_minimal(base_size = 10) +
+        theme(
+            plot.title = element_text(face = "bold", size = 11, margin = margin(b = 3)),
+            plot.margin = unit(c(2, 2, 2, 2), "mm"),
+            panel.background = element_rect(fill = "#f8f8f8", color = NA),
+            plot.background = element_rect(fill = "#f8f8f8", color = NA),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            axis.text = element_text(color = "black")
+        )
+
+    file_slug <- str_to_lower(str_replace_all(name, "\\s+", "_"))
+    output_dir <- "output/tables/"
+    if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+    
+    ggsave(
+        paste0(output_dir, file_slug, "_map_plot.png"),
+        plot = coord_plot,
+        width = 8,
+        height = 5,
+        dpi = 300,
+        bg = "#f8f8f8"
     )
 }

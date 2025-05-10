@@ -40,7 +40,7 @@ all_venues_file <- "data/processed/baseball-venues-mlb.csv"
 #' Retrieves MLB venues data wiki pages. The combined data is processed
 #' into a structured dataframe and saved to a CSV file.
 #'
-#' @values ../../output/tables/mlb_venues_missing_data.png
+#' @values ../../output/tables/mlb_venues_map_plot.png
 #'
 #' @source https://en.wikipedia.org/wiki/
 #'
@@ -55,17 +55,19 @@ all_venues_file <- "data/processed/baseball-venues-mlb.csv"
 #'  longitude [string] - Longitude in decimal degrees (e.g., 82.50667°W)
 #'  capacity [string] - Current official seating capacity
 #'  surface [string] - Standardized playing surface type
+#'  roof [string] - Roof type of the field
 #'  field_size_left [string] - Left field distance in feet
 #'  field_size_left_center [string] - Left-center field distance in feet
 #'  field_size_center [string] - Center field distance in feet
 #'  field_size_right_center [string] - Right-center field distance in feet
 #'  field_size_right [string] - Right field distance in feet
-#' 
+#'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
+    
     # Init blank data frame for team details
     mlb_venue_details <- data.frame()
     # Loop through team detail webpages and select data
-    if (verbose) cat(paste0("\n\033[32mDownloading MLB Venue Information: https://en.wikipedia.org/wiki/...\n\033[0m"))
+    if (verbose) cat(paste0("\n\033[32mDownloading MLB Venue Information: https://en.wikipedia.org/wiki/...\033[0m"))
     for (url in config$LINKS$VENUES) {
         # Download page content from url
         page_content <- download_fromHTML(url)
@@ -140,11 +142,29 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
         ))
     }
 
+    page_content <- download_fromHTML(config$LINKS$VENUE_ROOF)
+    if (verbose) cat(paste0("\n\033[32mDownloading MLB Venue Roofs: ", config$LINKS$VENUE_ROOF, "\033[0m\n"))
+    tables <- page_content %>% html_elements("table")
+    venue_roofs <- tables[[1]] %>% rvest::html_table(fill = TRUE) %>% dplyr::select(Name, "Roof type") %>% dplyr::rename(full_name = Name, roof = "Roof type")
+    venue_roofs <- venue_roofs %>% dplyr::mutate(full_name = gsub("‡", "", full_name))
+    mlb_venue_details <- mlb_venue_details %>% dplyr::left_join(venue_roofs, by = "full_name") %>% relocate(roof, .after = surface)
+
+    # Manually adjust field sizes for Sutter Health Park because it is missing data points
+    mlb_venue_details <- mlb_venue_details %>%
+      dplyr::mutate(
+        field_size_left = ifelse(full_name == "Sutter Health Park", "330", field_size_left),
+        field_size_left_center = ifelse(full_name == "Sutter Health Park", "NA", field_size_left_center),
+        field_size_center = ifelse(full_name == "Sutter Health Park", "403", field_size_center),
+        field_size_right_center = ifelse(full_name == "Sutter Health Park", "NA", field_size_right_center),
+        field_size_right = ifelse(full_name == "Sutter Health Park", "325", field_size_right)
+      )
+
     # Create a unique stadium id from full name
     mlb_venue_details <- mlb_venue_details %>% dplyr::mutate(id = encode_id(paste0("B", full_name), full_name)) %>% select(id, dplyr::everything())
 
     # Analyze missing data
     analyze_missing_data("MLB Venues", mlb_venue_details)
+    plot_coordinates_map("MLB Venues", mlb_venue_details)
     process_markdown_file("R/venues/baseball-venues-mlb.R", "R/venues/readme.md", nrow(mlb_venue_details))
 
     if (verbose) cat(paste0("\n\033[90mMLB Baseball Data Saved To: /", all_venues_file, "\033[0m\n"))

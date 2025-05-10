@@ -1,7 +1,7 @@
 
 ## MLB Venues
 
-![Missing Values](../../output/tables/mlb_venues_missing_data.png)
+![Missing Values](../../output/tables/mlb_venues_map_plot.png)
 
  Retrieves MLB venues data wiki pages. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
@@ -20,11 +20,12 @@
 | 5 | longitude | string | Longitude in decimal degrees (e.g., 82.50667°W) |
 | 6 | capacity | string | Current official seating capacity |
 | 7 | surface | string | Standardized playing surface type |
-| 8 | field_size_left | string | Left field distance in feet |
-| 9 | field_size_left_center | string | Left-center field distance in feet |
-| 10 | field_size_center | string | Center field distance in feet |
-| 11 | field_size_right_center | string | Right-center field distance in feet |
-| 12 | field_size_right | string | Right field distance in feet |
+| 8 | roof | string | Roof type of the field |
+| 9 | field_size_left | string | Left field distance in feet |
+| 10 | field_size_left_center | string | Left-center field distance in feet |
+| 11 | field_size_center | string | Center field distance in feet |
+| 12 | field_size_right_center | string | Right-center field distance in feet |
+| 13 | field_size_right | string | Right field distance in feet |
 
 | Sources |
 |--------|

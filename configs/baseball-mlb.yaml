@@ -1,5 +1,6 @@
 LINKS:
   ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/teams?limit=200000"
+  VENUE_ROOF: "https://en.wikipedia.org/wiki/List_of_current_Major_League_Baseball_stadiums"
   TEAM_DETAILS:
     - "https://en.wikipedia.org/wiki/Arizona_Diamondbacks"
     - "https://en.wikipedia.org/wiki/Athletics_(baseball)"
