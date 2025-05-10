@@ -70,10 +70,9 @@ plot_coordinates_map <- function(name, df) {
             latitude = as.numeric(str_remove_all(latitude, "[^0-9.]+")) * ifelse(str_detect(latitude, "S"), -1, 1),
             longitude = as.numeric(str_remove_all(longitude, "[^0-9.]+")) * ifelse(str_detect(longitude, "W"), -1, 1))
     
-    coord_plot <- ggplot(map_data, aes(x = longitude, y = latitude, label = full_name)) +
+    coord_plot <- ggplot(map_data, aes(x = longitude, y = latitude)) +
         borders("state", colour = "gray80", fill = "gray95") +
         geom_point(color = "#333333", size = 2) +
-        geom_text(vjust = -1, size = 2.5, color = "black") +
         labs(title = paste("Map Coordinates:", name), x = "Longitude", y = "Latitude") +
         theme_minimal(base_size = 10) +
         theme(
