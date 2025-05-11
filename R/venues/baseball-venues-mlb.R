@@ -69,17 +69,19 @@ all_venues_file <- "data/processed/baseball-venues-mlb.csv"
 #'  field_size_right [string] - Right field distance in feet
 #'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
+
+    # Helper function to handle NA values in data
+    `%||%` <- function(x, y) if (length(x) > 0) x else y
     
     # Init blank data frame for team details
     mlb_venue_details <- data.frame()
     # Loop through team detail webpages and select data
-    if (verbose) cat(paste0("\n\033[32mDownloading MLB Venue Information: https://en.wikipedia.org/wiki/...\033[0m"))
     for (url in config$LINKS$VENUES) {
         # Download page content from url
         page_content <- download_fromHTML(url)
         # Get name from xpath
         name <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$NAME) %>% rvest::html_text(trim = TRUE)
-        
+        if (verbose) cat(paste0("\n\033[32mDownloading ", name, " Information: ", url, "\033[0m"))
         # Extract latitude and longitude in decimal format
         latlon_decimal <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$LATLON_DECIMAL) %>% rvest::html_text(trim = TRUE)
         split_decimal <- strsplit(latlon_decimal, " ")[[1]]
@@ -175,7 +177,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
     # Download mlb venue last to get opened data and roof type
     page_content <- download_fromHTML(config$LINKS$VENUE_ROOF)
-    if (verbose) cat(paste0("\n\033[32mDownloading MLB Venue Roofs: ", config$LINKS$VENUE_ROOF, "\033[0m\n"))
+    if (verbose) cat(paste0("\n\033[32mDownloading Addional MLB Venue Information: ", config$LINKS$VENUE_ROOF, "\033[0m\n"))
     # Extract the first table on page
     tables <- page_content %>% rvest::html_elements("table")
     venue_roofs <- tables[[1]] %>%

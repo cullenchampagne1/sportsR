@@ -62,17 +62,19 @@ all_venues_file <- "data/processed/basketball-venues-wnba.csv"
 #'  website [string] - Official venue website URL
 #'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
+
+    # Helper function to handle NA values in data
+    `%||%` <- function(x, y) if (length(x) > 0) x else y
     
     # Init blank data frame for team details
     wnba_venue_details <- data.frame()
     # Loop through team detail webpages and select data
-    if (verbose) cat(paste0("\n\033[32mDownloading WNBA Venue Information: https://en.wikipedia.org/wiki/...\n\033[0m"))
     for (url in config$LINKS$VENUES) {
         # Download page content from url
         page_content <- download_fromHTML(url)
         # Get name from xpath
         name <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$NAME) %>% rvest::html_text(trim = TRUE)
-
+        if (verbose) cat(paste0("\n\033[32mDownloading ", name, " Information: ", url, "\033[0m"))
         # Extract latitude and longitude in decimal format
         latlon_decimal <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$LATLON_DECIMAL) %>% rvest::html_text(trim = TRUE)
         split_decimal <- strsplit(latlon_decimal, " ")[[1]]
@@ -132,7 +134,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     plot_coordinates_map("WNBA Venues", wnba_venue_details)
     process_markdown_file("R/venues/basketball-venues-wnba.R", "R/venues/readme.md", nrow(wnba_venue_details), "venues")
 
-    if (verbose) cat(paste0("\n\033[90mNBA Basketball Data Saved To: /", all_venues_file, "\033[0m\n"))
+    if (verbose) cat(paste0("\n\n\033[90mWNBA Basketball Data Saved To: /", all_venues_file, "\033[0m\n"))
     # Save any created name bindings to file
     if (save) write.csv(wnba_venue_details, all_venues_file, row.names = FALSE)
     # Save rds file of data

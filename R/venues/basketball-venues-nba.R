@@ -62,17 +62,19 @@ all_venues_file <- "data/processed/basketball-venues-nba.csv"
 #'  website [string] - Official venue website URL
 #'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
+
+    # Helper function to handle NA values in data
+    `%||%` <- function(x, y) if (length(x) > 0) x else y
     
     # Init blank data frame for team details
     nba_venue_details <- data.frame()
     # Loop through team detail webpages and select data
-    if (verbose) cat(paste0("\n\033[32mDownloading NBA Venue Information: https://en.wikipedia.org/wiki/...\033[0m"))
     for (url in config$LINKS$VENUES) {
         # Download page content from url
         page_content <- download_fromHTML(url)
         # Get name from xpath
         name <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$NAME) %>% rvest::html_text(trim = TRUE)
-
+        if (verbose) cat(paste0("\n\033[32mDownloading ", name, " Information: ", url, "\033[0m"))
         # Extract latitude and longitude in decimal format
         latlon_decimal <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$LATLON_DECIMAL) %>% rvest::html_text(trim = TRUE)
         split_decimal <- strsplit(latlon_decimal, " ")[[1]]
@@ -126,7 +128,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
     # Download mlb venue list to get opening years
     page_content <- download_fromHTML(config$LINKS$OPENED)
-    if (verbose) cat(paste0("\n\033[32mDownloading NBA Venue Open Years: ", config$LINKS$OPENED, "\033[0m\n"))
+    if (verbose) cat(paste0("\n\033[32mDownloading Addional NBA Venue Information: ", config$LINKS$OPENED, "\033[0m\n"))
     # Get first table on webpage
     tables <- page_content %>% rvest::html_elements("table")
     venue_opened <- tables[[1]] %>%
