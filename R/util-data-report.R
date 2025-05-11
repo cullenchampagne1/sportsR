@@ -65,12 +65,8 @@ analyze_missing_data <- function(name, df) {
     )
 }
 
-plot_coordinates_map <- function(name, df) {
-    map_data <- df %>% mutate(
-            latitude = as.numeric(str_remove_all(latitude, "[^0-9.]+")) * ifelse(str_detect(latitude, "S"), -1, 1),
-            longitude = as.numeric(str_remove_all(longitude, "[^0-9.]+")) * ifelse(str_detect(longitude, "W"), -1, 1))
-    
-    coord_plot <- ggplot(map_data, aes(x = longitude, y = latitude)) +
+plot_coordinates_map <- function(name, df) { 
+    coord_plot <- ggplot(df, aes(x = longitude, y = latitude)) +
         borders("state", colour = "gray80", fill = "gray95") +
         geom_point(color = "#333333", size = 2) +
         labs(title = paste("Map Coordinates:", name), x = "Longitude", y = "Latitude") +
