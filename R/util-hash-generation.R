@@ -21,6 +21,10 @@ requireNamespace("here", quietly = TRUE)
 
 library(stringr)
 
+`%||%` <- function(a, b) {
+  if (!is.null(a)) a else b
+}
+
 # New enviroment to hold hisrory of generated ids
 .id_history <- new.env(parent = emptyenv())
 # Holds all generated ids and there input string

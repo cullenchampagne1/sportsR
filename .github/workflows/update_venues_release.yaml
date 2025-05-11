@@ -1,4 +1,4 @@
-name: Update Teams Release
+name: Update Venues Release
 
 on:
   push:
