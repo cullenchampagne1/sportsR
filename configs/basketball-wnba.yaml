@@ -14,6 +14,20 @@ LINKS:
     - "https://en.wikipedia.org/wiki/Minnesota_Lynx"
     - "https://en.wikipedia.org/wiki/Phoenix_Mercury"
     - "https://en.wikipedia.org/wiki/Seattle_Storm"
+  VENUES:
+    - "https://en.wikipedia.org/wiki/Gateway_Center_Arena"
+    - "https://en.wikipedia.org/wiki/Wintrust_Arena"
+    - "https://en.wikipedia.org/wiki/Mohegan_Sun_Arena"
+    - "https://en.wikipedia.org/wiki/Gainbridge_Fieldhouse"
+    - "https://en.wikipedia.org/wiki/Barclays_Center"
+    - "https://en.wikipedia.org/wiki/CareFirst_Arena"
+    - "https://en.wikipedia.org/wiki/College_Park_Center"
+    - "https://en.wikipedia.org/wiki/Chase_Center"
+    - "https://en.wikipedia.org/wiki/Michelob_Ultra_Arena"
+    - "https://en.wikipedia.org/wiki/Crypto.com_Arena"
+    - "https://en.wikipedia.org/wiki/Target_Center"
+    - "https://en.wikipedia.org/wiki/PHX_Arena"
+    - "https://en.wikipedia.org/wiki/Climate_Pledge_Arena"
 ATTRIBUTES:
   TEAM_DETAILS:
     NAME: "//th[@class='infobox-above fn org']/text()"
@@ -21,3 +35,10 @@ ATTRIBUTES:
     COACH: "//th[@class='infobox-label'][contains(., 'Head coach')]/following-sibling::td[1]"
     CONFERENCE: "//th[@class='infobox-label'][contains(., 'Conference')]/following-sibling::td[1]"
     GENERAL_MANAGER: "//th[@class='infobox-label'][contains(., 'General manager')]/following-sibling::td[1]"
+  VENUES:
+    NAME: "//table[contains(@class,'infobox')]//caption"
+    LOCATION: "//tr[th[normalize-space(.)='Location']]/td/a[1]"
+    CAPACITY: "//th[@class='infobox-label'][contains(., 'Capacity')]/following-sibling::td[1]"
+    SURFACE: "//th[@class='infobox-label'][contains(., 'Surface')]/following-sibling::td[1]"
+    LATLON_DECIMAL: "//span[contains(@class, 'geo-dec')]/text()"
+    WEBSITE: "//tr[th[contains(., 'Website')]]/following-sibling::tr[1]/td//a/@href"

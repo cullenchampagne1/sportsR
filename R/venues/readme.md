@@ -1,4 +1,3 @@
-
 ## MLB Venues
 
 ![Missing Values](../../output/figures/mlb_venues_map_plot.png)
@@ -36,7 +35,7 @@
 | Sources |
 |--------|
 | https://en.wikipedia.org/wiki/ |
-
+---
 ## NFL Venues
 
 ![Missing Values](../../output/figures/nfl_venues_map_plot.png)
@@ -69,7 +68,7 @@
 | Sources |
 |--------|
 | https://en.wikipedia.org/wiki/ |
-
+---
 ## NBA Venues
 
 ![Missing Values](../../output/figures/nba_venues_map_plot.png)
@@ -100,4 +99,34 @@
 | Sources |
 |--------|
 | https://en.wikipedia.org/wiki/ |
+---
+## WNBA Venues
 
+![Missing Values](../../output/figures/wnba_venues_map_plot.png)
+
+ Retrieves WNBA venues data from Wikipedia pages. The combined data is processed into a structured dataframe and saved to a CSV and RDS file. 
+
+**Function:** `basketball-venues-wnba::get_formated_data()` 
+
+**Records:** `13 venues`
+
+### Returned Data Structure
+
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | string | A generated unique identifier for each venue |
+| 2 | full_name | string | Full name of the venue |
+| 3 | street_address | string | Street address of the venue |
+| 4 | city | string | City where the venue is located |
+| 5 | state | string | State where the venue is located |
+| 6 | zip | string | Postal code of the venue |
+| 7 | latitude | string | Latitude in decimal degrees (e.g., 27.98028) |
+| 8 | longitude | string | Longitude in decimal degrees (e.g., -82.50667) |
+| 9 | elevation | numeric | Elevation in meters above sea level |
+| 10 | capacity | string | Current official seating capacity |
+| 11 | opened | string | Year the venue was opened |
+| 12 | website | string | Official venue website URL |
+
+| Sources |
+|--------|
+| https://en.wikipedia.org/wiki/ |

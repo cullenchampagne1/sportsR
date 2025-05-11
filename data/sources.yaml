@@ -2833,3 +2833,24 @@ sources:
   - https://nominatim.openstreetmap.org/reverse?lat=39.90111&lon=-75.17194&format=json
   - https://api.open-elevation.com/api/v1/lookup?locations=39.90111,-75.17194
   - https://en.wikipedia.org/wiki/List_of_NBA_arenas
+  - https://en.wikipedia.org/wiki/Gateway_Center_Arena
+  - https://nominatim.openstreetmap.org/reverse?lat=33.6468&lon=-84.459616&format=json
+  - https://api.open-elevation.com/api/v1/lookup?locations=33.6468,-84.459616
+  - https://en.wikipedia.org/wiki/Wintrust_Arena
+  - https://nominatim.openstreetmap.org/reverse?lat=41.85361&lon=-87.62139&format=json
+  - https://api.open-elevation.com/api/v1/lookup?locations=41.85361,-87.62139
+  - https://en.wikipedia.org/wiki/Mohegan_Sun_Arena
+  - https://nominatim.openstreetmap.org/reverse?lat=41.49111&lon=-72.08972&format=json
+  - https://api.open-elevation.com/api/v1/lookup?locations=41.49111,-72.08972
+  - https://en.wikipedia.org/wiki/CareFirst_Arena
+  - https://nominatim.openstreetmap.org/reverse?lat=38.846972&lon=-76.991444&format=json
+  - https://api.open-elevation.com/api/v1/lookup?locations=38.846972,-76.991444
+  - https://en.wikipedia.org/wiki/College_Park_Center
+  - https://nominatim.openstreetmap.org/reverse?lat=32.730586&lon=-97.107972&format=json
+  - https://api.open-elevation.com/api/v1/lookup?locations=32.730586,-97.107972
+  - https://en.wikipedia.org/wiki/Michelob_Ultra_Arena
+  - https://nominatim.openstreetmap.org/reverse?lat=36.0906778&lon=-115.1789806&format=json
+  - https://api.open-elevation.com/api/v1/lookup?locations=36.0906778,-115.1789806
+  - https://en.wikipedia.org/wiki/Climate_Pledge_Arena
+  - https://nominatim.openstreetmap.org/reverse?lat=47.622&lon=-122.354&format=json
+  - https://api.open-elevation.com/api/v1/lookup?locations=47.622,-122.354
