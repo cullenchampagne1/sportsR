@@ -275,6 +275,9 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     unbounded_ncaa_data <- college_ncaa_teams %>% dplyr::filter(!ncaa_id %in% all_college_data$ncaa_id)
     unbounded_espn_data <- college_espn_teams %>% dplyr::filter(!espn_id %in% all_college_data$espn_id)
 
+    if (nrow(unbounded_espn_data) > 0) write.csv(unbounded_espn_data, "output/csv/unbounded-espn-baseball.csv", row.names = FALSE)
+    if (nrow(unbounded_ncaa_data) > 0) write.csv(unbounded_ncaa_data, "output/csv/unbounded-ncaa-baseball.csv", row.names = FALSE)
+
     # Reformat combined data into standard format and only select relevant columns
     all_college_data <- all_college_data %>%
         # Rename columns to standardize
