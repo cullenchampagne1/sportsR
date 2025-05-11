@@ -24,6 +24,14 @@ else
   echo "→ No existing 'venues' release to delete"
 fi
 
+if git rev-parse "venues" >/dev/null 2>&1; then
+  echo "→ Deleting existing 'venues' tag"
+  git tag -d venues
+  git push --delete origin venues
+else
+  echo "→ No existing 'venues' tag to delete"
+fi
+
 assets=()
 while IFS= read -r -d $'\0' file; do
   assets+=("$file")

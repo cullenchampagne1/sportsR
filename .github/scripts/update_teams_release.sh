@@ -24,6 +24,14 @@ else
   echo "→ No existing 'teams' release to delete"
 fi
 
+if git rev-parse "teams" >/dev/null 2>&1; then
+  echo "→ Deleting existing 'teams' tag"
+  git tag -d teams
+  git push --delete origin teams
+else
+  echo "→ No existing 'teams' tag to delete"
+fi
+
 assets=()
 while IFS= read -r -d $'\0' file; do
   assets+=("$file")
