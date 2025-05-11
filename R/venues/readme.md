@@ -7,7 +7,7 @@
 
 **Function:** `baseball-venues-mlb::get_formated_data()` 
 
-**Records:** `30 teams`
+**Records:** `30 venues`
 
 ### Returned Data Structure
 
@@ -45,7 +45,7 @@
 
 **Function:** `football-venues-nfl::get_formated_data()` 
 
-**Records:** `30 teams`
+**Records:** `30 venues`
 
 ### Returned Data Structure
 
@@ -78,7 +78,7 @@
 
 **Function:** `basketball-venues-nba::get_formated_data()` 
 
-**Records:** `30 teams`
+**Records:** `30 venues`
 
 ### Returned Data Structure
 

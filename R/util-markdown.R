@@ -26,10 +26,10 @@
 #' @param script_file_path A string representing the file path of the R script to extract comments from.
 #' @param md_file_path A string representing the file path of the Markdown file to update.
 #' @param records A numeric value representing the number of records to include in the Markdown block (e.g., the number of teams).
-#' 
+#'
 #' @return None. The function updates the given Markdown file in-place.
-#' 
-process_markdown_file <- function(script_file_path, md_file_path, records) {
+#'
+process_markdown_file <- function(script_file_path, md_file_path, records, label = "teams") {
     function_name <- paste0(tools::file_path_sans_ext(basename(script_file_path)), "::get_formated_data()")
     extract_comment_block <- function(file_path, fun_name) {
         lines <- readLines(file_path)
@@ -51,7 +51,7 @@ process_markdown_file <- function(script_file_path, md_file_path, records) {
     title <- lines[1]
     desc_end <- which(grepl("^@values", lines))
     if (length(desc_end) == 0) desc_end <- length(lines) 
-    else desc_end <- desc_end[1] - 1  
+    else desc_end <- desc_end[1] - 1 
     desc <- paste(lines[2:desc_end], collapse = " ")
     values <- sub("^@values ", "", lines[grepl("^@values", lines)])
     sources <- sub("^@source ", "", lines[grepl("^@source", lines)])
@@ -72,7 +72,7 @@ process_markdown_file <- function(script_file_path, md_file_path, records) {
     block <- paste(sprintf("## %s\n\n", title),
                     sprintf("![Missing Values](%s)\n\n", values[1]),
                     sprintf("%s\n\n", desc),
-                    sprintf("**Function:** `%s` \n\n**Records:** `%s teams`\n\n### Returned Data Structure\n\n", function_name, records),
+                    sprintf("**Function:** `%s` \n\n**Records:** `%s %s`\n\n### Returned Data Structure\n\n", function_name, records, label),
                     "| # | Column | Type | Description |\n|----|--------|------|-------------|\n",
                     paste(sapply(1:nrow(df), function(i) {
                         sprintf("| %d | %s | %s | %s |", 

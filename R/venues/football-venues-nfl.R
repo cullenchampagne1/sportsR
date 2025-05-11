@@ -166,7 +166,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     # Analyze missing data and process markdown file
     analyze_missing_data("NFL Venues", nfl_venue_details)
     plot_coordinates_map("NFL Venues", nfl_venue_details)
-    process_markdown_file("R/venues/football-venues-nfl.R", "R/venues/readme.md", nrow(nfl_venue_details))
+    process_markdown_file("R/venues/football-venues-nfl.R", "R/venues/readme.md", nrow(nfl_venue_details), "venues")
 
     if (verbose) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_venues_file, "\033[0m\n"))
     # Save any created name bindings to file
