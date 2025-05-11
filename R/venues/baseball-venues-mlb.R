@@ -40,7 +40,7 @@ all_venues_file <- "data/processed/baseball-venues-mlb.csv"
 #' Retrieves MLB venues data wiki pages. The combined data is processed
 #' into a structured dataframe and saved to a CSV file.
 #'
-#' @values ../../output/tables/mlb_venues_map_plot.png
+#' @values ../../output/figures/mlb_venues_map_plot.png
 #'
 #' @source https://en.wikipedia.org/wiki/
 #'

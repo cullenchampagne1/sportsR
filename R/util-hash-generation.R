@@ -18,12 +18,9 @@
 
 requireNamespace("digest", quietly = TRUE)
 requireNamespace("here", quietly = TRUE)
+library(stringr, quietly = TRUE, warn.conflicts = FALSE) # String Manipulation
 
-library(stringr)
-
-`%||%` <- function(a, b) {
-  if (!is.null(a)) a else b
-}
+`%||%` <- function(a, b) { if (!is.null(a)) a else b }
 
 # New enviroment to hold hisrory of generated ids
 .id_history <- new.env(parent = emptyenv())
@@ -40,10 +37,10 @@ generated_report_file <- file.path(here::here(), "output/csv", "generated_ids_al
 
 #' Takes in a input string and prefix string and generates a uniue ID for use in
 #' a relational databse, all generated ids are saved, see generate_id_report()
-#' 
+#'
 #' @param input_string A string to use for hash
 #' @param prefix_string A string to use for begining prefix
-#' 
+#'
 #' @returns A string representing both values 
 encode_id <- function(input_string, prefix_string) {
     # Generate 5 digit uniue hash from input string

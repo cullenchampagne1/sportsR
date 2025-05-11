@@ -82,7 +82,7 @@ plot_coordinates_map <- function(name, df) {
         )
 
     file_slug <- str_to_lower(str_replace_all(name, "\\s+", "_"))
-    output_dir <- "output/tables/"
+    output_dir <- "output/figures/"
     if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
     
     ggsave(

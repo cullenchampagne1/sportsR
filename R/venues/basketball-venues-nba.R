@@ -40,7 +40,7 @@ all_venues_file <- "data/processed/basketball-venues-nba.csv"
 #' Retrieves NBA venues data from Wikipedia pages. The combined data is processed
 #' into a structured dataframe and saved to a CSV and RDS file.
 #'
-#' @values ../../output/tables/nba_venues_map_plot.png
+#' @values ../../output/figures/nba_venues_map_plot.png
 #'
 #' @source https://en.wikipedia.org/wiki/
 #'
