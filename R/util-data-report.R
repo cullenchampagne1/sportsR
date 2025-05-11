@@ -21,6 +21,17 @@ library(tidyr, quietly = TRUE, warn.conflicts = FALSE)
 library(ggplot2, quietly = TRUE, warn.conflicts = FALSE)
 library(stringr, quietly = TRUE, warn.conflicts = FALSE)
 
+
+#' Analyze Missing Data in a Data Frame
+#'
+#' Generates a bar chart showing the number of missing values per column in the provided data frame.
+#' The plot is saved as a PNG file in the 'output/tables/' directory.
+#'
+#' @param name A character string used in the plot title and output file name.
+#' @param df A data frame to analyze for missing values.
+#'
+#' @return Saves a PNG file of the missing data plot. No object is returned.
+#'
 analyze_missing_data <- function(name, df) {
     # Calculate missing values per column and add column numbers
     missing_data <- df %>%
@@ -61,10 +72,20 @@ analyze_missing_data <- function(name, df) {
         width = 8,
         height = 2.5,
         dpi = 300,
-        bg = "#f8f8f8"  # Off-white background
+        bg = "#f8f8f8" 
     )
 }
 
+#' Plot Latitude and Longitude Points on a Map of the United States
+#'
+#' Creates a map plot with provided latitude and longitude points overlaid on a map of the United States.
+#' The plot is saved as a PNG file in the 'output/figures/' directory.
+#'
+#' @param name A character string used in the plot title and output file name.
+#' @param df A data frame with 'latitude' and 'longitude' columns.
+#'
+#' @return Saves a PNG file of the map plot. No object is returned.
+#'
 plot_coordinates_map <- function(name, df) { 
     coord_plot <- ggplot(df, aes(x = longitude, y = latitude)) +
         borders("state", colour = "gray80", fill = "gray95") +

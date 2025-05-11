@@ -17,10 +17,7 @@
 # SOFTWARE.
 
 requireNamespace("digest", quietly = TRUE)
-requireNamespace("here", quietly = TRUE)
 library(stringr, quietly = TRUE, warn.conflicts = FALSE) # String Manipulation
-
-`%||%` <- function(a, b) { if (!is.null(a)) a else b }
 
 # New enviroment to hold hisrory of generated ids
 .id_history <- new.env(parent = emptyenv())
@@ -32,8 +29,8 @@ library(stringr, quietly = TRUE, warn.conflicts = FALSE) # String Manipulation
   timestamp = character(), # When id was generated
   stringsAsFactors = FALSE
 )
-# Filename where reports are stored 
-generated_report_file <- file.path(here::here(), "output/csv", "generated_ids_all.csv")
+# Filename where reports are stored
+generated_report_file <- "output/csv/generated_ids_all.csv"
 
 #' Takes in a input string and prefix string and generates a uniue ID for use in
 #' a relational databse, all generated ids are saved, see generate_id_report()
@@ -41,13 +38,13 @@ generated_report_file <- file.path(here::here(), "output/csv", "generated_ids_al
 #' @param input_string A string to use for hash
 #' @param prefix_string A string to use for begining prefix
 #'
-#' @returns A string representing both values 
+#' @returns A string representing both values
 encode_id <- function(input_string, prefix_string) {
     # Generate 5 digit uniue hash from input string
-    hash = sprintf("%05d", strtoi(substr(sapply(
+    hash <- sprintf("%05d", strtoi(substr(sapply(
         as.character(input_string), function(x) digest::digest(x, algo = "xxhash32")), 1, 4), 16L) %% 100000)
     # Generate a perfix for ID using first 3 letters of prefix string
-    prefix = substr(str_pad(gsub("[^A-Z]", "", toupper(prefix_string)), 3, "right", "X"), 1, 3)
+    prefix <- substr(str_pad(gsub("[^A-Z]", "", toupper(prefix_string)), 3, "right", "X"), 1, 3)
     # Generate encoded Id form prefix and hash
     encoded_id <- paste0(prefix, hash)
     # Generate record with all data used in generation
@@ -61,15 +58,15 @@ encode_id <- function(input_string, prefix_string) {
     # Add hash record to stored history
     .id_history$records <- rbind(.id_history$records, hash_record)
     # Return ID in form (PREFIX)HASH of input string
-    return(encoded_id)
+    encoded_id
 }
 
-#' Generates a report all of generated ids and input values which is 
+#' Generates a report all of generated ids and input values which is
 #' saved to ./reports/generated_ids.csv
 generate_id_report <- function() write.csv(.id_history$records, generated_report_file, row.names = FALSE)
 
 #' Shows summary statistics of generated IDs to consle
-generate_id_summary <- function() {  
+generate_id_summary <- function() {
   cat("Total IDs generated: ", nrow(.id_history$records), "\n")
   cat("Unique prefixes: ", length(unique(.id_history$records$prefix_string)), "\n")
   cat("First generated: ", min(.id_history$records$timestamp), "\n")
