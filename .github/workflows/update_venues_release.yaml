@@ -30,7 +30,7 @@ jobs:
       - name: Install tidyverse/maps in container
         run: |
           Rscript --vanilla -e "install.packages(
-            'tidyverse', 'maps',
+            c('tidyverse', 'maps'),
             repos='https://cloud.r-project.org',
             dependencies=TRUE
           )"
