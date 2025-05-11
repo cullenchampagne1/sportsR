@@ -73,11 +73,8 @@ ATTRIBUTES:
     DIVISION: "//div[contains(@style, 'text-align:left;')]//ul/li/ul/li/a[contains(text(), 'Division')]/text()"
   VENUES:
     NAME: "//table[contains(@class,'infobox')]//caption"
-    ADDRESS: "//th[@class='infobox-label'][contains(., 'Address')]/following-sibling::td[1]"
-    LOCATION: "//tr[th[normalize-space(.)='Location']]/td/a[1]"
     CAPACITY: "//th[@class='infobox-label'][contains(., 'Capacity')]/following-sibling::td[1]"
     FIELD_SIZE_ALL: "//th[normalize-space(.)='Field size']/following-sibling::td//*[self::b or self::strong or self::span or self::small]/following-sibling::text()[not(ancestor::a or ancestor::sup)] | //th[normalize-space(.)='Field size']/following-sibling::td//small[not(ancestor::a or ancestor::sup)] | //th[normalize-space(.)='Field size']/following-sibling::td//br/following-sibling::text()[not(ancestor::a or ancestor::sup)]"
     SURFACE: "//th[@class='infobox-label'][contains(., 'Surface')]/following-sibling::td[1]"
-    LATITUDE_DMS: "//span[@class='latitude']/text()"
-    LONGITUDE_DMS: "//span[@class='longitude']/text()"
     LATLON_DECIMAL: "//span[contains(@class, 'geo-dec')]/text()"
+    WEBSITE: "//tr[th[contains(., 'Website')]]/following-sibling::tr[1]/td//a/@href"

@@ -31,23 +31,23 @@ library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management o
 library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
 
 # Read configuration from configs directory
-config <- yaml::read_yaml("configs/baseball-mlb.yaml")
+config <- yaml::read_yaml("configs/football-nfl.yaml")
 # File to hold formated data
-all_venues_file <- "data/processed/baseball-venues-mlb.csv"
+all_venues_file <- "data/processed/football-venues-nfl.csv"
 
-#' MLB Venues
+#' NFL Venues
 #'
-#' Retrieves MLB venues data wiki pages. The combined data is processed
-#' into a structured dataframe and saved to a CSV file.
+#' Retrieves NFL venues data from Wikipedia pages. The combined data is processed
+#' into a structured dataframe and saved to a CSV and RDS file.
 #'
-#' @values ../../output/tables/mlb_venues_map_plot.png
+#' @values ../../output/tables/nfl_venues_map_plot.png
 #'
 #' @source https://en.wikipedia.org/wiki/
 #'
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
 #' @param save Logical indicating whether to save data to data/processed folder
 #'
-#' @return A dataframe containing the following information for each MLB venue:
+#' @return A dataframe containing the following information for each NFL venue:
 #'  id [string] - A generated unique identifier for each venue
 #'  full_name [string] - Full name of the venue
 #'  street_address [string] - Street address of the venue
@@ -62,18 +62,13 @@ all_venues_file <- "data/processed/baseball-venues-mlb.csv"
 #'  surface [string] - Standardized playing surface type
 #'  roof [string] - Venue roof type
 #'  website [string] - Official venue website URL
-#'  field_size_left [string] - Left field distance in feet
-#'  field_size_left_center [string] - Left-center field distance in feet
-#'  field_size_center [string] - Center field distance in feet
-#'  field_size_right_center [string] - Right-center field distance in feet
-#'  field_size_right [string] - Right field distance in feet
 #'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
     
     # Init blank data frame for team details
-    mlb_venue_details <- data.frame()
+    nfl_venue_details <- data.frame()
     # Loop through team detail webpages and select data
-    if (verbose) cat(paste0("\n\033[32mDownloading MLB Venue Information: https://en.wikipedia.org/wiki/...\033[0m"))
+    if (verbose) cat(paste0("\n\033[32mDownloading NFL Venue Information: https://en.wikipedia.org/wiki/...\033[0m"))
     for (url in config$LINKS$VENUES) {
         # Download page content from url
         page_content <- download_fromHTML(url)
@@ -109,35 +104,9 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
         capacity <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$CAPACITY) %>% rvest::html_text(trim = TRUE)
         capacity_matches <- regmatches(capacity, gregexpr("\\d{1,3}(,\\d{3})*", capacity))
         capacity <- sapply(capacity_matches, function(m) if (length(m) > 0) m[1] else NA_character_)
-
-        # Extract all field size values in sequence, excluding those inside links
-        field_sizes <- page_content %>%
-          rvest::html_elements(xpath = paste0(config$ATTRIBUTES$VENUES$FIELD_SIZE_ALL, "[not(ancestor::a)]")) %>%
-          rvest::html_text(trim = TRUE)
-
-        # Remove year ranges like "(1973-1994)" or "(2004–present)"
-        field_sizes <- field_sizes[!grepl("\\(\\d{4}[-–]\\d{0,4}\\)", field_sizes)]
-        # First try to capture values with units (e.g., "342 ft", "100 m")
-        field_sizes_with_units <- field_sizes[grepl("\\d+\\s*(feet|ft|m)", field_sizes, ignore.case = TRUE)]
-        # If none found, fall back to any digit-containing values
-        if (length(field_sizes_with_units) > 0) field_sizes <- field_sizes_with_units
-        else field_sizes <- field_sizes[grepl("\\d+", field_sizes)]
-
-        # Assign values by position if available
-        field_size_left <- if (length(field_sizes) >= 1) field_sizes[1] else NA
-        field_size_left_center <- if (length(field_sizes) >= 2) field_sizes[2] else NA
-        field_size_center <- if (length(field_sizes) >= 3) field_sizes[3] else NA
-        field_size_right_center <- if (length(field_sizes) >= 4) field_sizes[4] else NA
-        field_size_right <- if (length(field_sizes) >= 5) field_sizes[5] else NA
-        # Extract just the first number from each field size
-        field_size_left <- sub("^[^0-9-]*[-–]?[ ]*(\\d+).*", "\\1", field_size_left)
-        field_size_left_center <- sub("^[^0-9-]*[-–]?[ ]*(\\d+).*", "\\1", field_size_left_center)
-        field_size_center <- sub("^[^0-9-]*[-–]?[ ]*(\\d+).*", "\\1", field_size_center)
-        field_size_right_center <- sub("^[^0-9-]*[-–]?[ ]*(\\d+).*", "\\1", field_size_right_center)
-        field_size_right <- sub("^[^0-9-]*[-–]?[ ]*(\\d+).*", "\\1", field_size_right)
-
-        # Get surface from xpath and convert to standard
+        # Get surface from xpath
         surface <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$SURFACE) %>% rvest::html_text(trim = TRUE) %>% tolower()
+        # Standardize surface categories
         if (grepl("artificial|astro|fieldturf|shaw|hellas", surface)) surface <- "Artificial Turf"
         else if (grepl("bermuda", surface)) surface <- "Bermuda Grass"
         else if (grepl("paspalum", surface)) surface <- "Paspalum Grass"
@@ -151,8 +120,8 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
         elevation_data <- download_fromJSON(elevation_url)
         elevation <- elevation_data$results$elevation[1] %||% NA_real_
 
-        # Append to venue details dataframe
-        mlb_venue_details <- rbind(mlb_venue_details, data.frame(
+        # Return dataframe with parsed information
+        nfl_venue_details <- rbind(nfl_venue_details, data.frame(
             full_name = name %||% NA_character_,
             street_address = street_address,
             city = city,
@@ -164,61 +133,48 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
             capacity = capacity %||% NA_character_,
             surface = surface %||% NA_character_,
             website = website %||% NA_character_,
-            field_size_left = field_size_left %||% NA_character_,
-            field_size_left_center = field_size_left_center %||% NA_character_,
-            field_size_center = field_size_center %||% NA_character_,
-            field_size_right_center = field_size_right_center %||% NA_character_,
-            field_size_right = field_size_right %||% NA_character_,
             stringsAsFactors = FALSE
         ))
     }
 
-    # Download mlb venue last to get opened data and roof type
+    # Download NFL venue list to get roof type and opening year
     page_content <- download_fromHTML(config$LINKS$VENUE_ROOF)
-    if (verbose) cat(paste0("\n\033[32mDownloading MLB Venue Roofs: ", config$LINKS$VENUE_ROOF, "\033[0m\n"))
-    # Extract the first table on page
+    if (verbose) cat(paste0("\n\033[32mDownloading NFL Venue Roofs: ", config$LINKS$VENUE_ROOF, "\033[0m\n"))
+    # Get second table on webpage
     tables <- page_content %>% rvest::html_elements("table")
-    venue_roofs <- tables[[1]] %>%
+    venue_roofs <- tables[[2]] %>%
     rvest::html_table(fill = TRUE) %>%
-    # Select only columns of interest
+    # Extract only relevant columns
     dplyr::select(Name, "Roof type", Opened) %>%
     dplyr::rename(full_name = Name, roof = "Roof type", opened = Opened) %>%
-    # Remove speacial character from venue name
+    # Remove special characters from venue name
     dplyr::mutate(full_name = gsub("‡", "", full_name)) %>%
-    # Extarct only first year on opened value
-    dplyr::mutate(opened = trimws(sapply(strsplit(as.character(opened), "\\["), `[`, 1)))
+    # Remove all external links from opening year
+    dplyr::mutate(opened = opened %>% gsub("\\[[a-z0-9]+\\]", "", .))
 
     # Join new info with venue details
-    mlb_venue_details <- mlb_venue_details %>% dplyr::left_join(venue_roofs, by = "full_name") %>% relocate(roof, .after = surface)
+    nfl_venue_details <- nfl_venue_details %>% dplyr::left_join(venue_roofs, by = "full_name")
 
-    # Manually adjust field sizes for Sutter Health Park because it is missing data points
-    mlb_venue_details <- mlb_venue_details %>%
-      dplyr::mutate(
-        field_size_left = ifelse(full_name == "Sutter Health Park", "330", field_size_left),
-        field_size_left_center = ifelse(full_name == "Sutter Health Park", "NA", field_size_left_center),
-        field_size_center = ifelse(full_name == "Sutter Health Park", "403", field_size_center),
-        field_size_right_center = ifelse(full_name == "Sutter Health Park", "NA", field_size_right_center),
-        field_size_right = ifelse(full_name == "Sutter Health Park", "325", field_size_right)
-      )
-
-    # Create a unique stadium id from full name and relocate columns to standard
-    mlb_venue_details <- mlb_venue_details %>%
-    dplyr::mutate(id = encode_id(paste0("B", full_name), full_name)) %>%
+    # Create a unique stadium id from full name
+    nfl_venue_details <- nfl_venue_details %>%
+    dplyr::mutate(id = encode_id(paste0("F", full_name), full_name)) %>%
+    # Reorder columns to standard
     select(id, dplyr::everything()) %>%
+    relocate(roof, .after = surface) %>%
     relocate(opened, .after = capacity)
 
     # Analyze missing data and process markdown file
-    analyze_missing_data("MLB Venues", mlb_venue_details)
-    plot_coordinates_map("MLB Venues", mlb_venue_details)
-    process_markdown_file("R/venues/baseball-venues-mlb.R", "R/venues/readme.md", nrow(mlb_venue_details))
+    analyze_missing_data("NFL Venues", nfl_venue_details)
+    plot_coordinates_map("NFL Venues", nfl_venue_details)
+    process_markdown_file("R/venues/football-venues-nfl.R", "R/venues/readme.md", nrow(nfl_venue_details))
 
-    if (verbose) cat(paste0("\n\033[90mMLB Baseball Data Saved To: /", all_venues_file, "\033[0m\n"))
+    if (verbose) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_venues_file, "\033[0m\n"))
     # Save any created name bindings to file
-    if (save) write.csv(mlb_venue_details, all_venues_file, row.names = FALSE)
+    if (save) write.csv(nfl_venue_details, all_venues_file, row.names = FALSE)
     # Save rds file of data
-    if (save) saveRDS(mlb_venue_details, sub("\\.csv$", ".rds", all_venues_file))
+    if (save) saveRDS(nfl_venue_details, sub("\\.csv$", ".rds", all_venues_file))
     # Return formated data
-    return(mlb_venue_details)
+    return(nfl_venue_details)
 }
 
 # If file is being run stand-alone, run function
