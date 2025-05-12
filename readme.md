@@ -19,7 +19,7 @@ Team data is primarily sourced from ESPN's public API, with additional enhanceme
 Venue data is almost interely sources from Wiki tables and pages as i couldnt find a consistent set of sources from any other reliable sources. For a detailed breakdown of data sources and table structures, please see the [Venues Documentation](/R/venues/readme.md).
 
 ### Available Venue Data:
-- [NFL Stadium](/R/venues/readme.md#nfl-venues) - All current National Football League franchise stadiums
+- [NFL Stadiums](/R/venues/readme.md#nfl-venues) - All current National Football League franchise stadiums
 - [College Football Stadiums](/R/venues/readme.md#college-football-venues) - NCAA Football FBS and FCS Stadiums
 - [NBA Arenas](/R/venues/readme.md#nba-venues) - All National Basketball Association Arenas
 - [WNBA Arenas](/R/venues/readme.md#wnba-venues) - All National Women's Basketball Association arenas (Including those shared with NBA)  
