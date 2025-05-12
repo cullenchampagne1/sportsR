@@ -1,7 +1,7 @@
 
 ## MLB Venues
 
-![Missing Values](../../output/figures/mlb_venues_map_plot.png)
+![Missing Values](../../output/tables/mlb_venues_missing_data.png)
 
  Retrieves MLB venues data wiki pages. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
@@ -39,7 +39,7 @@
 ---
 ## NFL Venues
 
-![Missing Values](../../output/figures/nfl_venues_map_plot.png)
+![Missing Values](../../output/tables/nfl_venues_missing_data.png)
 
  Retrieves NFL venues data from Wikipedia pages. The combined data is processed into a structured dataframe and saved to a CSV and RDS file. 
 
@@ -72,7 +72,7 @@
 ---
 ## NBA Venues
 
-![Missing Values](../../output/figures/nba_venues_map_plot.png)
+![Missing Values](../../output/tables/nba_venues_missing_data.png)
 
  Retrieves NBA venues data from Wikipedia pages. The combined data is processed into a structured dataframe and saved to a CSV and RDS file. 
 
@@ -103,7 +103,7 @@
 ---
 ## WNBA Venues
 
-![Missing Values](../../output/figures/wnba_venues_map_plot.png)
+![Missing Values](../../output/tables/wnba_venues_missing_data.png)
 
  Retrieves WNBA venues data from Wikipedia pages. The combined data is processed into a structured dataframe and saved to a CSV and RDS file. 
 
@@ -130,4 +130,5 @@
 
 | Sources |
 |--------|
+| https://en.wikipedia.org/wiki/ |
 | https://en.wikipedia.org/wiki/ |

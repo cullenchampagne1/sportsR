@@ -40,7 +40,7 @@ all_venues_file <- "data/processed/football-venues-nfl.csv"
 #' Retrieves NFL venues data from Wikipedia pages. The combined data is processed
 #' into a structured dataframe and saved to a CSV and RDS file.
 #'
-#' @values ../../output/figures/nfl_venues_map_plot.png
+#' @values ../../output/tables/nfl_venues_missing_data.png
 #'
 #' @source https://en.wikipedia.org/wiki/
 #'

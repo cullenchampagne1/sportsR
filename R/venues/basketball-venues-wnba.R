@@ -40,7 +40,7 @@ all_venues_file <- "data/processed/basketball-venues-wnba.csv"
 #' Retrieves WNBA venues data from Wikipedia pages. The combined data is processed
 #' into a structured dataframe and saved to a CSV and RDS file.
 #'
-#' @values ../../output/figures/wnba_venues_map_plot.png
+#' @values ../../output/tables/wnba_venues_missing_data.png
 #'
 #' @source https://en.wikipedia.org/wiki/
 #'
