@@ -1,5 +1,6 @@
 LINKS:
   ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/baseball/college-baseball/teams?limit=200000"
+  VENUES: "https://en.wikipedia.org/wiki/List_of_NCAA_Division_I_baseball_venues"
   NCAA_TEAMS:
     - "https://www.ncaa.com/stats/baseball/d1/current/team/484"
     - "https://www.ncaa.com/stats/baseball/d1/current/team/484/p2"
