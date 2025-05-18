@@ -86,10 +86,14 @@ analyze_missing_data <- function(name, df) {
 #'
 #' @return Saves a PNG file of the map plot. No object is returned.
 #'
-plot_coordinates_map <- function(name, df) { 
+plot_coordinates_map <- function(name, df) {
+    df <- df %>%
+        filter(longitude >= -125, longitude <= -65, latitude >= 25, latitude <= 50) %>%
+        group_by(longitude, latitude) %>%
+        summarise(count = n(), .groups = "drop")
     coord_plot <- ggplot(df, aes(x = longitude, y = latitude)) +
         borders("state", colour = "gray80", fill = "gray95") +
-        geom_point(color = "#333333", size = 2) +
+        geom_point(color = "#333333", size = 1) +
         labs(title = paste("Map Coordinates:", name), x = "Longitude", y = "Latitude") +
         theme_minimal(base_size = 10) +
         theme(

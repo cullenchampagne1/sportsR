@@ -146,7 +146,13 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
             osm_data <- download_fromJSON(osm_url)
             address_parts <- osm_data$address
             street_address <- paste(na.omit(c(address_parts$house_number, address_parts$road)), collapse = " ") %||% NA_character_
-            city <- address_parts$city %||% address_parts$town %||% address_parts$village %||% NA_character_
+            city <- address_parts$city %||% 
+                    address_parts$town %||% 
+                    address_parts$village %||% 
+                    address_parts$suburb %||% 
+                    address_parts$hamlet %||% 
+                    address_parts$county %||% 
+                    NA_character_
             state <- address_parts$state %||% NA_character_
             postcode <- address_parts$postcode %||% NA_character_
         } else {
@@ -163,13 +169,13 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
         # Get surface from xpath and convert to standard
         surface <- page_content %>% rvest::html_element(xpath = config$ATTRIBUTES$VENUES$SURFACE) %>% rvest::html_text(trim = TRUE) %>% tolower()
-        if (grepl("artificial|astro|fieldturf|shaw|hellas", surface)) surface <- "Artificial Turf"
+        if (grepl("artificial|astro|fieldturf|shaw|hellas|turf", surface)) surface <- "Artificial Turf"
         else if (grepl("bermuda", surface)) surface <- "Bermuda Grass"
         else if (grepl("paspalum", surface)) surface <- "Paspalum Grass"
         else if (grepl("ryegrass", surface)) surface <- "Ryegrass Blend"
         else if (grepl("bluegrass|kentucky", surface)) surface <- "Kentucky Bluegrass"
         else if (grepl("grass", surface)) surface <- "Natural Grass"
-        else surface <- "Other"
+        else surface <- "Unknonwn"
 
         # Get elevation using Open-Elevation API
         if (!is.na(clean_longitude)) {
@@ -182,7 +188,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
         # Append to venue details dataframe
         data.frame(
-            street_address = street_address %||% location %||% NA_character_,
+            street_address = ifelse(nchar(street_address) > 2, street_address, strsplit(location, ",")[[1]][1]),
             city = city %||% NA_character_,
             state = state %||% NA_character_,
             zip = postcode %||% NA_character_,
