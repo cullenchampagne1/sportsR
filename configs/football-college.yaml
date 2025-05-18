@@ -26,6 +26,8 @@ LINKS:
     - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=12.0&ranking_period=39.0&sport_code=MFB&stat_seq=27.0"
     - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=2.0&ranking_period=34.0&sport_code=MFB&stat_seq=27.0"
     - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=3.0&ranking_period=30.0&sport_code=MFB&stat_seq=27.0"
+  FBS_VENUES: "https://en.wikipedia.org/wiki/List_of_NCAA_Division_I_FBS_football_stadiums"
+  FCS_VENUES: "https://en.wikipedia.org/wiki/List_of_NCAA_Division_I_FCS_football_stadiums"
 ATTRIBUTES:
   NCAA_TEAM_REF: "td.reclass a.skipMask[href^='/teams/']"
   NCAA_TEAMS:
@@ -53,3 +55,8 @@ ATTRIBUTES:
   NCAA_STAT:
     HEAD_COACH: "//div[contains(@class,'card-header') and contains(text(), 'Coach')]/following-sibling::div//a"
     VENUE: "//div[contains(@class, 'card-header') and contains(text(), 'Stadium')]/following-sibling::div//dt[contains(text(), 'Name:')]/following-sibling::dd"
+  VENUES:
+    NAME: "//table[contains(@class,'infobox')]//caption"
+    LOCATION: "//th[@class='infobox-label'][contains(., 'Location')]/following-sibling::td[1]"
+    LATLON_DECIMAL: "//span[contains(@class, 'geo-dec')]/text()"
+    SURFACE: "//th[@class='infobox-label'][contains(., 'Surface')]/following-sibling::td[1]"

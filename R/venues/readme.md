@@ -43,9 +43,9 @@
 
  Retrieves NFL venues data from Wikipedia pages. The combined data is processed into a structured dataframe and saved to a CSV and RDS file. 
 
-**Function:** `football-venues-nfl::get_formated_data()` 
+**Function:** `football-venues-college::get_formated_data()` 
 
-**Records:** `30 venues`
+**Records:** `262 venues`
 
 ### Returned Data Structure
 
@@ -193,6 +193,37 @@
 | 9 | elevation | numeric | Elevation in meters above sea level |
 | 10 | capacity | string | Current official seating capacity |
 | 11 | opened | string | Year the venue was opened |
+
+| Sources |
+|--------|
+| https://en.wikipedia.org/wiki/ |
+---
+## College Football Venues
+
+![Missing Values](../../output/tables/college_football_venues_missing_data.png)
+
+ Retrieves College Football venues data from Wikipedia pages. The combined  data is processed into a structured dataframe and saved to a CSV and RDS file. 
+
+**Function:** `football-venues-college::get_formated_data()` 
+
+**Records:** `262 venues`
+
+### Returned Data Structure
+
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | string | A generated unique identifier for each venue |
+| 2 | full_name | string | Full name of the venue |
+| 3 | street_address | string | Street address of the venue |
+| 4 | city | string | City where the venue is located |
+| 5 | state | string | State where the venue is located |
+| 6 | zip | string | Postal code of the venue |
+| 7 | latitude | string | Latitude in decimal degrees (e.g., 27.98028) |
+| 8 | longitude | string | Longitude in decimal degrees (e.g., -82.50667) |
+| 9 | elevation | numeric | Elevation in meters above sea level |
+| 10 | capacity | string | Current official seating capacity |
+| 11 | opened | string | Year the venue was opened |
+| 12 | surface | string | Standardized playing surface type |
 
 | Sources |
 |--------|
