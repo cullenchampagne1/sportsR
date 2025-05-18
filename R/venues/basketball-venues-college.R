@@ -200,7 +200,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     tidyr::unnest(scraped_data) %>%
     filter(!is.na(street_address))
 
-    # Join dimensions with the current data
+    # Format data to match all venues
     venue_details <- venue_details %>%
         dplyr::rename(full_name = stadium_name) %>%
         dplyr::mutate(id = encode_id(paste0("B", full_name), full_name)) %>%
