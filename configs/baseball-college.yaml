@@ -29,3 +29,9 @@ ATTRIBUTES:
   NCAA_STAT:
     HEAD_COACH: "//div[contains(@class,'card-header') and contains(text(), 'Coach')]/following-sibling::div//a"
     VENUE: "//div[contains(@class, 'card-header') and contains(text(), 'Stadium')]/following-sibling::div//dt[contains(text(), 'Name:')]/following-sibling::dd"
+  VENUES:
+    NAME: "//table[contains(@class,'infobox')]//caption"
+    CAPACITY: "//th[@class='infobox-label'][contains(., 'Capacity')]/following-sibling::td[1]"
+    LOCATION: "//th[@class='infobox-label'][contains(., 'Location')]/following-sibling::td[1]"
+    SURFACE: "//th[@class='infobox-label'][contains(., 'Surface')]/following-sibling::td[1]"
+    LATLON_DECIMAL: "//span[contains(@class, 'geo-dec')]/text()"
