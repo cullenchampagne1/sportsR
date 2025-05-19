@@ -46,7 +46,7 @@
 
 **Function:** `football-teams-college::get_formated_data()` 
 
-**Records:** `638 teams`
+**Records:** `254 teams`
 
 ### Returned Data Structure
 
