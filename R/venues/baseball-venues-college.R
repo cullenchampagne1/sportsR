@@ -59,11 +59,6 @@ all_venues_file <- "data/processed/baseball-venues-college.csv"
 #'  elevation [numeric] - Elevation in meters above sea level
 #'  capacity [string] - Current official seating capacity
 #'  surface [string] - Standardized playing surface type
-#'  field_size_left [string] - Left field distance in feet
-#'  field_size_left_center [string] - Left-center field distance in feet
-#'  field_size_center [string] - Center field distance in feet
-#'  field_size_right_center [string] - Right-center field distance in feet
-#'  field_size_right [string] - Right field distance in feet
 #'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
@@ -208,13 +203,8 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     tidyr::unnest(scraped_data) %>%
     filter(!is.na(street_address))
 
-    # Load estimated college baseball dimensions from github
-    dimensions <- read.csv("https://github.com/cullenchampagne1/sportsR/releases/download/misc/college-baseball-dimensions.csv")
-    # Match column names with current dataset
-    dimensions <- dimensions %>% dplyr::rename_with(~ paste0("field_size_", .x)) %>% dplyr::rename(stadium_name = field_size_stadium_name)
     # Join dimensions with the current data
     venue_details <- venue_details %>%
-        dplyr::left_join(dimensions, by = "stadium_name") %>%
         dplyr::rename(full_name = stadium_name) %>%
         dplyr::mutate(id = encode_id(paste0("B", full_name), full_name)) %>%
         dplyr::select(id, full_name, dplyr::everything(), -stadium_href)
