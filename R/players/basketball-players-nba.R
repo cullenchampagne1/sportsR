@@ -44,27 +44,48 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     if (verbose) cat(paste0("\n\033[32mDownloading ESPN Basketball Players: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
     # Extract the items list from json returned
     espn_items <- espn_players$items[!sapply(espn_players$items, function(x) grepl("^\\[", x$lastName))]
-    # Convert to list to a dataframe
+    # Filter by only active players
+    espn_items <- espn_items[sapply(espn_items, function(x) isTRUE(x$active))]
+
+    #' Helper function to retrieve detailed player information from espn api
+    #'
+    #' @param espn_id id of the player
+    #' @param name name of player for logging
+    #'
+    fetch_player_details <- function(espn_id, name) {
+        player_url <- gsub("\\{id\\}", espn_id, config$LINKS$ESPN_DETAILED)
+        if (verbose) cat(paste0("\n\033[32mDownloading ", name, " Detailed: ", player_url, "\033[0m"))
+        player_details <- download_fromJSON(player_url, force_refresh = FALSE)
+        # Return detailed information as a tribble
+        tibble(
+            position = player_details$athlete$position$abbreviation %||% NA_character_,
+            team_espn_id = player_details$athlete$team$id %||% NA_character_,
+            college_espn_id = player_details$athlete$collegeTeam$id %||% NA_character_,
+        )
+    }
+
+    # Convert the list to a dataframe and extract details for each
     espn_players <- purrr::map_dfr(espn_items, function(player) {
+        details <- fetch_player_details(player$id, player$fullName)
         tibble(
             espn_id = player$id %||% NA_character_,
             first_name = player$firstName %||% NA_character_,
             last_name = player$lastName %||% NA_character_,
             full_name = player$fullName %||% NA_character_,
             short_name = player$shortName %||% NA_character_,
-            weight = player$weight %||% NA_real_,
-            height = player$height %||% NA_real_,
+            headshot = paste0("https://a.espncdn.com/i/headshots/nba/players/full/", espn_id, ".png"),
             jersey = player$jersey %||% NA_character_,
-            active = player$active %||% NA
-        )
+            weight = player$weight %||% NA_character_,
+            height = player$height %||% NA_character_
+        ) %>% bind_cols(details)
     }) %>%
+    # Only keep players associated with a valid team
+    filter(!is.na(team_espn_id)) %>%
     dplyr::mutate(id = encode_id(paste0("B", espn_id), first_name)) %>%
-    # Only keep active players
-    dplyr::filter(active == TRUE) %>%
     # Reorder columns and remove active data
-    dplyr::select(id, dplyr::everything(), -active)
+    dplyr::select(id, dplyr::everything())
 
-    if (verbose) cat(paste0("\n\033[90mNBA Basketball Data Saved To: /", all_players_file, "\033[0m\n"))
+    if (verbose) cat(paste0("\n\n\033[90mNBA Basketball Data Saved To: /", all_players_file, "\033[0m\n"))
     # Save any created name bindings to file
     if (save) write.csv(espn_players, all_players_file, row.names = FALSE)
     # Save rds file of data

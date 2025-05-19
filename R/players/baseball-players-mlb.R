@@ -44,24 +44,49 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     if (verbose) cat(paste0("\n\033[32mDownloading ESPN Baseball Players: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
     # Extract the items list from json returned
     espn_items <- espn_players$items[!sapply(espn_players$items, function(x) grepl("^\\[", x$lastName))]
-    # Convert to list to a dataframe
+    # Filter by only active players
+    espn_items <- espn_items[sapply(espn_items, function(x) isTRUE(x$active))]
+
+    #' Helper function to retrieve detailed player information from espn api
+    #'
+    #' @param espn_id id of the player
+    #' @param name name of player for logging
+    #'
+    fetch_player_details <- function(espn_id, name) {
+        player_url <- gsub("\\{id\\}", espn_id, config$LINKS$ESPN_DETAILED)
+        if (verbose) cat(paste0("\n\033[32mDownloading ", name, " Detailed: ", player_url, "\033[0m"))
+        player_details <- download_fromJSON(player_url, force_refresh = FALSE)
+        # If no player details return na
+        if (is.null(player_details)) return(tibble(birthPlace = NA, position_abbr = NA, bats_throws = NA))
+        # Get throws and bats values by spliting raw string
+        bats_throws_raw <- player_details$athlete$displayBatsThrows %||% NA_character_
+        tibble(
+            position = player_details$athlete$position$abbreviation %||% NA_character_,
+            bats = if (!is.na(bats_throws_raw) && grepl("/", bats_throws_raw)) strsplit(bats_throws_raw, "/")[[1]][1] else "Right",
+            throws = if (!is.na(bats_throws_raw) && grepl("/", bats_throws_raw)) strsplit(bats_throws_raw, "/")[[1]][2] else "Right",
+            team_espn_id = player_details$athlete$team$id %||% NA_character_
+        )
+    }
+
+    # Convert the list to a dataframe and extract details for each
     espn_players <- purrr::map_dfr(espn_items, function(player) {
+        details <- fetch_player_details(player$id, player$fullName)
         tibble(
             espn_id = player$id %||% NA_character_,
             first_name = player$firstName %||% NA_character_,
             last_name = player$lastName %||% NA_character_,
             full_name = player$fullName %||% NA_character_,
             short_name = player$shortName %||% NA_character_,
-            active = player$active %||% NA
-        )
+            headshot = paste0("https://a.espncdn.com/i/headshots/mlb/players/full/", espn_id, ".png")
+        ) %>% bind_cols(details)
     }) %>%
+    # Only keep players associated with a valid team
+    filter(!is.na(team_espn_id)) %>%
     dplyr::mutate(id = encode_id(paste0("B", espn_id), first_name)) %>%
-    # Only keep active players
-    dplyr::filter(active == TRUE) %>%
     # Reorder columns and remove active data
-    dplyr::select(id, dplyr::everything(), -active)
+    dplyr::select(id, dplyr::everything())
 
-    if (verbose) cat(paste0("\n\033[90mMLB Baseball Data Saved To: /", all_players_file, "\033[0m\n"))
+    if (verbose) cat(paste0("\n\n\033[90mMLB Baseball Data Saved To: /", all_players_file, "\033[0m\n"))
     # Save any created name bindings to file
     if (save) write.csv(espn_players, all_players_file, row.names = FALSE)
     # Save rds file of data
