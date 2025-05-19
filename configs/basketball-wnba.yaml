@@ -1,5 +1,6 @@
 LINKS:
   ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/teams?limit=200000"
+  PLAYERS_ESPN: "https://sports.core.api.espn.com/v3/sports/basketball/wnba/athletes?limit=20000&active=true"
   TEAM_DETAILS:
     - "https://en.wikipedia.org/wiki/Atlanta_Dream"
     - "https://en.wikipedia.org/wiki/Chicago_Sky"

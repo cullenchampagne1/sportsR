@@ -5625,3 +5625,9 @@ sources:
   - https://en.wikipedia.org/wiki/Williams%E2%80%93Brice_Stadium
   - https://nominatim.openstreetmap.org/reverse?lat=33.97306&lon=-81.01917&format=json
   - https://api.open-elevation.com/api/v1/lookup?locations=33.97306,-81.01917
+  - sports.core.api.espn.com/v3/sports/football/nfl/athletes?limit=20000&active=true
+  - https://sports.core.api.espn.com/v3/sports/football/nfl/athletes?limit=20000&active=true
+  - https://site.api.espn.com/apis/site/v2/sports/football/college-football/athletes?limit=40000&
+  - https://sports.core.api.espn.com/v3/sports/basketball/nba/athletes?limit=20000&active=true
+  - https://sports.core.api.espn.com/v3/sports/basketball/wnba/athletes?limit=20000&active=true
+  - https://sports.core.api.espn.com/v3/sports/baseball/mlb/athletes?limit=20000&active=true

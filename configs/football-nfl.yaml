@@ -3,6 +3,7 @@ LINKS:
   OFFENSIVE_COORDINATORS: "https://en.wikipedia.org/wiki/List_of_current_NFL_offensive_coordinators"
   DEFENSIVE_COORDINATORS: "https://en.wikipedia.org/wiki/List_of_current_NFL_defensive_coordinators"
   VENUE_ROOF: "https://en.wikipedia.org/wiki/List_of_current_NFL_stadiums"
+  PLAYERS_ESPN: "https://sports.core.api.espn.com/v3/sports/football/nfl/athletes?limit=20000&active=true"
   TEAM_DETAILS:
     - "https://www.nfl.com/teams/arizona-cardinals/"
     - "https://www.nfl.com/teams/atlanta-falcons/"

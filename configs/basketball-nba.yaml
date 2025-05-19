@@ -2,6 +2,7 @@ LINKS:
   ESPN_TEAMS: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams?limit=200000"
   GENERAL_MANAGERS : "https://en.wikipedia.org/wiki/List_of_NBA_general_managers"
   OPENED: "https://en.wikipedia.org/wiki/List_of_NBA_arenas"
+  PLAYERS_ESPN: "https://sports.core.api.espn.com/v3/sports/basketball/nba/athletes?limit=20000&active=true"
   TEAM_DETAILS:
     - "https://en.wikipedia.org/wiki/Atlanta_Hawks"
     - "https://en.wikipedia.org/wiki/Boston_Celtics"
