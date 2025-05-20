@@ -50,10 +50,11 @@
 | 6 | short_name | string | shortand version of the players name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
-| 9 | height | int | height of player |
-| 10 | position | string | position abv of player |
-| 11 | team_espn_id | int | id used be espn to identify players team |
-| 12 | college_espn_id | int | id used be espn to identify players college team |
+| 9 | weight | int | weight of player |
+| 10 | height | int | height of player |
+| 11 | position | string | position abv of player |
+| 12 | team_espn_id | int | id used be espn to identify players team |
+| 13 | college_espn_id | int | id used be espn to identify players college team |
 
 | Sources |
 |--------|
@@ -81,10 +82,11 @@
 | 6 | short_name | string | shortand version of the players name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
-| 9 | height | int | height of player |
-| 10 | position | string | position abv of player |
-| 11 | team_espn_id | int | id used be espn to identify players team |
-| 12 | college_espn_id | int | id used be espn to identify players college team |
+| 9 | weight | int | weight of player |
+| 10 | height | int | height of player |
+| 11 | position | string | position abv of player |
+| 12 | team_espn_id | int | id used be espn to identify players team |
+| 13 | college_espn_id | int | id used be espn to identify players college team |
 
 | Sources |
 |--------|
@@ -112,10 +114,11 @@
 | 6 | short_name | string | shortand version of the players name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
-| 9 | height | int | height of player |
-| 10 | position | string | position abv of player |
-| 11 | team_espn_id | int | id used be espn to identify players team |
-| 12 | college_espn_id | int | id used be espn to identify players college team |
+| 9 | weight | int | weight of player |
+| 10 | height | int | height of player |
+| 11 | position | string | position abv of player |
+| 12 | team_espn_id | int | id used be espn to identify players team |
+| 13 | college_espn_id | int | id used be espn to identify players college team |
 
 | Sources |
 |--------|

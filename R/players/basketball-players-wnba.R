@@ -58,7 +58,7 @@ all_players_file <- "data/processed/basketball-players-wnba.csv"
 #'  short_name [string] - shortand version of the players name
 #'  headshot [string] - url to players headshot
 #'  jersey [int] - jersey number for player
-#'  weight[int] - weight of player
+#'  weight [int] - weight of player
 #'  height [int] - height of player
 #'  position [string] - position abv of player
 #'  team_espn_id [int] - id used be espn to identify players team
