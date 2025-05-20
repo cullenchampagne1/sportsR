@@ -16,7 +16,7 @@ Team data is primarily sourced from ESPN's public API, with additional enhanceme
 ---
 ## Venue Information 
 
-Venue data is almost interely sources from Wiki tables and pages as i couldnt find a consistent set of sources from any other reliable sources. For a detailed breakdown of data sources and table structures, please see the [Venues Documentation](/R/venues/readme.md).
+Venue data is almost interely sources from Wiki tables and pages as I couldnt find a consistent set of data from any other reliable source. For a detailed breakdown of data sources and table structures, please see the [Venues Documentation](/R/venues/readme.md).
 
 ### Available Venue Data:
 - [NFL Stadiums](/R/venues/readme.md#nfl-venues) - All current National Football League franchise stadiums
