@@ -1,4 +1,4 @@
-name: Update Venues Release
+name: Update Players Release
 
 on:
   push:
@@ -43,5 +43,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           chmod +x .github/scripts/update_players_release.sh
-          .github/scripts/update_venues_players.sh data/processed
+          .github/scripts/update_players_release.sh data/processed
       
