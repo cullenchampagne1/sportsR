@@ -43,7 +43,7 @@ done < <(
 
 echo "→ Creating new 'players' release"
 gh release create players \
-  --title "players" \
+  --title "Players" \
   --notes-file "$NOTES_FILE" \
   "${assets[@]}"
 
