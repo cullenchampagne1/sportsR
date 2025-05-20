@@ -123,4 +123,122 @@
 | Sources |
 |--------|
 | https://site.api.espn.com/ |
+---
+## College Football Players
+
+![Missing Values](../../output/tables/college_football_players_missing_data.png)
+
+ Retrieves All NCAA football players from espn's API and other sources. The combined data is processed into a structured dataframe and saved to a CSV file. 
+
+**Function:** `football-players-college::get_formated_data()` 
+
+**Records:** `26197 players`
+
+### Returned Data Structure
+
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | int | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify player |
+| 3 | first_name | string | first name of player |
+| 4 | last_name | string | last name of player |
+| 5 | full_name | string | first and last name of player |
+| 6 | short_name | string | shortand version of the players name |
+| 7 | headshot | string | url to players headshot |
+| 8 | jersey | int | jersey number for player |
+| 9 | weight | int | weight of player |
+| 10 | height | int | height of player |
+| 11 | position | string | position abv of player |
+| 12 | team_espn_id | int | id used be espn to identify players team |
+| 13 | college_espn_id | int | id used be espn to identify players college team |
+
+| Sources |
+|--------|
+| https://site.api.espn.com/ |
+---
+## College Basketball Players
+
+![Missing Values](../../output/tables/college_basketball_players_missing_data.png)
+
+ Retrieves All NCAA basketball players from espn's API and other sources. The combined data is processed into a structured dataframe and saved to a CSV file. 
+
+**Function:** `basketball-players-college::get_formated_data()` 
+
+**Records:** `7124 players`
+
+### Returned Data Structure
+
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | int | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify player |
+| 3 | first_name | string | first name of player |
+| 4 | last_name | string | last name of player |
+| 5 | full_name | string | first and last name of player |
+| 6 | short_name | string | shortand version of the players name |
+| 7 | headshot | string | url to players headshot |
+| 8 | jersey | int | jersey number for player |
+| 9 | weight | int | weight of player |
+| 10 | height | int | height of player |
+| 11 | position | string | position abv of player |
+| 12 | team_espn_id | int | id used be espn to identify players team |
+
+| Sources |
+|--------|
+| https://site.api.espn.com/ |
+---
+## College Womens Basketball Players
+
+![Missing Values](../../output/tables/college_womens_basketball_players_missing_data.png)
+
+ Retrieves All NCAA womens basketball players from espn's API and other sources. The combined data is processed into a structured dataframe and saved to a CSV file. 
+
+**Function:** `basketball-players-w-college::get_formated_data()` 
+
+**Records:** `6029 players`
+
+### Returned Data Structure
+
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | int | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify player |
+| 3 | first_name | string | first name of player |
+| 4 | last_name | string | last name of player |
+| 5 | full_name | string | first and last name of player |
+| 6 | short_name | string | shortand version of the players name |
+| 7 | headshot | string | url to players headshot |
+| 8 | jersey | int | jersey number for player |
+| 9 | weight | int | weight of player |
+| 10 | height | int | height of player |
+| 11 | position | string | position abv of player |
+| 12 | team_espn_id | int | id used be espn to identify players team |
+
+| Sources |
+|--------|
+| https://site.api.espn.com/ |
+---
+## College Baseball Players
+
+![Missing Values](../../output/tables/college_baseball_players_missing_data.png)
+
+ Retrieves All NCAA baseball players from espn's API and other sources. The combined data is processed into a structured dataframe and saved to a CSV file. 
+
+**Function:** `baseball-players-college::get_formated_data()` 
+
+**Records:** `16924 players`
+
+### Returned Data Structure
+
+| # | Column | Type | Description |
+|----|--------|------|-------------|
+| 1 | id | int | A generated unique identifier for each team |
+| 2 | espn_id | int | id used be espn to identify player |
+| 3 | full_name | string | first and last name of player |
+| 4 | short_name | string | shortand version of the players name |
+| 5 | team_espn_id | int | id used be espn to identify players team |
+
+| Sources |
+|--------|
+| https://site.api.espn.com/ |
 
