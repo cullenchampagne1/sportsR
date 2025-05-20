@@ -16,7 +16,7 @@ Team data is primarily sourced from ESPN's public API, with additional enhanceme
 ---
 ## Venue Information 
 
-Venue data is almost interely sources from Wiki tables and pages as I couldnt find a consistent set of data from any other reliable source. For a detailed breakdown of data sources and table structures, please see the [Venues Documentation](/R/venues/readme.md).
+Venue data is almost interely sourced from Wiki tables and pages as I couldnt find a consistent set of data from any other reliable source. For a detailed breakdown of data sources and table structures, please see the [Venues Documentation](/R/venues/readme.md).
 
 ### Available Venue Data:
 - [NFL Stadiums](/R/venues/readme.md#nfl-venues) - All current National Football League franchise stadiums
@@ -26,3 +26,17 @@ Venue data is almost interely sources from Wiki tables and pages as I couldnt fi
 - [College Basketball Arenas](/R/venues/readme.md#college-basketball-venues) - NCAA Division I men's basketball arenas
 - [MLB Fields](/R/venues/readme.md#mlb-venues) - All Major League Baseball fields
 - [College Baseball Fields](/R/venues/readme.md#college-baseball-venues) - NCAA Division I men's baseball fields
+---
+## Player Information 
+
+Player data is interely sourced from ESPNS internal API. For a detailed breakdown of data sources and table structures, please see the [Players Documentation](/R/players/readme.md).
+
+### Available Venue Data:
+- [NFL Players](/R/players/readme.md#nfl-players) - All current National Football League active athelets
+- [College Football Players](/R/players/readme.md#college-football-players) - NCAA Football FBS and FCS active athletes
+- [NBA Players](/R/players/readme.md#nba-players) - All National Basketball Association active athletes 
+- [WNBA Players](/R/players/readme.md#wnba-players) - All National Women's Basketball Association active athletes
+- [College Basketball Players](/R/players/readme.md#college-basketball-players) - NCAA Division I men's basketball active athletes
+- [Women's College Basketball Players](/R/players/readme.md#womens-college-basketball-players) - NCAA Division I women's basketball active atheltes
+- [MLB Players](/R/venues/readme.md#mlb-players) - All Major League Baseball active athletes
+- [College Baseball Players](/R/venues/readme.md#college-baseball-players) - NCAA Division I men's baseball active athletes
