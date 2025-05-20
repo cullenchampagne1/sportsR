@@ -1,8 +1,9 @@
 ## MLB Players
+## MLB Players
 
 ![Missing Values](../../output/tables/mlb_players_missing_data.png)
 
- Retrieves Major Leaugue baseball players from espn's API and other sources. The combined data is processed into a structured dataframe and saved to a CSV file. 
+ Retrieves Major League Baseball players from espn's API and other sources. The combined data is processed into a structured dataframe and saved to a CSV file. 
 
 **Function:** `baseball-players-mlb::get_formated_data()` 
 
@@ -13,16 +14,16 @@
 | # | Column | Type | Description |
 |----|--------|------|-------------|
 | 1 | id | int | A generated unique identifier for each team |
-| 2 | espn_id | int | id used be espn to identify player |
+| 2 | espn_id | int | ID used by ESPN to identify player |
 | 3 | first_name | string | first name of player |
 | 4 | last_name | string | last name of player |
 | 5 | full_name | string | first and last name of player |
-| 6 | short_name | string | shortand version of the players name |
+| 6 | short_name | string | shorthand version of the players name |
 | 7 | headshot | string | url to players headshot |
 | 8 | position | string | position abv of player |
 | 9 | bats | string | which hand the player bats with (right/left/both) |
 | 10 | throws | string | which hand the player throws with (right/left/both) |
-| 11 | team_espn_id | int | id used be espn to identify players team |
+| 11 | team_espn_id | int | ID used by ESPN to identify players team |
 
 | Sources |
 |--------|
@@ -43,18 +44,18 @@
 | # | Column | Type | Description |
 |----|--------|------|-------------|
 | 1 | id | int | A generated unique identifier for each team |
-| 2 | espn_id | int | id used be espn to identify player |
+| 2 | espn_id | int | ID used by ESPN to identify player |
 | 3 | first_name | string | first name of player |
 | 4 | last_name | string | last name of player |
 | 5 | full_name | string | first and last name of player |
-| 6 | short_name | string | shortand version of the players name |
+| 6 | short_name | string | shorthand version of the player's name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
 | 9 | weight | int | weight of player |
 | 10 | height | int | height of player |
-| 11 | position | string | position abv of player |
-| 12 | team_espn_id | int | id used be espn to identify players team |
-| 13 | college_espn_id | int | id used be espn to identify players college team |
+| 11 | position | string | position abbreviation of the player |
+| 12 | team_espn_id | int | ID used by ESPN to identify players team |
+| 13 | college_espn_id | int | ID used by ESPN to identify players college team |
 
 | Sources |
 |--------|
@@ -75,18 +76,18 @@
 | # | Column | Type | Description |
 |----|--------|------|-------------|
 | 1 | id | int | A generated unique identifier for each team |
-| 2 | espn_id | int | id used be espn to identify player |
+| 2 | espn_id | int | ID used by ESPN to identify the player |
 | 3 | first_name | string | first name of player |
 | 4 | last_name | string | last name of player |
 | 5 | full_name | string | first and last name of player |
-| 6 | short_name | string | shortand version of the players name |
+| 6 | short_name | string | shorthand version of the player's name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
 | 9 | weight | int | weight of player |
 | 10 | height | int | height of player |
 | 11 | position | string | position abv of player |
-| 12 | team_espn_id | int | id used be espn to identify players team |
-| 13 | college_espn_id | int | id used be espn to identify players college team |
+| 12 | team_espn_id | int | ID used by ESPN to identify the player's team |
+| 13 | college_espn_id | int | ID used by ESPN to identify the player's college team |
 
 | Sources |
 |--------|
@@ -106,19 +107,19 @@
 
 | # | Column | Type | Description |
 |----|--------|------|-------------|
-| 1 | id | int | A generated unique identifier for each team |
-| 2 | espn_id | int | id used be espn to identify player |
+| 1 | id | int | A generated unique identifier for each player |
+| 2 | espn_id | int | ID used by ESPN to identify the player |
 | 3 | first_name | string | first name of player |
 | 4 | last_name | string | last name of player |
 | 5 | full_name | string | first and last name of player |
-| 6 | short_name | string | shortand version of the players name |
-| 7 | headshot | string | url to players headshot |
+| 6 | short_name | string | shorthand version of the player's name |
+| 7 | headshot | string | URL to player's headshot |
 | 8 | jersey | int | jersey number for player |
 | 9 | weight | int | weight of player |
 | 10 | height | int | height of player |
-| 11 | position | string | position abv of player |
-| 12 | team_espn_id | int | id used be espn to identify players team |
-| 13 | college_espn_id | int | id used be espn to identify players college team |
+| 11 | position | string | position abbreviation of the player |
+| 12 | team_espn_id | int | ID used by ESPN to identify the player's team |
+| 13 | college_espn_id | int | ID used by ESPN to identify the player's college team |
 
 | Sources |
 |--------|
@@ -139,18 +140,17 @@
 | # | Column | Type | Description |
 |----|--------|------|-------------|
 | 1 | id | int | A generated unique identifier for each team |
-| 2 | espn_id | int | id used be espn to identify player |
+| 2 | espn_id | int | ID used by ESPN to identify the player |
 | 3 | first_name | string | first name of player |
 | 4 | last_name | string | last name of player |
 | 5 | full_name | string | first and last name of player |
-| 6 | short_name | string | shortand version of the players name |
+| 6 | short_name | string | shorthand version of the player's name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
 | 9 | weight | int | weight of player |
 | 10 | height | int | height of player |
 | 11 | position | string | position abv of player |
-| 12 | team_espn_id | int | id used be espn to identify players team |
-| 13 | college_espn_id | int | id used be espn to identify players college team |
+| 12 | team_espn_id | int | ID used by ESPN to identify the player's team |
 
 | Sources |
 |--------|
@@ -171,16 +171,16 @@
 | # | Column | Type | Description |
 |----|--------|------|-------------|
 | 1 | id | int | A generated unique identifier for each team |
-| 2 | espn_id | int | id used be espn to identify player |
+| 2 | espn_id | int | ID used by ESPN to identify the player |
 | 3 | first_name | string | first name of player |
 | 4 | last_name | string | last name of player |
 | 5 | full_name | string | first and last name of player |
-| 6 | short_name | string | shortand version of the players name |
+| 6 | short_name | string | shorthand version of the player's name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
 | 9 | height | int | height of player |
 | 10 | position | string | position abv of player |
-| 11 | team_espn_id | int | id used be espn to identify players team |
+| 11 | team_espn_id | int | ID used by ESPN to identify the player's team |
 
 | Sources |
 |--------|
@@ -231,10 +231,10 @@
 | # | Column | Type | Description |
 |----|--------|------|-------------|
 | 1 | id | int | A generated unique identifier for each team |
-| 2 | espn_id | int | id used be espn to identify player |
+| 2 | espn_id | int | ID used by ESPN to identify player |
 | 3 | full_name | string | first and last name of player |
-| 4 | short_name | string | shortand version of the players name |
-| 5 | team_espn_id | int | id used be espn to identify players team |
+| 4 | short_name | string | shorthand version of the player's name |
+| 5 | team_espn_id | int | ID used by ESPN to identify players team |
 
 | Sources |
 |--------|

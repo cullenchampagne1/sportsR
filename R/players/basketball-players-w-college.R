@@ -16,19 +16,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Utilties for downloading data from cache
+# Utilities for downloading data from cache
 source("R/util-data-download.R")
-# Utilties for generating unique team ids
+# Utilities for generating unique team ids
 source("R/util-hash-generation.R")
-# Utilties for generating reports
+# Utilities for generating reports
 source("R/util-data-report.R")
-# Utilties for updating markdown
+# Utilities for updating markdown
 source("R/util-markdown.R")
 
 library(rvest, quietly = TRUE, warn.conflicts = FALSE) # Filter through and parse html objects
-library(tidyr, quietly = TRUE, warn.conflicts = FALSE) # Unest list attributed to columns in dataframe
-library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management of dataframes
-library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
+library(tidyr, quietly = TRUE, warn.conflicts = FALSE) # Unnest list attributes to columns in dataframe
+library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / management of dataframes
+library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load YAML configuration into program
 library(purrr, quietly = TRUE, warn.conflicts = FALSE)  # Map functions to values in dataframe
 
 # Read configuration from configs directory
@@ -46,9 +46,9 @@ all_players_file <- "data/processed/basketball-players-womens-college.csv"
 #' @source https://site.api.espn.com/
 #'
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
-#' @param save Logical indicating weather to save data to data/processed folder
+#' @param save Logical indicating whether to save data to data/processed folder
 #'
-#' @return A dataframe containing the following information for each basketball team
+#' @return A dataframe containing the following information for each basketball player
 #'  id [int] - A generated unique identifier for each team
 #'  espn_id [int] - id used be espn to identify player
 #'  first_name [string] - first name of player
@@ -63,7 +63,7 @@ all_players_file <- "data/processed/basketball-players-womens-college.csv"
 #'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
-    # Grab College Football data from ESPN
+    # Grab College Womens Basketball data from ESPN
     college_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, force_refresh = FALSE, simplifyDataFrame = FALSE)
     if (verbose) cat(paste0("\n\033[32mDownloading ESPN Womens Basketball Teams: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
     # Extract all team ids from ESPN json structure
@@ -93,7 +93,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
         })
         espn_players <- dplyr::bind_rows(espn_players, players)
     }
-    # Create Uniquie id for all players and put as first column
+    # Create unique ID for all players and put as first column
     espn_players <- espn_players %>% dplyr::mutate(id = encode_id(paste0("B", espn_id), first_name)) %>% select(id, dplyr::everything())
 
     # Analyze missing data

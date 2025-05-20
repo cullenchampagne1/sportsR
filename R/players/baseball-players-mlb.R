@@ -16,29 +16,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Utilties for downloading data from cache
+# Utilities for downloading data from cache
 source("R/util-data-download.R")
-# Utilties for generating unique team ids
+# Utilities for generating unique team ids
 source("R/util-hash-generation.R")
-# Utilties for generating reports
+# Utilities for generating reports
 source("R/util-data-report.R")
-# Utilties for updating markdown
+# Utilities for updating markdown
 source("R/util-markdown.R")
 
 library(rvest, quietly = TRUE, warn.conflicts = FALSE) # Filter through and parse html objects
-library(tidyr, quietly = TRUE, warn.conflicts = FALSE) # Unest list attributed to columns in dataframe
-library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management of dataframes
-library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
+library(tidyr, quietly = TRUE, warn.conflicts = FALSE) # Unnest list attributes to columns in dataframe
+library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / management of dataframes
+library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load YAML configuration into program
 library(purrr, quietly = TRUE, warn.conflicts = FALSE)  # Map functions to values in dataframe
 
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/baseball-mlb.yaml")
-# File to hold formated data
+# File to hold formatted data
 all_players_file <- "data/processed/baseball-players-mlb.csv"
 
 #' MLB Players
 #'
-#' Retrieves Major Leaugue baseball players from espn's API and other
+#' Retrieves Major League Baseball players from espn's API and other
 #' sources. The combined data is processed into a structured dataframe
 #' and saved to a CSV file.
 #'
@@ -47,24 +47,24 @@ all_players_file <- "data/processed/baseball-players-mlb.csv"
 #' @source https://site.api.espn.com/
 #'
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
-#' @param save Logical indicating weather to save data to data/processed folder
+#' @param save Logical indicating whether to save data to data/processed folder
 #'
-#' @return A dataframe containing the following information for each basketball team
+#' @return A dataframe containing the following information for each baseball player
 #'  id [int] - A generated unique identifier for each team
-#'  espn_id [int] - id used be espn to identify player
+#'  espn_id [int] - ID used by ESPN to identify player
 #'  first_name [string] - first name of player
 #'  last_name [string] - last name of player
 #'  full_name [string] - first and last name of player
-#'  short_name [string] - shortand version of the players name
+#'  short_name [string] - shorthand version of the players name
 #'  headshot [string] - url to players headshot
 #'  position [string] - position abv of player
 #'  bats [string] - which hand the player bats with (right/left/both)
 #'  throws [string] - which hand the player throws with (right/left/both)
-#'  team_espn_id [int] - id used be espn to identify players team
+#'  team_espn_id [int] - ID used by ESPN to identify players team
 #'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
     
-    # Grab College Football data from ESPN
+    # Grab MLB player data from ESPN
     espn_players <- download_fromJSON(config$LINKS$PLAYERS_ESPN, force_refresh = FALSE, simplifyDataFrame = FALSE)
     if (verbose) cat(paste0("\n\033[32mDownloading ESPN Baseball Players: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
     # Extract the items list from json returned
@@ -120,7 +120,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     if (save) write.csv(espn_players, all_players_file, row.names = FALSE)
     # Save rds file of data
     if (save) saveRDS(espn_players, sub("\\.csv$", ".rds", all_players_file))
-    # Return formated data
+    # Return formatted data
     return(espn_players)
 }
 

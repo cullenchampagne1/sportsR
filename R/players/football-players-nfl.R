@@ -49,20 +49,20 @@ all_players_file <- "data/processed/football-players-nfl.csv"
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
 #' @param save Logical indicating weather to save data to data/processed folder
 #'
-#' @return A dataframe containing the following information for each basketball team
-#'  id [int] - A generated unique identifier for each team
-#'  espn_id [int] - id used be espn to identify player
+#' @return A dataframe containing the following information for each football player
+#'  id [int] - A generated unique identifier for each player
+#'  espn_id [int] - ID used by ESPN to identify the player
 #'  first_name [string] - first name of player
 #'  last_name [string] - last name of player
 #'  full_name [string] - first and last name of player
-#'  short_name [string] - shortand version of the players name
-#'  headshot [string] - url to players headshot
+#'  short_name [string] - shorthand version of the player's name
+#'  headshot [string] - URL to player's headshot
 #'  jersey [int] - jersey number for player
 #'  weight [int] - weight of player
 #'  height [int] - height of player
-#'  position [string] - position abv of player
-#'  team_espn_id [int] - id used be espn to identify players team
-#'  college_espn_id [int] - id used be espn to identify players college team
+#'  position [string] - position abbreviation of the player
+#'  team_espn_id [int] - ID used by ESPN to identify the player's team
+#'  college_espn_id [int] - ID used by ESPN to identify the player's college team
 #'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
     
