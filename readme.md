@@ -38,5 +38,5 @@ Player data is sourced exclusively from ESPN’s internal API. For schema detail
 - [WNBA Players](/R/players/readme.md#wnba-players) - All active National Women's Basketball Association athletes
 - [College Basketball Players](/R/players/readme.md#college-basketball-players) - NCAA Division I men's basketball active athletes
 - [Women's College Basketball Players](/R/players/readme.md#womens-college-basketball-players) - NCAA Division I women's basketball active atheltes
-- [MLB Players](/R/venues/readme.md#mlb-players) - All active Major League Baseball athletes
-- [College Baseball Players](/R/venues/readme.md#college-baseball-players) - NCAA Division I men's baseball active athletes
+- [MLB Players](/R/players/readme.md#mlb-players) - All active Major League Baseball athletes
+- [College Baseball Players](/R/players/readme.md#college-baseball-players) - NCAA Division I men's baseball active athletes
