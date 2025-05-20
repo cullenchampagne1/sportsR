@@ -30,7 +30,6 @@ library(tidyr, quietly = TRUE, warn.conflicts = FALSE) # Unest list attributed t
 library(dplyr, quietly = TRUE, warn.conflicts = FALSE) # Mutation / Management of dataframes
 library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load yaml configiugration into program
 library(purrr, quietly = TRUE, warn.conflicts = FALSE)  # Map functions to values in dataframe
-library(fuzzyjoin, quietly = TRUE, warn.conflicts = FALSE)
 
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/basketball-wnba.yaml")
