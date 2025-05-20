@@ -2,7 +2,7 @@
 ---
 ## Team Information
 
-Team data is primarily sourced from ESPN's public API, with additional enhancements from league-specific websites, wikipedia tables, and NCAA's official statistics website (for college sports). For a detailed breakdown of data sources and table structures, please see the [Teams Documentation](/R/teams/readme.md).
+Team data is primarily pulled from ESPN’s public API, with supplementary details from league-specific websites, Wikipedia tables, and the NCAA’s official stats pages (for college programs). For full data source details and schema documentation, refer to the [Teams Documentation](/R/teams/readme.md).
 
 ### Available Team Data:
 - [NFL Teams](/R/teams/readme.md#nfl-teams) - All current National Football League franchises  
@@ -16,7 +16,7 @@ Team data is primarily sourced from ESPN's public API, with additional enhanceme
 ---
 ## Venue Information 
 
-Venue data is almost interely sources from Wiki tables and pages as i couldnt find a consistent set of sources from any other reliable sources. For a detailed breakdown of data sources and table structures, please see the [Venues Documentation](/R/venues/readme.md).
+Venue data is almost entirely sourced from Wikipedia, as no consistent and reliable dataset was found elsewhere. For details on data structure and origin, see the [Venues Documentation](/R/venues/readme.md).
 
 ### Available Venue Data:
 - [NFL Stadiums](/R/venues/readme.md#nfl-venues) - All current National Football League franchise stadiums
@@ -26,3 +26,17 @@ Venue data is almost interely sources from Wiki tables and pages as i couldnt fi
 - [College Basketball Arenas](/R/venues/readme.md#college-basketball-venues) - NCAA Division I men's basketball arenas
 - [MLB Fields](/R/venues/readme.md#mlb-venues) - All Major League Baseball fields
 - [College Baseball Fields](/R/venues/readme.md#college-baseball-venues) - NCAA Division I men's baseball fields
+---
+## Player Information 
+
+Player data is sourced exclusively from ESPN’s internal API. For schema details and source references, visit the [Players Documentation](/R/players/readme.md).
+
+### Available Venue Data:
+- [NFL Players](/R/players/readme.md#nfl-players) - All active National Football League athelets
+- [College Football Players](/R/players/readme.md#college-football-players) - NCAA Football FBS and FCS active athletes
+- [NBA Players](/R/players/readme.md#nba-players) - All active National Basketball Association athletes 
+- [WNBA Players](/R/players/readme.md#wnba-players) - All active National Women's Basketball Association athletes
+- [College Basketball Players](/R/players/readme.md#college-basketball-players) - NCAA Division I men's basketball active athletes
+- [Women's College Basketball Players](/R/players/readme.md#womens-college-basketball-players) - NCAA Division I women's basketball active atheltes
+- [MLB Players](/R/players/readme.md#mlb-players) - All active Major League Baseball athletes
+- [College Baseball Players](/R/players/readme.md#college-baseball-players) - NCAA Division I men's baseball active athletes
