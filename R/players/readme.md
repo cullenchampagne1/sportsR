@@ -1,4 +1,4 @@
-## MLB Players
+
 ## MLB Players
 
 ![Missing Values](../../output/tables/mlb_players_missing_data.png)
