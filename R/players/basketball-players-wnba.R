@@ -37,6 +37,34 @@ config <- yaml::read_yaml("configs/basketball-wnba.yaml")
 # File to hold formated data
 all_players_file <- "data/processed/basketball-players-wnba.csv"
 
+#' WNBA Players
+#'
+#' Retrieves Womens National Basketball Association players from espn's API and other
+#' sources. The combined data is processed into a structured dataframe
+#' and saved to a CSV file.
+#'
+#' @values ../../output/tables/wnba_players_missing_data.png
+#'
+#' @source https://site.api.espn.com/
+#'
+#' @param verbose Logical indicating whether to print progress messages (default: TRUE)
+#' @param save Logical indicating weather to save data to data/processed folder
+#'
+#' @return A dataframe containing the following information for each basketball team
+#'  id [int] - A generated unique identifier for each team
+#'  espn_id [int] - id used be espn to identify player
+#'  first_name [string] - first name of player
+#'  last_name [string] - last name of player
+#'  full_name [string] - first and last name of player
+#'  short_name [string] - shortand version of the players name
+#'  headshot [string] - url to players headshot
+#'  jersey [int] - jersey number for player
+#'  weight[int] - weight of player
+#'  height [int] - height of player
+#'  position [string] - position abv of player
+#'  team_espn_id [int] - id used be espn to identify players team
+#'  college_espn_id [int] - id used be espn to identify players college team
+#'
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
     
     # Grab College Football data from ESPN
@@ -84,8 +112,12 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     dplyr::mutate(id = encode_id(paste0("B", espn_id), first_name)) %>%
     # Reorder columns and remove active data
     dplyr::select(id, dplyr::everything())
+    
+    # Analyze missing data
+    analyze_missing_data("WNBA Players", espn_players)
+    process_markdown_file("R/players/basketball-players-wnba.R", "R/players/readme.md", nrow(espn_players), "players")
 
-    if (verbose) cat(paste0("\n\033[90mWNBA Basketball Data Saved To: /", all_players_file, "\033[0m\n"))
+    if (verbose) cat(paste0("\n\n\033[90mWNBA Basketball Data Saved To: /", all_players_file, "\033[0m\n"))
     # Save any created name bindings to file
     if (save) write.csv(espn_players, all_players_file, row.names = FALSE)
     # Save rds file of data
