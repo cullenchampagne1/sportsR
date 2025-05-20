@@ -57,7 +57,6 @@ all_players_file <- "data/processed/basketball-players-college.csv"
 #'  short_name [string] - shortand version of the players name
 #'  headshot [string] - url to players headshot
 #'  jersey [int] - jersey number for player
-#'  weight [int] - weight of player
 #'  height [int] - height of player
 #'  position [string] - position abv of player
 #'  team_espn_id [int] - id used be espn to identify players team
@@ -87,7 +86,6 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
                 short_name = player$shortName,
                 headshot =  player$headshot$href %||% NA_character_,
                 jersey = player$jersey %||% NA,
-                weight = player$weight %||% NA,
                 height = player$height %||% NA,
                 position = player$position$abbreviation,
                 team_espn_id = team_id

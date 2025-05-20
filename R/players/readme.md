@@ -178,10 +178,9 @@
 | 6 | short_name | string | shortand version of the players name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
-| 9 | weight | int | weight of player |
-| 10 | height | int | height of player |
-| 11 | position | string | position abv of player |
-| 12 | team_espn_id | int | id used be espn to identify players team |
+| 9 | height | int | height of player |
+| 10 | position | string | position abv of player |
+| 11 | team_espn_id | int | id used be espn to identify players team |
 
 | Sources |
 |--------|
@@ -209,10 +208,9 @@
 | 6 | short_name | string | shortand version of the players name |
 | 7 | headshot | string | url to players headshot |
 | 8 | jersey | int | jersey number for player |
-| 9 | weight | int | weight of player |
-| 10 | height | int | height of player |
-| 11 | position | string | position abv of player |
-| 12 | team_espn_id | int | id used be espn to identify players team |
+| 9 | height | int | height of player |
+| 10 | position | string | position abv of player |
+| 11 | team_espn_id | int | id used be espn to identify players team |
 
 | Sources |
 |--------|
