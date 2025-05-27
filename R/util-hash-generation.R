@@ -32,20 +32,25 @@ library(stringr, quietly = TRUE, warn.conflicts = FALSE) # String Manipulation
 # Filename where reports are stored
 generated_report_file <- "output/csv/generated_ids_all.csv"
 
-#' Takes in a input string and prefix string and generates a uniue ID for use in
-#' a relational databse, all generated ids are saved, see generate_id_report()
+#' Takes in a input string and prefix string and generates a unique ID for use in
+#' a relational database, all generated ids are saved, see generate_id_report()
 #'
 #' @param input_string A string to use for hash
-#' @param prefix_string A string to use for begining prefix
+#' @param prefix_string A string to use for beginning prefix
+#' @param hash_length An optional integer controlling the length of the numeric hash (default is 5)
 #'
 #' @returns A string representing both values
-encode_id <- function(input_string, prefix_string) {
-    # Generate 5 digit uniue hash from input string
-    hash <- sprintf("%05d", strtoi(substr(sapply(
-        as.character(input_string), function(x) digest::digest(x, algo = "xxhash32")), 1, 4), 16L) %% 100000)
-    # Generate a perfix for ID using first 3 letters of prefix string
+encode_id <- function(input_string, prefix_string, hash_length = 5) {
+    # Generate a numeric hash with variable length based on hash_length
+    raw_hashes <- sapply(as.character(input_string), function(x) digest::digest(x, algo = "xxhash32"))
+    numeric_hashes <- sapply(raw_hashes, function(h) {
+        hex_sub <- substr(gsub("[^0-9a-fA-F]", "", h), 1, ceiling(hash_length * log(10, 16)))
+        strtoi(hex_sub, base = 16L)
+    })
+    hash <- str_pad(as.character(numeric_hashes %% 10^hash_length), width = hash_length, pad = "0")
+    # Generate a prefix for ID using first 3 letters of prefix string
     prefix <- substr(str_pad(gsub("[^A-Z]", "", toupper(prefix_string)), 3, "right", "X"), 1, 3)
-    # Generate encoded Id form prefix and hash
+    # Generate encoded Id from prefix and hash
     encoded_id <- paste0(prefix, hash)
     # Generate record with all data used in generation
     hash_record <- data.frame(
