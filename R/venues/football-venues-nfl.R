@@ -63,7 +63,7 @@ all_venues_file <- "data/processed/football-venues-nfl.csv"
 #'  roof [string] - Venue roof type
 #'  website [string] - Official venue website URL
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_venues <- function(verbose = TRUE, save = TRUE) {
 
     # Helper function to handle NA values in data
     `%||%` <- function(x, y) if (length(x) > 0) x else y
@@ -168,9 +168,9 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     # Analyze missing data and process markdown file
     analyze_missing_data("NFL Venues", nfl_venue_details)
     plot_coordinates_map("NFL Venues", nfl_venue_details)
-    process_markdown_file("R/venues/football-venues-nfl.R", "R/venues/readme.md", nrow(nfl_venue_details), "venues")
+    if (sys.nframe() == 0) process_markdown_file("R/venues/football-venues-nfl.R", "R/venues/readme.md", nrow(nfl_venue_details), "venues")
 
-    if (verbose) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_venues_file, "\033[0m\n"))
+    if (verbose && save) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_venues_file, "\033[0m\n"))
     # Save any created name bindings to file
     if (save) write.csv(nfl_venue_details, all_venues_file, row.names = FALSE)
     # Save rds file of data
@@ -180,4 +180,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-invisible(get_formated_data())
+if (sys.nframe() == 0) invisible(get_formated_venues())

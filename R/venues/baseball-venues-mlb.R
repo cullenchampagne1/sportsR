@@ -68,7 +68,7 @@ all_venues_file <- "data/processed/baseball-venues-mlb.csv"
 #'  field_size_right_center [string] - Right-center field distance in feet
 #'  field_size_right [string] - Right field distance in feet
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_venues <- function(verbose = TRUE, save = TRUE) {
 
     # Helper function to handle NA values in data
     `%||%` <- function(x, y) if (length(x) > 0) x else y
@@ -212,9 +212,9 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     # Analyze missing data and process markdown file
     analyze_missing_data("MLB Venues", mlb_venue_details)
     plot_coordinates_map("MLB Venues", mlb_venue_details)
-    process_markdown_file("R/venues/baseball-venues-mlb.R", "R/venues/readme.md", nrow(mlb_venue_details), "venues")
+    if (sys.nframe() == 0) process_markdown_file("R/venues/baseball-venues-mlb.R", "R/venues/readme.md", nrow(mlb_venue_details), "venues")
 
-    if (verbose) cat(paste0("\n\033[90mMLB Baseball Data Saved To: /", all_venues_file, "\033[0m\n"))
+    if (verbose && save) cat(paste0("\n\033[90mMLB Baseball Data Saved To: /", all_venues_file, "\033[0m\n"))
     # Save any created name bindings to file
     if (save) write.csv(mlb_venue_details, all_venues_file, row.names = FALSE)
     # Save rds file of data
@@ -224,4 +224,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-invisible(get_formated_data())
+if (sys.nframe() == 0) invisible(get_formated_venues())

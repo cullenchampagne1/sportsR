@@ -3,3 +3,4 @@ data/processed/*
 .env
 .DS_Store
 **/.DS_Store
+R/relationships

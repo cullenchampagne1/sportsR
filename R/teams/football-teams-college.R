@@ -80,7 +80,7 @@ all_teams_file <- "data/processed/football-teams-college.csv"
 #'  twitter [string] -Twitter handle of team starting with '@'
 #'  venue [string] - Current venue where team plays
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_teams <- function(verbose = TRUE, save = TRUE) {
     # Grab College Football data from ESPN
     college_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, force_refresh = TRUE, simplifyDataFrame = FALSE)
     if (verbose) cat(paste0("\n\033[32mDownloading ESPN Football Teams: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
@@ -295,7 +295,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
             secondary = alternateColor,
         ) %>%
         # Create a type column to identify sport and venue column for later
-        dplyr::mutate(type = "NCAAF", venue = NA_character_) %>%
+        dplyr::mutate(type = "CFB", venue = NA_character_) %>%
         # Set values based on Na counditions for NCAA teams
         dplyr::mutate(university = university %||% location) %>%
         # Create a unique id for each team
@@ -465,10 +465,10 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
     # Analyze missing data
     analyze_missing_data("College Football", all_college_data)
-    process_markdown_file("R/teams/football-teams-college.R", "R/teams/readme.md", nrow(all_college_data))
+    if (sys.nframe() == 0) process_markdown_file("R/teams/football-teams-college.R", "R/teams/readme.md", nrow(all_college_data))
 
     if (verbose) cat(paste0("\n\033[90m", nrow(unbounded_ncaa_data), " NCAA Teams and ", nrow(unbounded_espn_data), " ESPN Teams Could Not be Binded: /output/csv/unmatched_...\033[0m"))
-    if (verbose) cat(paste0("\n\033[90mCollege Football Data Saved To: /", all_teams_file, "\033[0m\n"))
+    if (verbose && save) cat(paste0("\n\033[90mCollege Football Data Saved To: /", all_teams_file, "\033[0m\n"))
     
     # Save generated csollege data
     if (save) write.csv(all_college_data, all_teams_file, row.names = FALSE)
@@ -479,4 +479,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-invisible(get_formated_data())
+if (sys.nframe() == 0) invisible(get_formated_teams())

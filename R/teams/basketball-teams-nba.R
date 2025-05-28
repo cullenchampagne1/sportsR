@@ -69,7 +69,7 @@ all_teams_file <- "data/processed/basketball-teams-nba.csv"
 #'  webiste [string] - Website url for team
 #'  venue [string] - Current venue where team plays
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_teams <- function(verbose = TRUE, save = TRUE) {
     # Grab College Football data from ESPN
     all_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, simplifyDataFrame = FALSE)
     if (verbose) cat(paste0("\n\033[32mDownloading NBA Teams: ", config$LINKS$ESPN_TEAMS, "\033[0m"))
@@ -165,7 +165,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
         # Add a stanard # before color values if isnt already there and value isnt NA
         dplyr::mutate(dplyr::across(c(primary, secondary), ~ ifelse(!is.na(.) & !str_starts(., "#"), paste0("#", .), .))) %>%
         # Create a type column and move after id - reorder all columns to match standard
-        dplyr::mutate(type = "NBA") %>%
+        dplyr::mutate(type = "BKB") %>%
         dplyr::select(id, espn_id, type, abv, full_name, short_name, division, conference, dplyr::everything()) %>%
         dplyr::relocate(twitter, .after = last_col()) %>%
         dplyr::relocate(website, .after = last_col()) %>%
@@ -173,9 +173,9 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
     # Analyze missing data
     analyze_missing_data("NBA", all_nba_teams)
-    process_markdown_file("R/teams/basketball-teams-nba.R", "R/teams/readme.md", nrow(all_nba_teams))
+    if (sys.nframe() == 0) process_markdown_file("R/teams/basketball-teams-nba.R", "R/teams/readme.md", nrow(all_nba_teams))
 
-    if (verbose) cat(paste0("\n\033[90mNBA Basketball Data Saved To: /", all_teams_file, "\033[0m\n"))
+    if (verbose && save) cat(paste0("\n\033[90mNBA Basketball Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save any created name bindings to file
     if (save) write.csv(all_nba_teams, all_teams_file, row.names = FALSE)
     # Save rds file of data
@@ -185,4 +185,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-invisible(get_formated_data())
+if (sys.nframe() == 0) invisible(get_formated_teams())

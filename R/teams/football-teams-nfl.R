@@ -72,7 +72,7 @@ all_teams_file <- "data/processed/football-teams-nfl.csv"
 #'  general_manager [string] - Current general manager of team
 #'  venue [string] - Current venue where team plays
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_teams <- function(verbose = TRUE, save = TRUE) {
     
     # Processes raw ESPN team JSON data into structured dataframe
     #
@@ -166,7 +166,7 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
         # Add a stanard # before color values if isnt already there and value isnt NA
         dplyr::mutate(dplyr::across(c(primary, secondary), ~ ifelse(!is.na(.) & !str_starts(., "#"), paste0("#", .), .))) %>%
         # Create a type column and move after id
-        dplyr::mutate(type = "NFL")
+        dplyr::mutate(type = "FB")
 
     # Dowload current Offensive Coordinators for the NFL
     page_content <- download_fromHTML(config$LINKS$OFFENSIVE_COORDINATORS)
@@ -203,9 +203,9 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 
     # Analyze missing data
     analyze_missing_data("NFL", all_nfl_data)
-    process_markdown_file("R/teams/football-teams-nfl.R", "R/teams/readme.md", nrow(all_nfl_data))
+    if (sys.nframe() == 0) process_markdown_file("R/teams/football-teams-nfl.R", "R/teams/readme.md", nrow(all_nfl_data))
 
-    if (verbose) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_teams_file, "\033[0m\n"))
+    if (verbose && save) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save generated csollege data
     if (save) write.csv(all_nfl_data, all_teams_file, row.names = FALSE)
     # Save rds file of data
@@ -215,4 +215,4 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
 }
 
 # If file is being run stand-alone, run function
-invisible(get_formated_data())
+if (sys.nframe() == 0) invisible(get_formated_teams())
