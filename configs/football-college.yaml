@@ -7,12 +7,25 @@ LINKS:
     - "https://www.ncaa.com/stats/football/fbs/current/team/27"
     - "https://www.ncaa.com/stats/football/fbs/current/team/27/p2"
     - "https://www.ncaa.com/stats/football/fbs/current/team/27/p3"
+    - "https://www.ncaa.com/stats/football/d2/current/team/27"
+    - "https://www.ncaa.com/stats/football/d2/current/team/27/p2"
+    - "https://www.ncaa.com/stats/football/d2/current/team/27/p3"
+    - "https://www.ncaa.com/stats/football/d2/current/team/27/p4"
+    - "https://www.ncaa.com/stats/football/d3/current/team/27"
+    - "https://www.ncaa.com/stats/football/d3/current/team/27/p2"
+    - "https://www.ncaa.com/stats/football/d3/current/team/27/p3"
+    - "https://www.ncaa.com/stats/football/d3/current/team/27/p4"
+    - "https://www.ncaa.com/stats/football/d3/current/team/27/p5"
   NCAA_COACHES:
     - "https://en.wikipedia.org/wiki/List_of_current_NCAA_Division_I_FBS_football_coaches"
+    - "https://en.wikipedia.org/wiki/List_of_current_NCAA_Division_II_football_coaches"
+    - "https://en.wikipedia.org/wiki/List_of_current_NCAA_Division_III_football_coaches"
     - "https://en.wikipedia.org/wiki/List_of_current_NCAA_Division_I_FCS_football_coaches"
   NCAA_IDS:
     - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=11.0&ranking_period=84.0&sport_code=MFB&stat_seq=22.0"
     - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=12.0&ranking_period=39.0&sport_code=MFB&stat_seq=27.0"
+    - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=2.0&ranking_period=34.0&sport_code=MFB&stat_seq=27.0"
+    - "https://stats.ncaa.org/rankings/national_ranking?academic_year=2025.0&division=3.0&ranking_period=30.0&sport_code=MFB&stat_seq=27.0"
   FBS_VENUES: "https://en.wikipedia.org/wiki/List_of_NCAA_Division_I_FBS_football_stadiums"
   FCS_VENUES: "https://en.wikipedia.org/wiki/List_of_NCAA_Division_I_FCS_football_stadiums"
 ATTRIBUTES:
@@ -28,6 +41,10 @@ ATTRIBUTES:
     TABLE: "(//table)[1]"
   "https://en.wikipedia.org/wiki/List_of_current_NCAA_Division_I_FCS_football_coaches": 
     TABLE: "(//table)[2]"
+  "https://en.wikipedia.org/wiki/List_of_current_NCAA_Division_II_football_coaches": 
+    TABLE: "(//table)[2]"
+  "https://en.wikipedia.org/wiki/List_of_current_NCAA_Division_III_football_coaches": 
+    TABLE: "(//table)[1]"
   NCAA_DETAILED:
     CONFERENCE: "//dt[text()='Conference']/following-sibling::dd[1]"
     NICKNAME: "//dt[text()='Nickname']/following-sibling::dd[1]"
