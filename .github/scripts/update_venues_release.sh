@@ -9,7 +9,7 @@ mkdir -p "$OUTPUT_DIR"
 echo "→ Executing R scripts in R/venues/"
 for script in R/venues/*.R; do
   echo "   • Running $script → $OUTPUT_DIR"
-  Rscript --vanilla "$script" "$OUTPUT_DIR"
+  Rscript --vanilla -e "source('$script'); get_formated_data()"
 done
 
 NOTES_FILE=$(mktemp)
