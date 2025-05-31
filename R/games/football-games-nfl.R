@@ -61,7 +61,7 @@ all_games_file <- "data/processed/football-games-nfl.csv"
 #'  away_espn_id [string] - ESPN ID for the away team
 #'  play_by_play [string] - URL to the game's play-by-play JSON data
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_games <- function(verbose = TRUE, save = TRUE) {
 
     # Get current year to backlog data 2 years
     current_year <- as.numeric(format(Sys.Date(), "%Y"))

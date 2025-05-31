@@ -34,7 +34,7 @@ library(purrr, quietly = TRUE, warn.conflicts = FALSE)  # Map functions to value
 # Read configuration from configs directory
 config <- yaml::read_yaml("configs/football-nfl.yaml")
 # File to hold formated data
-all_players_file <- "data/processed/football-players-nfl.csv"
+get_formated_players <- "data/processed/football-players-nfl.csv"
 
 #' NFL Players
 #'
@@ -64,7 +64,7 @@ all_players_file <- "data/processed/football-players-nfl.csv"
 #'  team_espn_id [int] - ID used by ESPN to identify the player's team
 #'  college_espn_id [int] - ID used by ESPN to identify the player's college team
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_players <- function(verbose = TRUE, save = TRUE) {
     
     # Grab College Football data from ESPN
     espn_players <- download_fromJSON(config$LINKS$PLAYERS_ESPN, force_refresh = FALSE, simplifyDataFrame = FALSE)

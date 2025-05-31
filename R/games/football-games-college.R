@@ -61,7 +61,7 @@ all_games_file <- "data/processed/football-games-college.csv"
 #'  away_espn_id [string] - ESPN ID for the away team
 #'  play_by_play [string] - URL to the game's play-by-play JSON data
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_games <- function(verbose = TRUE, save = TRUE) {
 
     # Construct a sequence of dates from January 1, 2023 to December 31, 2024
     start_date <- as.Date("2023-01-01")

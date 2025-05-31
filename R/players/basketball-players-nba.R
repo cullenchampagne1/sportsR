@@ -64,7 +64,7 @@ all_players_file <- "data/processed/basketball-players-nba.csv"
 #'  team_espn_id [int] - ID used by ESPN to identify players team
 #'  college_espn_id [int] - ID used by ESPN to identify players college team
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_players <- function(verbose = TRUE, save = TRUE) {
     
     # Grab NBA player data from ESPN
     espn_players <- download_fromJSON(config$LINKS$PLAYERS_ESPN, force_refresh = FALSE, simplifyDataFrame = FALSE)

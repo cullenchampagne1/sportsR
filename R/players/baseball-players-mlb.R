@@ -62,7 +62,7 @@ all_players_file <- "data/processed/baseball-players-mlb.csv"
 #'  throws [string] - which hand the player throws with (right/left/both)
 #'  team_espn_id [int] - ID used by ESPN to identify players team
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_players <- function(verbose = TRUE, save = TRUE) {
     
     # Grab MLB player data from ESPN
     espn_players <- download_fromJSON(config$LINKS$PLAYERS_ESPN, force_refresh = FALSE, simplifyDataFrame = FALSE)

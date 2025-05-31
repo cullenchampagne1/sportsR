@@ -55,7 +55,7 @@ all_players_file <- "data/processed/baseball-players-college.csv"
 #'  short_name [string] - shorthand version of the player's name
 #'  team_espn_id [int] - ID used by ESPN to identify players team
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_players <- function(verbose = TRUE, save = TRUE) {
 
     # Grab College Baseball data from ESPN
     college_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, force_refresh = FALSE, simplifyDataFrame = FALSE)

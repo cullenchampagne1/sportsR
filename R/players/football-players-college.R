@@ -62,7 +62,7 @@ all_players_file <- "data/processed/football-players-college.csv"
 #'  position [string] - position abv of player
 #'  team_espn_id [int] - ID used by ESPN to identify the player's team
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_players <- function(verbose = TRUE, save = TRUE) {
 
     # Grab College Football data from ESPN
     college_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, force_refresh = FALSE, simplifyDataFrame = FALSE)

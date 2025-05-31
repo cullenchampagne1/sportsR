@@ -61,7 +61,7 @@ all_games_file <- "data/processed/baseball-games-mlb.csv"
 #'  away_espn_id [string] - ESPN ID for the away team
 #'  play_by_play [string] - URL to the game's play-by-play JSON data
 #' 
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_games <- function(verbose = TRUE, save = TRUE) {
 
     # Read configuration from configs directory
     config <- yaml::read_yaml("configs/baseball-mlb.yaml")

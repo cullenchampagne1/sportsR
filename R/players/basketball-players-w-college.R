@@ -61,7 +61,7 @@ all_players_file <- "data/processed/basketball-players-womens-college.csv"
 #'  position [string] - position abv of player
 #'  team_espn_id [int] - id used be espn to identify players team
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_players <- function(verbose = TRUE, save = TRUE) {
 
     # Grab College Womens Basketball data from ESPN
     college_espn_teams <- download_fromJSON(config$LINKS$ESPN_TEAMS, force_refresh = FALSE, simplifyDataFrame = FALSE)

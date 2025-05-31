@@ -64,7 +64,7 @@ all_players_file <- "data/processed/basketball-players-wnba.csv"
 #'  team_espn_id [int] - ID used by ESPN to identify the player's team
 #'  college_espn_id [int] - ID used by ESPN to identify the player's college team
 #'
-get_formated_data <- function(verbose = TRUE, save = TRUE) {
+get_formated_players <- function(verbose = TRUE, save = TRUE) {
     
     # Grab WNBA player data from ESPN
     espn_players <- download_fromJSON(config$LINKS$PLAYERS_ESPN, force_refresh = FALSE, simplifyDataFrame = FALSE)
