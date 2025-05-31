@@ -32,26 +32,26 @@ library(yaml, quietly = TRUE, warn.conflicts = FALSE) # Load YAML configuration 
 library(purrr, quietly = TRUE, warn.conflicts = FALSE)  # Map functions to values in dataframe
 
 # Read configuration from configs directory
-config <- yaml::read_yaml("configs/football-nfl.yaml")
+config <- yaml::read_yaml("configs/basketball-nba.yaml")
 # File to hold formatted data
-all_games_file <- "data/processed/football-games-nfl.csv"
-
-#' NFL Games
+all_games_file <- "data/processed/basketball-games-nba.csv"
+ 
+#' NBA Basketball Games
 #'
-#' Retrieves NFL game data from espn's api and other sources. The combined data
+#' Retrieves NBA basketball game data from ESPN's API and other sources. The combined data
 #' is processed into a structured dataframe and saved to a CSV file.
 #'
-#' @values ../../output/tables/nfl_football_games_missing_data.png
+#' @values ../../output/tables/nba_basketball_games_missing_data.png
 #'
 #' @source https://site.api.espn.com/
 #'
 #' @param verbose Logical indicating whether to print progress messages (default: TRUE)
 #' @param save Logical indicating whether to save data to data/processed folder
 #'
-#' @return A dataframe containing the following information for each NFL game:
+#' @return A dataframe containing the following information for each NBA basketball game:
 #'  id [string] - A generated unique identifier for each game
 #'  espn_id [string] - ESPN-assigned game ID
-#'  type [string] - Sport type code (e.g., "FB" for football)
+#'  type [string] - Sport type code (e.g., "BK" for basketball)
 #'  date [string] - Date and time of the game
 #'  season [int] - Season year
 #'  title [string] - Full title of the game
@@ -60,52 +60,56 @@ all_games_file <- "data/processed/football-games-nfl.csv"
 #'  home_espn_id [string] - ESPN ID for the home team
 #'  away_espn_id [string] - ESPN ID for the away team
 #'  play_by_play [string] - URL to the game's play-by-play JSON data
-#'
+#' 
 get_formated_data <- function(verbose = TRUE, save = TRUE) {
+
+    # Read configuration from configs directory
+    config <- yaml::read_yaml("configs/basketball-nba.yaml")
+    # File to hold formatted data
+    all_games_file <- "data/processed/basketball-games-nba.csv"
 
     # Get current year to backlog data 2 years
     current_year <- as.numeric(format(Sys.Date(), "%Y"))
-    # List to hold all avalaible game link
+    # List to hold all available game links
     all_game_links <- list()
-    # Loop through all previous years to get historical games
+    # Loop through all type_ids and previous years to get historical games, with pagination support
     for (type_id in 1:4) {
       for (i in (current_year - 2):(current_year - 1)) {
-        for (week in 1:21) {
-          url <- paste0("https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/", i, "/types/", type_id, "/weeks/", week, "/events")
-          season_events <- tryCatch(download_fromJSON(url, simplifyDataFrame = FALSE), error = function(e) NULL)
-          if (is.null(season_events) || is.null(season_events$items) || !is.list(season_events$items) || length(season_events$items) == 0) next
+        page <- 1
+        repeat {
+          url <- paste0("https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/seasons/", i, "/types/", type_id, "/events?page=", page)
+          season_events <- download_fromJSON(url, simplifyDataFrame = FALSE)
+          # If no items, break
+          if (length(season_events$items) == 0) break
           refs <- purrr::map_chr(season_events$items, ~ .x$`$ref`)
           meta_refs <- purrr::map(refs, ~ list(
             url = .x,
             season = i
           ))
           all_game_links <- append(all_game_links, meta_refs)
+          # Pagination: break if reached last page
+          if (!is.null(season_events$pageCount) && page >= season_events$pageCount) break
+          page <- page + 1
         }
       }
     }
     # Empty dataframe to hold all team information
     games <- data.frame()
-    # Now loop through all avalaible links
+    # Now loop through all available links with error handling
     for (entry in all_game_links) {
-        # Extrcat link and meta data from list item
-        link <- entry$url
-        season <- entry$season
-        # If verbose print the link being currently processed
-        if (verbose) cat(paste0("\n\033[32mDownloading Game Information: ", link, "\033[0m"))
-        # Download the raw json data for each game
+      link <- entry$url
+      season <- entry$season
+      if (verbose) cat(paste0("\n\033[32mDownloading Game Information: ", link, "\033[0m"))
+      game_info <- tryCatch({
         game_json <- download_fromJSON(link, simplifyDataFrame = FALSE)
-        # Comp object reference
         comp <- game_json$competitions[[1]]
-        # Identify home and away competitors
         home_idx <- which(purrr::map_chr(comp$competitors, "homeAway") == "home")[1]
         away_idx <- which(purrr::map_chr(comp$competitors, "homeAway") == "away")[1]
-        # Internal objects representing each competitor
         home_comp <- comp$competitors[[home_idx]]
         away_comp <- comp$competitors[[away_idx]]
-        # Return gathered in info as list
-        game_info <- list(
+        list(
           espn_id = game_json$id,
-          type = "FB",
+          type = "BKB",
           date = game_json$date,
           season = season,
           title = game_json$name,
@@ -115,19 +119,21 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
           away_espn_id = away_comp$id,
           play_by_play = comp$details$`$ref`
         )
-        # Add game data to the games dataframe
+      }, error = function(e) NULL)
+      if (!is.null(game_info)) {
         games <- dplyr::bind_rows(games, game_info)
+      }
     }
     # Generate a uniquie internal id for each game
-    games <- games %>%
-      dplyr::mutate(id = encode_id(paste0("F", espn_id), short_tile, 8)) %>%
+    games <- games %>% 
+      dplyr::mutate(id = encode_id(paste0("B", espn_id), short_tile, 8)) %>%
       dplyr::select(id, espn_id, type, date, season, title, short_tile, venue, home_espn_id, away_espn_id, play_by_play)
     
     # Analyze missing data
-    analyze_missing_data("NFL Football Games", games)
-    process_markdown_file("R/games/football-games-nfl.R", "R/games/readme.md", nrow(games), "games")
+    analyze_missing_data("NBA Basketball Games", games)
+    process_markdown_file("R/games/basketball-games-nba.R", "R/games/readme.md", nrow(games), "games")
 
-    if (verbose) cat(paste0("\n\n\033[90mNFL Football Data Saved To: /", all_games_file, "\033[0m\n"))
+    if (verbose) cat(paste0("\n\n\033[90mNBA Basketball Data Saved To: /", all_games_file, "\033[0m\n"))
     # Save any created name bindings to file
     if (save) write.csv(games, all_games_file, row.names = FALSE)
     # Save rds file of data
