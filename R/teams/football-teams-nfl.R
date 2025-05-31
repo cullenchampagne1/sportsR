@@ -203,7 +203,7 @@ get_formated_teams <- function(verbose = TRUE, save = TRUE) {
 
     # Analyze missing data
     analyze_missing_data("NFL", all_nfl_data)
-    if (sys.nframe() == 0) process_markdown_file("R/teams/football-teams-nfl.R", "R/teams/readme.md", nrow(all_nfl_data))
+    process_markdown_file("R/teams/football-teams-nfl.R", "R/teams/readme.md", nrow(all_nfl_data))
 
     if (verbose && save) cat(paste0("\n\033[90mNFL Football Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save generated csollege data
@@ -213,6 +213,3 @@ get_formated_teams <- function(verbose = TRUE, save = TRUE) {
     # Return fornated data
     return(all_nfl_data)
 }
-
-# If file is being run stand-alone, run function
-if (sys.nframe() == 0) invisible(get_formated_teams())

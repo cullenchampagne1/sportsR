@@ -123,6 +123,3 @@ get_formated_data <- function(verbose = TRUE, save = TRUE) {
     # Return formatted data
     return(espn_players)
 }
-
-# If file is being run stand-alone, run function
-invisible(get_formated_data())

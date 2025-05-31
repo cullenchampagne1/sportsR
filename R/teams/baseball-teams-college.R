@@ -368,10 +368,9 @@ get_formated_teams <- function(verbose = TRUE, save = TRUE) {
         dplyr::mutate(dplyr::across(c(primary, secondary), ~ ifelse(!is.na(.) & !str_starts(., "#"), paste0("#", .), .))) %>%
         # Standard website format
         mutate(website = {
-            # Remove trailing slashes/question marks and whitespace
             urls <- trimws(website)
+            urls <- ifelse(tolower(urls) %in% c("na", "n/a", ""), NA, urls) 
             urls <- sub("[/?]+$", "", urls)
-            # Add https:// if no protocol exists
             ifelse(grepl("^https?://", urls, ignore.case = TRUE), urls, paste0("https://", urls))
         }) %>%
         # Removed uneeded columns
@@ -422,7 +421,7 @@ get_formated_teams <- function(verbose = TRUE, save = TRUE) {
 
     # Analyze missing data
     analyze_missing_data("College Baseball", all_college_data)
-    if (sys.nframe() == 0) process_markdown_file("R/teams/baseball-teams-college.R", "R/teams/readme.md", nrow(all_college_data))
+    process_markdown_file("R/teams/baseball-teams-college.R", "R/teams/readme.md", nrow(all_college_data))
 
     if (verbose) cat(paste0("\n\033[90m", nrow(unbounded_ncaa_data), " NCAA Teams and ", nrow(unbounded_espn_data), " ESPN Teams Could Not be Binded: /output/csv/unmatched_...\033[0m"))
     if (verbose && save) cat(paste0("\n\033[90mCollege Baseball Data Saved To: /", all_teams_file, "\033[0m\n"))
@@ -435,6 +434,3 @@ get_formated_teams <- function(verbose = TRUE, save = TRUE) {
     return(all_college_data)
 
 }
-
-# If file is being run stand-alone, run function
-if (sys.nframe() == 0) invisible(get_formated_teams())

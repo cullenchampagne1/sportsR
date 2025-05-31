@@ -163,7 +163,7 @@ get_formated_teams <- function(verbose = TRUE, save = TRUE) {
 
     # Analyze missing data
     analyze_missing_data("WNBA", all_wnba_teams)
-    if (sys.nframe() == 0) process_markdown_file("R/teams/basketball-teams-wnba.R", "R/teams/readme.md", nrow(all_wnba_teams))
+    process_markdown_file("R/teams/basketball-teams-wnba.R", "R/teams/readme.md", nrow(all_wnba_teams))
 
     if (verbose && save) cat(paste0("\n\033[90mWNBA Basketball Data Saved To: /", all_teams_file, "\033[0m\n"))
     # Save any created name bindings to file
@@ -173,6 +173,3 @@ get_formated_teams <- function(verbose = TRUE, save = TRUE) {
     # Return formated data
     return(all_wnba_teams)
 }
-
-# If file is being run stand-alone, run function
-if (sys.nframe() == 0) invisible(get_formated_teams())
