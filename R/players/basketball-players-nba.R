@@ -108,13 +108,13 @@ get_formated_players <- function(verbose = TRUE, save = TRUE) {
     }) %>%
     # Only keep players associated with a valid team
     filter(!is.na(team_espn_id)) %>%
-    dplyr::mutate(id = encode_id(paste0("B", espn_id), first_name)) %>%
+    dplyr::mutate(id = encode_id(paste0("B", espn_id), full_name, 8)) %>%
     # Reorder columns and remove active data
     dplyr::select(id, dplyr::everything())
 
     # Analyze missing data
-    analyze_missing_data("NBA Players", espn_players)
-    process_markdown_file("R/players/basketball-players-nba.R", "R/players/readme.md", nrow(espn_players), "players")
+    # analyze_missing_data("NBA Players", espn_players)
+    # process_markdown_file("R/players/basketball-players-nba.R", "R/players/readme.md", nrow(espn_players), "players")
 
     if (verbose) cat(paste0("\n\n\033[90mNBA Basketball Data Saved To: /", all_players_file, "\033[0m\n"))
     # Save any created name bindings to file

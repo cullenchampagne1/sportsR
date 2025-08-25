@@ -102,19 +102,41 @@ get_formated_games <- function(verbose = TRUE, save = TRUE) {
               venue = if (!is.null(comp$venue) && !is.null(comp$venue$fullName)) comp$venue$fullName else NA,
               home_espn_id = home_comp$id,
               away_espn_id = away_comp$id,
+              odds_ref = paste0("https://sports.core.api.espn.com/v2/sports/baseball/college-baseball/events/", game$id, "/competitions/", game$id, "/odds"),
+              home_score = home_comp$score,
+              away_score = away_comp$score,
+              winner = if (!is.null(home_comp$score) && !is.null(away_comp$score)) {
+                if (as.numeric(home_comp$score) > as.numeric(away_comp$score)) {
+                  home_comp$id
+                } else if (as.numeric(away_comp$score) > as.numeric(home_comp$score)) {
+                  away_comp$id
+                } else {
+                  NA
+                }
+              } else {
+                NA
+              },
+              over_under_total = NA,
+              home_spread = NA,
+              away_spread = NA,
+              home_moneyline = NA,
+              away_moneyline = NA,
               play_by_play = pbp_url
             )
             games <- dplyr::bind_rows(games, game_info)
         }
     }
+
     # Generate a uniquie internal id for each game
     games <- games %>%
       dplyr::mutate(id = encode_id(paste0("CB", espn_id), short_tile, 8)) %>%
-      dplyr::select(id, espn_id, type, date, season, title, short_tile, venue, home_espn_id, away_espn_id, play_by_play)
+      dplyr::select(id, espn_id, type, date, season, title, short_tile, venue,
+                    home_espn_id, away_espn_id, home_score, away_score, winner,
+                    over_under_total, home_spread, away_spread, home_moneyline, away_moneyline, play_by_play)
 
     # Analyze missing data
     analyze_missing_data("College Baseball Games", games)
-    process_markdown_file("R/games/baseball-games-college.R", "R/games/readme.md", nrow(games), "games")
+    # process_markdown_file("R/games/baseball-games-college.R", "R/games/readme.md", nrow(games), "games")
 
     if (verbose) cat(paste0("\n\n\033[90mCollege Baseball Data Saved To: /", all_games_file, "\033[0m\n"))
     # Save any created name bindings to file

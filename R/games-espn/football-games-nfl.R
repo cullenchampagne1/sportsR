@@ -63,6 +63,9 @@ all_games_file <- "data/processed/football-games-nfl.csv"
 #'
 get_formated_games <- function(verbose = TRUE, save = TRUE) {
 
+  #http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401671882/competitions/401671882/odds?lang=en&region=us
+  #http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401671882/competitions/401671882/competitors/14/score?lang=en&region=us
+
     # Get current year to backlog data 2 years
     current_year <- as.numeric(format(Sys.Date(), "%Y"))
     # List to hold all avalaible game link
@@ -102,6 +105,9 @@ get_formated_games <- function(verbose = TRUE, save = TRUE) {
         # Internal objects representing each competitor
         home_comp <- comp$competitors[[home_idx]]
         away_comp <- comp$competitors[[away_idx]]
+        # Generate score URLs for college football manually
+        home_score_ref <- paste0("http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/", game_json$id, "/competitions/", game_json$id, "/competitors/", home_comp$id, "/score?lang=en&region=us")
+        away_score_ref <- paste0("http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/", game_json$id, "/competitions/", game_json$id, "/competitors/", away_comp$id, "/score?lang=en&region=us")
         # Return gathered in info as list
         game_info <- list(
           espn_id = game_json$id,
@@ -113,19 +119,89 @@ get_formated_games <- function(verbose = TRUE, save = TRUE) {
           venue = comp$venue$fullName,
           home_espn_id = home_comp$id,
           away_espn_id = away_comp$id,
-          play_by_play = comp$details$`$ref`
+          play_by_play = comp$details$`$ref`,
+          odds_ref = paste0("http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/", game_json$id, "/competitions/", game_json$id, "/odds?lang=en&region=us"),
+          home_score_ref = home_score_ref,
+          away_score_ref = away_score_ref
         )
         # Add game data to the games dataframe
         games <- dplyr::bind_rows(games, game_info)
     }
+    
+    # Extract actual scores and winner info from score refs
+    scores <- purrr::pmap_dfr(list(games$home_score_ref, games$away_score_ref, games$home_espn_id, games$away_espn_id),
+      function(home_url, away_url, home_id, away_id) {
+        home_score_json <- tryCatch(download_fromJSON(home_url, simplifyDataFrame = TRUE), error = function(e) NULL)
+        away_score_json <- tryCatch(download_fromJSON(away_url, simplifyDataFrame = TRUE), error = function(e) NULL)
+
+        tibble::tibble(
+          home_score = if (!is.null(home_score_json)) home_score_json$value else NA,
+          away_score = if (!is.null(away_score_json)) away_score_json$value else NA,
+          winner = dplyr::case_when(
+            !is.null(home_score_json) && "winner" %in% names(home_score_json) && is.logical(home_score_json$winner) && home_score_json$winner ~ home_id,
+            !is.null(away_score_json) && "winner" %in% names(away_score_json) && is.logical(away_score_json$winner) && away_score_json$winner ~ away_id,
+            TRUE ~ NA_character_
+          )
+        )
+      }
+    )
+
+    # Combine the score data with the original games dataframe
+    games <- dplyr::bind_cols(games, scores)
+
+    # Extract betting odds information
+    odds_data <- purrr::pmap_dfr(list(games$odds_ref, games$home_espn_id, games$away_espn_id), function(odds_url, home_id, away_id) {
+      odds_json <- tryCatch(download_fromJSON(odds_url, simplifyDataFrame = FALSE), error = function(e) NULL)
+
+      if (is.null(odds_json) || is.null(odds_json$items) || length(odds_json$items) == 0) {
+        return(tibble::tibble(
+          over_under_total = NA,
+          home_spread = NA,
+          away_spread = NA,
+          home_moneyline = NA,
+          away_moneyline = NA
+        ))
+      }
+
+      # Take the first odds entry as default
+      item <- odds_json$items[[1]]
+
+      tibble::tibble(
+        over_under_total = item$current$total$alternateDisplayValue %||% NA,
+        home_spread = item$homeTeamOdds$current$pointSpread$american %||% NA,
+        away_spread = item$awayTeamOdds$current$pointSpread$american %||% NA,
+        home_moneyline = item$homeTeamOdds$current$moneyLine$alternateDisplayValue %||% NA,
+        away_moneyline = item$awayTeamOdds$current$moneyLine$alternateDisplayValue %||% NA
+      )
+    })
+
+    # Append odds data to the games dataframe
+    games <- dplyr::bind_cols(games, odds_data)
+
     # Generate a uniquie internal id for each game
     games <- games %>%
       dplyr::mutate(id = encode_id(paste0("F", espn_id), short_tile, 8)) %>%
-      dplyr::select(id, espn_id, type, date, season, title, short_tile, venue, home_espn_id, away_espn_id, play_by_play)
+      dplyr::mutate(
+        home_spread = ifelse(is.na(home_spread) & !is.na(away_spread), -as.numeric(away_spread), home_spread),
+        away_spread = ifelse(is.na(away_spread) & !is.na(home_spread), -as.numeric(home_spread), away_spread),
+        home_moneyline = ifelse(
+                  is.na(home_moneyline) & !is.na(away_moneyline),
+                  as.character(-as.numeric(away_moneyline)),
+                  ifelse(home_moneyline == "EVEN", as.character(away_moneyline), home_moneyline)
+                ),        away_moneyline = ifelse(
+          is.na(away_moneyline) & !is.na(home_moneyline),
+          as.character(-as.numeric(home_moneyline)),
+          ifelse(away_moneyline == "EVEN", as.character(home_moneyline), away_moneyline)
+        )
+      ) %>%
+      dplyr::select(id, espn_id, type, date, season, title, short_tile, venue,
+                    home_espn_id, away_espn_id, home_score, away_score, winner,
+                    over_under_total, home_spread, away_spread, home_moneyline, away_moneyline,
+                    play_by_play)
     
     # Analyze missing data
     analyze_missing_data("NFL Football Games", games)
-    process_markdown_file("R/games/football-games-nfl.R", "R/games/readme.md", nrow(games), "games")
+    # process_markdown_file("R/games/football-games-nfl.R", "R/games/readme.md", nrow(games), "games")
 
     if (verbose) cat(paste0("\n\n\033[90mNFL Football Data Saved To: /", all_games_file, "\033[0m\n"))
     # Save any created name bindings to file

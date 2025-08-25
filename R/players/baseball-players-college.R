@@ -82,11 +82,11 @@ get_formated_players <- function(verbose = TRUE, save = TRUE) {
         espn_players <- dplyr::bind_rows(espn_players, players)
     }
     # Create unique ID for all players and put as first column
-    espn_players <- espn_players %>% dplyr::mutate(id = encode_id(paste0("B", espn_id), full_name)) %>% select(id, dplyr::everything())
+    espn_players <- espn_players %>% dplyr::mutate(id = encode_id(paste0("B", espn_id), full_name, 8)) %>% select(id, dplyr::everything())
 
     # Analyze missing data
-    analyze_missing_data("College Baseball Players", espn_players)
-    process_markdown_file("R/players/baseball-players-college.R", "R/players/readme.md", nrow(espn_players), "players")
+    # analyze_missing_data("College Baseball Players", espn_players)
+    # process_markdown_file("R/players/baseball-players-college.R", "R/players/readme.md", nrow(espn_players), "players")
 
     if (verbose) cat(paste0("\n\n\033[90mCollege Baseball Data Saved To: /", all_players_file, "\033[0m\n"))
     # Save any created name bindings to file
