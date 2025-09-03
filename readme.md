@@ -1,4 +1,4 @@
-## ⚠️ Project Notice  
+## Project Notice  
 
 This repository is **no longer maintained**.  
 All future development has moved to **[sportJS](https://github.com/cullenchampagne1/sportsJS)** due to limitations with **R** and live browsing support.  
